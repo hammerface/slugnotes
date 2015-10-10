@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from study_notes_project import settings
 from .forms import UserCreateForm, SignUpForm
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 
 def Login(request):
@@ -19,6 +20,9 @@ def Login(request):
             else:
                 return HttpResponse("Inactive user.")
         else:
+            #invalid login
+            #https://docs.djangoproject.com/en/dev/topics/auth/default/#user-objects
+            messages.error(request, "Invalid username/password")
             return HttpResponseRedirect(settings.LOGIN_URL)
             
 
