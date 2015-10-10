@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from study_notes_project import settings
-
+from .forms import UserCreateForm, SignUpForm
 
 def Login(request):
     if request.method == "POST":
@@ -24,7 +24,11 @@ def Login(request):
 
 @login_required
 def Home(request):
-    return render(request, "user_profile/home.html", {})
+    form = SignUpForm();
+    context = {
+        "form" : form
+    }
+    return render(request, "user_profile/home.html", context)
 
 def Logout(request):
     logout(request)
@@ -32,6 +36,12 @@ def Logout(request):
 
 
 
-
+def Signup(request):
+    title = "My Title"
+    form = UserCreateForm()
+    context = {
+        "form" : form
+    }
+    return render(request,"user_profile/signup.html", context)
 
 

@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', views.Login),
     url(r'^accounts/logout/$', views.Logout),
+    url(r'^accounts/signup/$', views.Signup),
 ]
