@@ -6,6 +6,8 @@ from study_notes_project import settings
 from .forms import UserCreateForm, SignUpForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.contrib.auth.models import User
+
 
 
 def Login(request):
@@ -51,11 +53,10 @@ def Signup(request):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             #add the user to the database
+            new_user = User.objects.create_user(username = form.cleaned_data.get('username'), 
+                email= form.cleaned_data.get('email'), password= form.cleaned_data.get('password1'), 
+                first_name = form.cleaned_data.get('first_name'), last_name= forms.cleaned_data.get('last_name'))
             return HttpResponseRedirect('/')
-        # username = request.POST['username']
-        # password1 = request.POST['password1']
-        # password2 = request.POST['password2']
-        # email = request.POST['email']
     else:
         form = UserCreateForm()
     context = {

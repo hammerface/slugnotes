@@ -42,13 +42,30 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("first_name", "last_name", "username",  "password1", "password2", "email")
+    # Check that username doesn't already exist
+    def clean_username(self):
+        username=self.cleaned_data['username']
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            return username
+        raise forms.ValidationError('The username is already taken. Please try with another.')
 
+    # Check for a valid .edu email accounts
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        email_base, provider = email.split("@")
+        domain, extension = provider.split('.')
+        if not extension == "edu":
+            raise forms.ValidationError("Please use valid .edu email address.")
+        return email
+
+    # Check that passwords match
     def clean_password2(self):
-    	print self.cleaned_data
     	password1 = self.cleaned_data.get('password1')
     	password2 = self.cleaned_data.get('password2')
     	if password1 != password2:
-    		raise forms.ValidationError("passwords don't match!!!")
+    		raise forms.ValidationError("Passwords don't match!")
     	return password2
 
     def __init__(self, *args, **kwargs):
