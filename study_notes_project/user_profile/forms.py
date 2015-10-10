@@ -36,6 +36,21 @@ class SignUpForm(forms.ModelForm):
 # http://stackoverflow.com/questions/13202845/removing-help-text-from-django-usercreateform	
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "username",  "password1", "password2", "email")
+
+    def clean_password2(self):
+    	print self.cleaned_data
+    	password1 = self.cleaned_data.get('password1')
+    	password2 = self.cleaned_data.get('password2')
+    	if password1 != password2:
+    		raise forms.ValidationError("passwords don't match!!!")
+    	return password2
+
     def __init__(self, *args, **kwargs):
         super(UserCreateForm, self).__init__(*args, **kwargs)
 

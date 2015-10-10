@@ -1,9 +1,14 @@
 <h1>Sign up</h1>
 
-
+{% if form.errors %}
+    <p>Errors in form</p>
+    <!-- {% for errors in form.errors %}
+        {{ errors }}
+    {% endfor %} -->
+{% endif %}
 <form method="POST" action=""> {% csrf_token %}
-{{ form.as_p }}
+	{{ form.as_p }}
 
-<input type="submit" value="Sign Up">
+	<input type="submit" value="Sign Up">
 </form>
 
