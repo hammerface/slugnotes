@@ -55,7 +55,7 @@ def Signup(request):
             #add the user to the database
             new_user = User.objects.create_user(username = form.cleaned_data.get('username'), 
                 email= form.cleaned_data.get('email'), password= form.cleaned_data.get('password1'), 
-                first_name = form.cleaned_data.get('first_name'), last_name= forms.cleaned_data.get('last_name'))
+                first_name = form.cleaned_data.get('first_name'), last_name= form.cleaned_data.get('last_name'))
             return HttpResponseRedirect('/')
     else:
         form = UserCreateForm()
