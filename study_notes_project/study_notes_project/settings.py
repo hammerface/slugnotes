@@ -109,6 +109,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_URL = '/accounts/login/'
+PROFILE_URL = '/accounts/profile/'
 HOME_URL = '/'
 STATIC_ROOT = {
     os.path.join(BASE_DIR, "static_files"),

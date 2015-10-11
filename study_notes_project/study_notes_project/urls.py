@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^accounts/login/$', views.Login),
     url(r'^accounts/logout/$', views.Logout),
     url(r'^accounts/signup/$', views.Signup),
+    url(r'^accounts/profile/$', views.Profile),
+    
 ]

@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from study_notes_project import settings
-from .forms import UserCreateForm, SignUpForm
+from .forms import UserCreateForm, SignUpForm, UpdateProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -63,5 +63,11 @@ def Signup(request):
         "form" : form,
     }
     return render(request,"user_profile/signup.html", context)
+
+# Editable Profile page
+def Profile(request):
+    #user = User.objects.get(username='testing2').first_name
+    #print user
+    return render(request,"user_profile/profile.html",{})
 
 
