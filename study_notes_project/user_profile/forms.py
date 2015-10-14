@@ -73,5 +73,33 @@ class UserCreateForm(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
 
-class UpdateProfile(UserCreateForm):
+class UpdateProfile(forms.ModelForm):
     email = forms.EmailField(required=False)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    username = forms.CharField(required=False)
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "username", "email")
+
+    # Check that username doesn't already exist
+    # http://stackoverflow.com/questions/23361057/django-comparing-old-and-new-field-value-before-saving
+    def clean_username(self):
+        username=self.cleaned_data['username']
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            return username
+        if "username" in self.changed_data:
+            raise forms.ValidationError('The username is already taken. Please try with another.')
+
+
+    # Check for a valid .edu email accounts
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        email_base, provider = email.split("@")
+        domain, extension = provider.split('.')
+        if not extension == "edu":
+            raise forms.ValidationError("Please use valid .edu email address.")
+        return email

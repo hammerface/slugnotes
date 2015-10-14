@@ -65,9 +65,30 @@ def Signup(request):
     return render(request,"user_profile/signup.html", context)
 
 # Editable Profile page
+@login_required
 def Profile(request):
     #user = User.objects.get(username='testing2').first_name
+    # username = None
+    # form = None
+    # username = request.user.username
+    # user = User.objects.get(username=username)
+    # username = user.username
+    # first_name = user.first_name
+    # last_name = user.last_name
+    # email = user.email
+    if request.method == "POST":
+        form = UpdateProfile(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = UpdateProfile(instance=request.user)
+    context = {
+        "form" : form
+    }
+    #print username , first_name, last_name, email
     #print user
-    return render(request,"user_profile/profile.html",{})
+    return render(request,"user_profile/profile.html",context)
 
 
