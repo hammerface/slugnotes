@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from study_notes_project import settings
-from .forms import UserCreateForm, SignUpForm, UpdateProfile
+from .forms import UserCreateForm, SignUpForm, UpdateProfile, ChangePassword
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -32,13 +34,13 @@ def Login(request):
 
 
 # Home page requires sign in before getting here
-@login_required
-def Home(request):
-    form = SignUpForm();
-    context = {
-        "form" : form
-    }
-    return render(request, "user_profile/home.html", context)
+# @login_required
+# def Home(request):
+#     # form = SignUpForm();
+#     context = {
+#         "form" : form
+#     }
+#     return render(request, "user_profile/home.html", context)
 
 # The logout function, just logsout a user
 def Logout(request):
@@ -52,10 +54,17 @@ def Signup(request):
     if request.method == "POST":
         form = UserCreateForm(request.POST)
         if form.is_valid():
+            # log user in
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
             #add the user to the database
-            new_user = User.objects.create_user(username = form.cleaned_data.get('username'), 
-                email= form.cleaned_data.get('email'), password= form.cleaned_data.get('password1'), 
+            new_user = User.objects.create_user(username = username, 
+                email= form.cleaned_data.get('email'), password = password, 
                 first_name = form.cleaned_data.get('first_name'), last_name= form.cleaned_data.get('last_name'))
+            # login user
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
             return HttpResponseRedirect('/')
     else:
         form = UserCreateForm()
@@ -90,5 +99,21 @@ def Profile(request):
     #print username , first_name, last_name, email
     #print user
     return render(request,"user_profile/profile.html",context)
+
+#http://stackoverflow.com/questions/26457279/passwordchangeform-with-custom-user-model
+def Change_Password(request):
+    form = PasswordChangeForm(user=request.user)
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+    context = {
+        "form" : form,
+    }
+
+
+    return render(request, "user_profile/change_password.html", context)
 
 
