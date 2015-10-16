@@ -30,6 +30,17 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+#Send email for forgotten paswword
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ucscslugnotes@gmail.com'
+EMAIL_HOST_PASSWORD = 'kickassslugs'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -108,12 +119,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 STATIC_URL = '/static/'
 LOGIN_URL = '/accounts/login/'
 PROFILE_URL = '/accounts/profile/'
 HOME_URL = '/'
-STATIC_ROOT = {
-    os.path.join(BASE_DIR, "static_files"),
-}
+# STATIC_ROOT = {
+#     os.path.join(BASE_DIR, "static_files")
+# }
 
 
