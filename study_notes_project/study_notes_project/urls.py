@@ -28,10 +28,10 @@ urlpatterns = [
     url(r'^accounts/signup/$', user_profile.Signup),
     url(r'^accounts/profile/$', user_profile.Profile),
     url(r'^accounts/change_password/$', user_profile.Change_Password),
-    url(r'^reset/password_reset/$', password_reset, name='reset_password_reset1'),
-    url(r'^reset/password_reset/done/$', password_reset_done, name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, name='password_reset_confirm'),
-    url(r'^reset/done/$', password_reset_complete, name='password_reset_complete'),
+    url(r'^accounts/reset/password_reset/$', password_reset, name='reset_password_reset1'),
+    url(r'^accounts/password_reset/done/$', password_reset_done, name='password_reset_done'),
+    url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, name='password_reset_confirm'),
+    url(r'^accounts/reset/done/$', password_reset_complete, name='password_reset_complete'),
    
     
 ]
