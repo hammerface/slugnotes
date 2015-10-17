@@ -58,7 +58,11 @@ class UserCreateForm(UserCreationForm):
         domain, extension = provider.split('.')
         if not extension == "edu":
             raise forms.ValidationError("Please use valid .edu email address.")
-        return email
+        try:
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('The email is already in use. Please try another')
 
     # Check that passwords match
     def clean_password2(self):
@@ -103,7 +107,11 @@ class UpdateProfile(forms.ModelForm):
         domain, extension = provider.split('.')
         if not extension == "edu":
             raise forms.ValidationError("Please use valid .edu email address.")
-        return email
+        try:
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('The email is already in use. Please try another')
 
 
 class ChangePassword(UserCreationForm):
