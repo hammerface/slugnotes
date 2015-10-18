@@ -1,4 +1,12 @@
 <head>
+  {% load staticfiles %}
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'user/styles.css' %}">
 </head>
 <body>
 	<!-- Check for error messages from bad form data -->
@@ -29,5 +37,6 @@
 	<a href="/accounts/signup">Sign Up </a>
 	<br>
 	<a href="{% url 'reset_password_reset1' %}">Forgot your password ?</a>
-
+  <!-- Latest compiled and minified JavaScript!!!!REQUIRES jQuery -->
+  <!-- script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script -->
 </body>
