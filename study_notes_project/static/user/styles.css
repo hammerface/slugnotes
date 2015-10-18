@@ -1,0 +1,24 @@
+h1 {
+    color: rgb(73, 102, 182);
+    text-align: center;
+}
+
+input {
+    color: rgb(118, 113, 220);
+    text-align: center;
+}
+
+a {
+    color: rgb(142, 162, 216);
+    text-align: center;
+}
+
+body {
+    background-color: rgb(191, 220, 250);
+    text-align: center;
+}
+
+form {
+    background-color: rgb(191, 220, 250);
+    text-align: center;
+}
