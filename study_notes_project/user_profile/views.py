@@ -9,10 +9,13 @@ from .forms import UserCreateForm, SignUpForm, UpdateProfile, ChangePassword
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-
-# more
+#Allow the use of the flash_cards models here
+from flash_cards.models import Card, Deck
 
 def Login(request):
+    #how to query
+    #new_entry = Card.objects.get(card_id=4)
+    #print new_entry.front
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']

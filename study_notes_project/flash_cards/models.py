@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Deck(models.Model):
 	deck_id = models.AutoField(primary_key=True)
 	user = models.ForeignKey(User)
-	deck_name = models.CharField(max_length=100, default='Untitled Deck')
+	deck_name = models.CharField(max_length=100, blank=False)
 	share_flag = models.BooleanField(default=0)
 	date_created = models.DateTimeField(auto_now_add=True)
 	date_modified = models.DateTimeField(auto_now=True)
