@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'user_profile', 
     'landing',
+    'flash_cards',
 )
 
 MIDDLEWARE_CLASSES = (
