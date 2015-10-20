@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if not user.is_authenticated %}
     <!-- Sequence Modern Slider -->
     <div id="da-slider" class="da-slider">
 
@@ -72,4 +74,8 @@
         </span>
       </nav>
     </div>
+  {% endif %}
+  {% if user.is_authenticated %}
+  <h1>HI!</h1>
+  {% endif %}
 {% endblock %}
