@@ -1,18 +1,33 @@
-<head>
-  {% load staticfiles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'user/styles.css' %}">
-</head>
-<h1>Sign up</h1>
+{% extends "base.html" %}
+{% block content %}
+    <!--necessary for the css-->
+    <div class="div_to_make_pretty">
+    </div>
 
-{% if form.errors %}
-    <p>Errors in form</p>
-    <!-- {% for errors in form.errors %}
-        {{ errors }}
-    {% endfor %} -->
-{% endif %}
-<form method="POST" action=""> {% csrf_token %}
-	{{ form.as_p }}
+    <!--container start-->
+    <div class="registration-bg">
+        <div class="container">
+        	<form method="POST" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
+                <h2 class="form-signin-heading">Sign Up now</h2>
+                <div class="login-wrap">
+                	{% if form.errors %}
+    					<p>Errors in form</p>
+					{% endif %}
+					<p>Enter Account Information</p>
+					{{form}}
 
-	<input type="submit" value="Sign Up">
-</form>
+                    <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
 
+                    <div class="registration">
+                        Already Registered ?
+                        <a class="" href="/accounts/login">
+                            Login
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+     </div>
+     <!--container end-->
+{% endblock %}

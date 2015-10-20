@@ -5,7 +5,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from study_notes_project import settings
-from .forms import UserCreateForm, SignUpForm, UpdateProfile, ChangePassword
+from .forms import UserCreateForm, UpdateProfile, ChangePassword
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -70,7 +70,7 @@ def Signup(request):
 
             return HttpResponseRedirect('/')
     else:
-        form = UserCreateForm()
+        form = UserCreateForm(auto_id=False)
     context = {
         "form" : form,
     }

@@ -1,42 +1,66 @@
-<head>
-  {% load staticfiles %}
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+{% extends "base.html" %}
+{% block content %}
+    <!--necessary for the css-->
+    <div class="div_to_make_pretty">
+    </div>
 
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!--container start-->
+    <div class="login-bg">
+        <div class="container">
+            <div class="form-wrapper">
+            <form method="post" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
+            <h2 class="form-signin-heading">sign in now</h2>
+            <div class="login-wrap">
+                  <!-- Check for error messages from bad form data -->
+                  {% if messages %}
+                    <ul class="messages">
+                    {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                <input type="text" class="form-control" name="username" placeholder="Username" autofocus>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+                <label class="checkbox">
+                    <span class="pull-right">
+                        <a href="{% url 'reset_password_reset1' %}"> Forgot Password?</a>
+                    </span>
+                </label>
+                <button class="btn btn-lg btn-login btn-block" type="submit">Sign in</button>
+                <div class="registration">
+                    Don't have an account yet?
+                    <a class="" href="/accounts/signup">
+                        Create an account
+                    </a>
+                </div>
 
-  <link rel="stylesheet" type="text/css" href="{% static 'user/styles.css' %}">
-</head>
-<body>
-	<!-- Check for error messages from bad form data -->
-	{% if messages %}
-		<ul class="messages">
-  		{% for message in messages %}
-  			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-  		{% endfor %}
-		</ul>
-	{% endif %}
-	
-	<div class='login-div'>
+            </div>
 
-		<h1 class='login-text'>Login</h1>
-		
+              <!-- Modal -->
+              <div aria-hidden="true" aria-labelledby="myModal" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title">Forgot Password ?</h4>
+                          </div>
+                          <div class="modal-body">
+                              <p>Enter your e-mail address below to reset your password.</p>
+                              <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
 
-		<form method="post" action=""> {% csrf_token %}
+                          </div>
+                          <div class="modal-footer">
+                              <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                              <button class="btn btn-success" type="button">Submit</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- modal -->
 
-		    <input type="text" name="username" placeholder="Username"/>
-		    <br></br>
-		    <input type="password" name="password" placeholder="Password"/>
-		    <br></br>
-		    <input type="submit" value="Login"/>
-		    
-		</form>
-
-	</div>
-	<a href="/accounts/signup">Sign Up </a>
-	<br>
-	<a href="{% url 'reset_password_reset1' %}">Forgot your password ?</a>
-  <!-- Latest compiled and minified JavaScript!!!!REQUIRES jQuery -->
-  <!-- script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script -->
-</body>
+          </form>
+          </div>
+        </div>
+    </div>
+    <!--container end-->
+  {% endblock %}

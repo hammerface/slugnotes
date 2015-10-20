@@ -1,9 +1,75 @@
-<head>
-  {% load staticfiles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'user/styles.css' %}">
-</head>
-<h1>home</h1>
-<a href="accounts/logout">Logout </a>
-<br>
-<a href="accounts/profile">Profile </a>
+{% extends "base.html" %}
+{% block content %}
+    <!-- Sequence Modern Slider -->
+    <div id="da-slider" class="da-slider">
 
+            <div class="da-slide">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+              <h2>
+                <i>Keep all study</i>
+                <br>
+                <i>materials in the</i>
+                <br>
+                <i>same place!</i>
+              </h2>
+              <p>
+                <i>Save all your flash cards</i>
+                <br />
+                <i>to your user profile.</i>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="da-slide">
+        <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+        <h2>
+          <i>Share your flashcards</i>
+            <br />
+          <i>with fellow UCSC</i>
+            <br />
+          <i>students</i>
+        </h2>
+      </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="da-slide">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+        <h2>
+          <i>Automatically create</i>
+            </br>
+          <i>flashcards from your</i>
+            </br>
+          <i>uploaded notes.</i>
+        </h2>
+        <p>
+          <i>While taking notes in class</i>
+          <br />
+          <i>simply use a "-" to indicate a question,</i>
+          <br />
+          <i>and a "~" to indicate the corresponding answer.</i>
+        </p>
+      </div>
+      </div>
+      </div>
+      </div>
+
+      <nav class="da-arrows">
+        <span class="da-arrows-prev">
+        </span>
+        <span class="da-arrows-next">
+        </span>
+      </nav>
+    </div>
+{% endblock %}

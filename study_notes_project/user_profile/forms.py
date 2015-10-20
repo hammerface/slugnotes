@@ -25,23 +25,20 @@ from django.contrib.auth.forms import UserCreationForm
 # 		full_name = self.cleaned_data.get('full_name')
 # 		return full_name
 
-class SignUpForm(forms.ModelForm):
-	class Meta:
-		model = User
-		fields = ['username', 'password', 'email', 'first_name', 'last_name']
 
-	def clean_username(self):
-		username = self.cleaned_data.get('username')
-		return username
 
 # http://stackoverflow.com/questions/13202845/removing-help-text-from-django-usercreateform	
 class UserCreateForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder':"Email"}))
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder':"First Name"}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder':"Last Name"}))
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':"form-control", 'placeholder':"Username"}))
+    password1 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'class':"form-control", 'placeholder':"Password"}))
+    password2 = forms.CharField(required=True, widget=forms.PasswordInput(attrs={'class':"form-control", 'placeholder':"Confirm Password"}))
+
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "username",  "password1", "password2", "email")
+        fields = ("first_name", "last_name", "email", "username",  "password1", "password2")
     # Check that username doesn't already exist
     def clean_username(self):
         username=self.cleaned_data['username']
@@ -75,8 +72,9 @@ class UserCreateForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserCreateForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'password1', 'password2']:
+        for fieldname in ['username', 'password1', 'password2', 'email', 'first_name', 'last_name']:
             self.fields[fieldname].help_text = None
+            self.fields[fieldname].label = ""
 
 class UpdateProfile(forms.ModelForm):
     email = forms.EmailField(required=False)
