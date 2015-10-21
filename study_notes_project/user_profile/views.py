@@ -5,7 +5,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from study_notes_project import settings
-from .forms import UserCreateForm, UpdateProfile, ChangePassword
+from .forms import UserCreateForm, UpdateProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -35,20 +35,10 @@ def Login(request):
 
     return render(request, "user_profile/login.html", {})
 
-
-# Home page requires sign in before getting here
-# @login_required
-# def Home(request):
-#     # form = SignUpForm();
-#     context = {
-#         "form" : form
-#     }
-#     return render(request, "user_profile/home.html", context)
-
 # The logout function, just logsout a user
 def Logout(request):
     logout(request)
-    return HttpResponseRedirect(settings.LOGIN_URL)
+    return HttpResponseRedirect("/")
 
 
 #http://stackoverflow.com/questions/21126005/how-to-get-django-view-to-return-form-errors
@@ -79,15 +69,6 @@ def Signup(request):
 # Editable Profile page
 @login_required
 def Profile(request):
-    #user = User.objects.get(username='testing2').first_name
-    # username = None
-    # form = None
-    # username = request.user.username
-    # user = User.objects.get(username=username)
-    # username = user.username
-    # first_name = user.first_name
-    # last_name = user.last_name
-    # email = user.email
     if request.method == "POST":
         form = UpdateProfile(request.POST, instance=request.user)
         if form.is_valid():
@@ -99,8 +80,6 @@ def Profile(request):
     context = {
         "form" : form
     }
-    #print username , first_name, last_name, email
-    #print user
     return render(request,"user_profile/profile.html",context)
 
 #http://stackoverflow.com/questions/26457279/passwordchangeform-with-custom-user-model
@@ -112,10 +91,10 @@ def Change_Password(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
+            return HttpResponseRedirect('/')
     context = {
         "form" : form,
     }
-
 
     return render(request, "user_profile/change_password.html", context)
 

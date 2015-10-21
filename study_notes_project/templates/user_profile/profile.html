@@ -1,14 +1,26 @@
-<head>
-  {% load staticfiles %}
-  <link rel="stylesheet" type="text/css" href="{% static 'user/styles.css' %}">
-</head>
-<h1>Profile</h1>
+{% extends "base.html" %}
+{% block content %}
+    <!--necessary for the css-->
+    <div class="div_to_make_pretty">
+    </div>
 
-<form method="POST" action=""> {% csrf_token %}
-	{{ form.as_p }}
+    <!--container start-->
+    <div class="registration-bg">
+        <div class="container">
+        	<form method="POST" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
+                <h2 class="form-signin-heading">Edit Account Info</h2>
+                <div class="login-wrap">
+                	{% if form.errors %}
+    					<p>Errors in form</p>
+					{% endif %}
+					{{form}}
+                    <button class="btn btn-lg btn-login btn-block" type="submit">Save Changes</button>
+                    <a class="btn btn-lg btn-login btn-block" href="/">Cancel</a>
+                </div>
+            </form>
 
-	<input type="submit" value="Save Changes">
-</form>
+        </div>
+     </div>
+     <!--container end-->
 
-<br>
-<a href='/accounts/change_password/'>Change Password</a>
+{% endblock %}
