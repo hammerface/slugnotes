@@ -77,5 +77,10 @@
   {% endif %}
   {% if user.is_authenticated %}
   <h1>Your Flash Cards will be displayed here once our site is fully developed.</h1>
+  <form method="POST" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
+  {{ form }}
+  <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
+  </form>
+
   {% endif %}
 {% endblock %}
