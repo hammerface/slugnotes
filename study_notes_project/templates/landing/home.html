@@ -76,11 +76,33 @@
     </div>
   {% endif %}
   {% if user.is_authenticated %}
-  <h1>Your Flash Cards will be displayed here once our site is fully developed.</h1>
-  <form method="POST" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
-  {{ form }}
-  <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
-  </form>
+    <h1>Your Flash Cards will be displayed here once our site is fully developed.</h1>
+    <form method="POST" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
+      {{ form }}
+      <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
+    </form>
+
+    <!-- Display the add new deck button and all the decks of a user-->
+    <div class="row display-decks">
+      <div class="col-md-3 create-deck">
+        <p>
+          add new deck
+        </p>
+
+      </div>
+      {% for deck in deck_list %}
+          <div id={{deck.deck_id}} class="col-md-3 user-decks">
+            <p> Name: <br>{{ deck.deck_name }} </p>
+            {% if deck.share %}
+              <p> Sharable: <br> Yes</p>
+            {% else %}
+              <p> Sharable: <br> No </p>
+            {% endif %}
+          </div>
+      {% endfor %}
+      
+
+    </div>
 
   {% endif %}
 {% endblock %}
