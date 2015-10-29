@@ -22,7 +22,7 @@ def Home(request):
                 deck.save()
                 return HttpResponseRedirect('/')
         else:
-            form = NewDeck()
+            form = NewDeck(initial={'user' : request.user.id})
         #grab all decks associated with a user order by descending date created
         decks = Deck.objects.filter(user_id=user_id).order_by('-date_created')
         for deck in decks:
