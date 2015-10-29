@@ -75,34 +75,65 @@
       </nav>
     </div>
   {% endif %}
+
+
   {% if user.is_authenticated %}
-    <h1>Your Flash Cards will be displayed here once our site is fully developed.</h1>
-    <form method="POST" class="form-signin wow fadeInUp" action=""> {% csrf_token %}
-      {{ form }}
-      <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
-    </form>
-
-    <!-- Display the add new deck button and all the decks of a user-->
-    <div class="row display-decks">
-      <div class="col-md-3 create-deck">
-        <p>
-          add new deck
-        </p>
-
+    <!-- Main Container -->
+    <div class="container">
+      <div class="row  mar-b-30">
+        <div class="col-md-12">
+          <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
+              <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s">
+                <i class="fa fa-plus-circle CreateNewDeck"></i>
+              </div>
+          </a>
+          <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
+              <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s">
+                <img src="/static/img/StackOfFlashCards.png"></img>
+              </div>
+          </a>
+        </div>
       </div>
-      {% for deck in deck_list %}
-          <div id={{deck.deck_id}} class="col-md-3 user-decks">
-            <p> Name: <br>{{ deck.deck_name }} </p>
-            {% if deck.share %}
-              <p> Sharable: <br> Yes</p>
-            {% else %}
-              <p> Sharable: <br> No </p>
-            {% endif %}
-          </div>
-      {% endfor %}
-      
-
     </div>
+    <!-- End Main Container -->
+
+
+    <!-- Modal -->
+    <div aria-hidden="true" aria-labelledby="CreateNewDeck" role="dialog" tabindex="-1" id="CreateNewDeck" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Create A New Deck</h4>
+          </div>
+          <form method="POST" class="form-signin wow" action=""> {% csrf_token %}
+          <div class="modal-body">
+          <!-- Check for error messages from bad form data -->
+          {% if form.errors %}
+              <p>Need to specify a deck name.</p>
+          {% endif %}
+          {% for field in form %}
+            {% if field.name == "deck_name" %}
+              <label for="id_deck_name">Deck Name:</label>
+              <input class="form-control" id="id_deck_name" name="{{ field.name}}" type="text">
+            {% else %}
+              <label for="id_share_flag">Share With Others:</label>
+              <input id="id_share_flag" name="{{ field.name}}" type="checkbox">
+            {% endif %}
+          {% endfor %}
+
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+            <button class="btn btn-success" type="submit">Make Deck!</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+
+
 
   {% endif %}
 {% endblock %}
