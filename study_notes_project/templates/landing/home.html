@@ -116,9 +116,12 @@
             {% if field.name == "deck_name" %}
               <label for="id_deck_name">Deck Name:</label>
               <input class="form-control" id="id_deck_name" name="{{ field.name}}" type="text">
-            {% else %}
+            {% elif field.name == "share_flag" %}
               <label for="id_share_flag">Share With Others:</label>
               <input id="id_share_flag" name="{{ field.name}}" type="checkbox">
+            {% else %}
+
+              {{ field.as_hidden }}
             {% endif %}
           {% endfor %}
 
