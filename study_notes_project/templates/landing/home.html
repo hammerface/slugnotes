@@ -99,6 +99,7 @@
 
 
     <!-- Modal -->
+
     <div aria-hidden="true" aria-labelledby="CreateNewDeck" role="dialog" tabindex="-1" id="CreateNewDeck" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -106,12 +107,12 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Create A New Deck</h4>
           </div>
-          <form method="POST" class="form-signin wow" action=""> {% csrf_token %}
+          <form id="make-deck-form" method="POST" class="form-signin wow" action=""> {% csrf_token %}
           <div class="modal-body">
           <!-- Check for error messages from bad form data -->
-          {% if form.errors %}
-              <p>Need to specify a deck name.</p>
-          {% endif %}
+          
+          <p id="make-deck-error"></p>
+          
           {% for field in form %}
             {% if field.name == "deck_name" %}
               <label for="id_deck_name">Deck Name:</label>
@@ -127,8 +128,8 @@
 
           </div>
           <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-            <button class="btn btn-success" type="submit">Make Deck!</button>
+            <button id="make-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+            <button id="make-deck-submit" class="btn btn-success" type="submit">Make Deck!</button>
           </div>
           </form>
         </div>

@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from user_profile import views as user_profile
 from landing import views as landing
+from flash_cards import views as flash_cards
 from django.contrib.auth.views import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 
 urlpatterns = [
@@ -32,6 +33,7 @@ urlpatterns = [
     url(r'^accounts/password_reset/done/$', password_reset_done, name='password_reset_done'),
     url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, name='password_reset_confirm'),
     url(r'^accounts/reset/done/$', password_reset_complete, name='password_reset_complete'),
-   
+    url(r'^cards/new_deck/$', flash_cards.New_Deck),
+
     
 ]
