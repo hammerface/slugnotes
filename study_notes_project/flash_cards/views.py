@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json
 from flash_cards.models import Card, Deck
 
-# Create your views here.
 def New_Deck(request):
 	if request.method == 'POST':
 		user = request.POST.get('user')
@@ -29,29 +28,3 @@ def New_Deck(request):
 			return HttpResponse(json.dumps(errors))
 
 	return HttpResponse(json.dumps({"success": "success"}))
-
-
-
-## using serialize
-# from django.shortcuts import render
-# from flash_cards.forms import NewDeck
-# from django.http import HttpResponse, HttpResponseRedirect
-
-# # Create your views here.
-# def New_Deck(request):
-# 	if request.method == 'POST':
-# 		print "here" , request.POST.get('deck_name')
-# 		data = {'user':'1','deck_name':"what are we?"}
-# 		form = NewDeck(data)
-# 		print request.POST
-# 		if form.is_valid():
-# 			print "Valid new deck"
-# 		else:
-# 			print "not valid"
-# 		print "I AM HERE"
-# 		# user = request.POST.get('user')
-# 		# deck_name = request.POST.get('deck_name')
-# 		# share_flag = request.POST.get('share_flag')
-
-# 		# print user , deck_name , share_flag
-# 	return HttpResponse("Inactive user.")
