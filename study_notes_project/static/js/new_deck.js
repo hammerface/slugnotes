@@ -78,4 +78,22 @@ function addNewDeck() {
 
 $(document).ready(function(){
 	addNewDeck();
+    $('h6.deck_name').each(function() {
+        var text_length = $(this).width();
+        var padding = (172-text_length)/2 + 36;
+        $(this).css("left",padding)
+    });
+
+    $('div.deck').hover(
+        function(){
+            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+        },
+        function(){
+            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+        }
+    );
+
+    $('.image-caption a').tooltip();
+
+
 });

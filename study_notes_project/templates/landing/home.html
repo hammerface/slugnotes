@@ -80,21 +80,35 @@
   {% if user.is_authenticated %}
     <!-- Main Container -->
     <div class="container">
-      <div class="row  mar-b-30">
+      <div class="row mar-b-30">
         <div class="col-md-12">
+          {% for deck in deck_list reversed %}
+          <div id={{deck.deck_id}} class="deck">
+            <div class="image-caption">
+                <a href="/" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="View Flash Cards">
+                  <i class="deck_options fa fa-eye"></i>
+                </a>
+                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Deck">
+                  <i class="deck_options fa fa-edit"></i>
+                </a>
+                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete Deck">
+                  <i class="deck_options fa fa-trash-o"></i>
+                </a>
+            </div>
+            <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
+            <h6 class="deck_name"> {{ deck.deck_name }} </h6>
+          </div>
+          {% endfor %}
           <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
               <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s">
                 <i class="fa fa-plus-circle CreateNewDeck"></i>
               </div>
           </a>
-          <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
-              <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s">
-                <img src="/static/img/StackOfFlashCards.png"></img>
-              </div>
-          </a>
         </div>
       </div>
     </div>
+
+
     <!-- End Main Container -->
 
 
