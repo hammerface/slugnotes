@@ -8,12 +8,12 @@
     <div class="registration-bg">
         <div class="container">
             <br>
-             <form class="form-signin wow fadeInUp" enctype="multipart/form-data"  action="" method="POST">
+             <form id="upload-notes-form" class="form-signin wow fadeInUp" enctype="multipart/form-data"  action="" method="POST">
             {% csrf_token %}
                 <h2 class="form-signin-heading">Upload Notes</h2>
                 <div class="login-wrap">
                     {{ form.as_p }}
-                    <input id="submit" class="btn btn-lg btn-login btn-block" type="submit" value="Upload">
+                    <input id="submit" class="btn btn-lg btn-login btn-block" type="submit" value="Upload" onclick="this.disabled=true;,$('#upload-notes-form').submit();">
                 </div>
             </form> 
             <br>
