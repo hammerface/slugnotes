@@ -34,7 +34,6 @@ def Upload_File(request):
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
             temp_file = request.FILES['file']
-            print temp_file.read()
             return HttpResponseRedirect('/')
     else:
         form = UploadFile()
