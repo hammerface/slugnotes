@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+    <!--necessary for the css-->
+    <div class="div_to_make_pretty">
+    </div>
+    
+    <!--container start-->
     <div class="registration-bg">
         <div class="container">
             <br>
-             <form class='search-form' enctype="multipart/form-data"  action="" method="POST">
+             <form class="form-signin wow fadeInUp" enctype="multipart/form-data"  action="" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input id="submit" type="submit" value="Submit">
+                <h2 class="form-signin-heading">Upload Notes</h2>
+                <div class="login-wrap">
+                    {{ form.as_p }}
+                    <input id="submit" class="btn btn-lg btn-login btn-block" type="submit" value="Upload">
+                </div>
             </form> 
             <br>
         </div>
      </div>
+     <!--container end-->
 {% endblock %}

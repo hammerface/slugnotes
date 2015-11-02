@@ -26,6 +26,6 @@ class NewDeck(forms.ModelForm):
 			raise forms.ValidationError('You already have a deck with that name.')
 
 class UploadFile(forms.Form):
-    file = forms.FileField()
+    file = forms.FileField(required=True, label="")
 
 
