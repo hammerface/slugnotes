@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^accounts/reset/done/$', password_reset_complete, name='password_reset_complete'),
     url(r'^cards/new_deck/$', flash_cards.New_Deck),
     url(r'^cards/content/$', flash_cards.Upload_File),
+    url(r'^cards/', flash_cards.View_Card),
 
 
     
