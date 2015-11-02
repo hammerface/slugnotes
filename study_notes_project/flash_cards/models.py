@@ -8,7 +8,7 @@ SHARE_CHOICES = [(0,"No"), (1,"Yes")]
 class Deck(models.Model):
 	deck_id = models.AutoField(primary_key=True, editable=False)
 	user = models.ForeignKey(User)
-	deck_name = models.CharField(max_length=35, blank=False)
+	deck_name = models.CharField(max_length=20, blank=False)
 	share_flag = models.BooleanField(choices=SHARE_CHOICES, default=0)
 	date_created = models.DateTimeField(auto_now_add=True, editable=False)
 	date_modified = models.DateTimeField(auto_now=True, editable=False)

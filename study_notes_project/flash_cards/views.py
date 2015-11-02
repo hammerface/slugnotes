@@ -38,3 +38,7 @@ def Upload_File(request):
     else:
         form = UploadFile()
     return render(request, 'landing/upload.html', {'form': form})
+
+def View_Card(request):
+	print request.GET.get('deck_id')
+	return render(request, 'flash_cards/view_card.html', {})
