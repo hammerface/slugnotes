@@ -33,8 +33,13 @@ def Upload_File(request):
     if request.method == 'POST':
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
-            temp_file = request.FILES['file']
-            return HttpResponseRedirect('/')
+        	content = None
+        	if request.POST.get('text', False) != False:
+        		content = request.POST['text']
+        	if request.FILES.get('file', False) != False:
+        		content = request.FILES['file']
+        	print content
+        	return HttpResponseRedirect('/')
     else:
         form = UploadFile()
     return render(request, 'landing/upload.html', {'form': form})

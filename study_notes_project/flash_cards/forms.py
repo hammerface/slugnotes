@@ -26,6 +26,27 @@ class NewDeck(forms.ModelForm):
 			raise forms.ValidationError('You already have a deck with that name.')
 
 class UploadFile(forms.Form):
-    file = forms.FileField(required=True, label="")
+    file = forms.FileField(required=False)
+    text = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':13, 'cols':33}))
 
+    def clean(self):
+
+        # Get the field values submitted
+        cleaned_data = super(UploadFile, self).clean()
+        file = cleaned_data.get('file')
+        text = cleaned_data.get('text')
+        if file:
+	        f = str(file).split('.')
+	    	if f[1] != 'txt':
+	    		raise forms.ValidationError('Please select a .txt file.')
+        if file and text:
+            raise forms.ValidationError('Only fill out one field please.', code='invalid')
+
+
+
+
+    # def check_fields(self):
+    # 	print self.cleaned_data['text']
+    # 	print self.cleaned_data['file']
+    # 	return 
 
