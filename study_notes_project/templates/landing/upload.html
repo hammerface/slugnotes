@@ -1,0 +1,9 @@
+<head>   
+</head>
+<body>
+    <form class='search-form' enctype="multipart/form-data"  action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input id="submit" type="submit" value="Submit">
+    </form> 
+</body>

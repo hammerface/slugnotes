@@ -34,6 +34,8 @@ urlpatterns = [
     url(r'^accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', password_reset_confirm, name='password_reset_confirm'),
     url(r'^accounts/reset/done/$', password_reset_complete, name='password_reset_complete'),
     url(r'^cards/new_deck/$', flash_cards.New_Deck),
+    url(r'^cards/content/$', flash_cards.Upload_File),
+
 
     
 ]

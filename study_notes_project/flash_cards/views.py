@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from flash_cards.forms import NewDeck
+from flash_cards.forms import NewDeck, UploadFile
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 from flash_cards.models import Card, Deck
+import os
 
 def New_Deck(request):
 	if request.method == 'POST':
@@ -28,3 +29,13 @@ def New_Deck(request):
 			return HttpResponse(json.dumps(errors))
 
 	return HttpResponse(json.dumps({"success": "success"}))
+
+def Upload_File(request):
+    if request.method == 'POST':
+        form = UploadFile(request.POST, request.FILES)
+        if form.is_valid():
+            temp_file = request.FILES['file']
+            return HttpResponseRedirect('/')
+    else:
+        form = UploadFile()
+    return render(request, 'landing/upload.html', {'form': form})
