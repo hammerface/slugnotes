@@ -3,7 +3,6 @@ from flash_cards.forms import NewDeck, UploadFile
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 from flash_cards.models import Card, Deck
-import os
 
 def New_Deck(request):
 	if request.method == 'POST':
@@ -35,6 +34,7 @@ def Upload_File(request):
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
             temp_file = request.FILES['file']
+            print temp_file.read()
             return HttpResponseRedirect('/')
     else:
         form = UploadFile()
