@@ -25,3 +25,7 @@ class NewDeck(forms.ModelForm):
 		if "deck_name" in self.changed_data:
 			raise forms.ValidationError('You already have a deck with that name.')
 
+class UploadFile(forms.Form):
+    file = forms.FileField(required=True, label="")
+
+
