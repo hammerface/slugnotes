@@ -38,7 +38,7 @@ def Upload_File(request):
         		content = request.POST['text']
         	if request.FILES.get('file', False) != False:
         		content = request.FILES['file']
-        	print content
+        		content = content.read()
         	return HttpResponseRedirect('/')
     else:
         form = UploadFile()
