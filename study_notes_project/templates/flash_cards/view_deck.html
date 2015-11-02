@@ -13,6 +13,9 @@
                 <i class="fa fa-plus-circle CreateNewCard"></i>
               </div>
           </a>
+          {% for card in card_list %}
+    		<p> {{ card.front }} </p>
+    	  {% endfor %}
         </div>
       </div>
     </div>

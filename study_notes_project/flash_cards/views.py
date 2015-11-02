@@ -3,6 +3,9 @@ from flash_cards.forms import NewDeck, UploadFile, NewCard
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 from flash_cards.models import Card, Deck
+from django.core.signing import Signer
+from django.core import signing
+
 
 def New_Deck(request):
 	if request.method == 'POST':
@@ -33,17 +36,39 @@ def Upload_File(request):
     if request.method == 'POST':
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
-            temp_file = request.FILES['file']
-            return HttpResponseRedirect('/')
+        	content = None
+        	if request.POST.get('text', False) != False:
+        		content = request.POST['text']
+        	if request.FILES.get('file', False) != False:
+        		content = request.FILES['file']
+        		content = content.read()
+        	return HttpResponseRedirect('/')
     else:
         form = UploadFile()
     return render(request, 'landing/upload.html', {'form': form})
 
 def View_Deck(request):
-	print request.GET.get('deck_id')
+
+	deck_id_signed = request.GET.get('deck_id')
+	deck_id = None
+	card_list =[]
+	signer = Signer(request.user.id)
+	try:
+		deck_id = signer.unsign(deck_id_signed)
+	except signing.BadSignature:
+		print("Tampering detected!")
+		return HttpResponseRedirect('/')
 	form = NewCard(initial={'deck' : request.GET.get('deck_id')})
+	cards = Card.objects.filter(deck_id=deck_id).order_by('-date_created')
+	for card in cards:
+		card_list.append({
+			"card_id" : card.card_id,
+			"front" : card.front,
+			"back" : card.back,
+			})
 	context = {
-		"form" : form
+		"form" : form,
+		"card_list" : card_list,
 	}
 	return render(request, 'flash_cards/view_deck.html', context)
 
