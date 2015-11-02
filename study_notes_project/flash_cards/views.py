@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from flash_cards.forms import NewDeck, UploadFile
+from flash_cards.forms import NewDeck, UploadFile, NewCard
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 from flash_cards.models import Card, Deck
@@ -39,6 +39,33 @@ def Upload_File(request):
         form = UploadFile()
     return render(request, 'landing/upload.html', {'form': form})
 
-def View_Card(request):
+def View_Deck(request):
 	print request.GET.get('deck_id')
-	return render(request, 'flash_cards/view_card.html', {})
+	form = NewCard(initial={'deck' : request.GET.get('deck_id')})
+	context = {
+		"form" : form
+	}
+	return render(request, 'flash_cards/view_deck.html', context)
+
+def New_Card(request):
+	print "I am here"
+	if request.method == 'POST':
+		deck = request.POST.get('deck')
+		front = request.POST.get('front')
+		back = request.POST.get('back')
+		data = {'deck' : deck, 'front' : front, 'back' : back}
+		print data , "here"
+		
+		form = NewCard(data)
+		if form.is_valid():
+			print "valid form"
+			card = form.save(commit=False)
+			card.deck_id = deck
+			card.save()
+		else:
+			print "error"
+			errors = form.errors
+			print errors
+			return HttpResponse(json.dumps(errors))
+
+	return HttpResponse(json.dumps({"success": "success"}))

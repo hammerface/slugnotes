@@ -73,11 +73,59 @@ function addNewDeck() {
 	});
 }
 
+function addNewCard() {
+    $('#make-card-submit').click(function(event){
+        event.preventDefault();
+        var deck = $("#id_deck").val();
+        var front = $("#id_front").val();
+        var back = $('#id_back').val();
+        // var csrftoken = getCookie('csrftoken');
+        //start ajax post
+        $.ajax({
+        url : "/cards/new_card/", // the endpoint
+        type : "POST", // http method
+        data : { deck : deck, front : front, back : back }, // data sent with the post request
+        "beforeSend": function(xhr, settings) {
+        console.log("Before Send");
+        $.ajaxSettings.beforeSend(xhr, settings);
+        },
+        // handle a successful response
+        success : function(json) {
+            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+            alert(json);
+            var errors = jQuery.parseJSON(json);
+            alert(errors.front);
+            //errors in form
+            if (errors.front != null) {
+                var error = $('#make-card-error');
+                error.text(errors.front)
+            }else {
+                //no errors in form
+                console.log("Trying to submit.");
+                $('#make-card-form').trigger("reset");
+                var cancelButton = document.getElementById("make-card-cancel");
+                cancelButton.click();
+                location.reload();
+            }
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
 
+        
+        
+    });
+}
 
 
 $(document).ready(function(){
 	addNewDeck();
+    addNewCard();
     $('h6.deck_name').each(function() {
         var text_length = $(this).width();
         var padding = (172-text_length)/2 + 36;

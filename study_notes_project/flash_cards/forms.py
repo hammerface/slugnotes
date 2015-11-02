@@ -25,6 +25,16 @@ class NewDeck(forms.ModelForm):
 		if "deck_name" in self.changed_data:
 			raise forms.ValidationError('You already have a deck with that name.')
 
+class NewCard(forms.ModelForm):
+
+	front = forms.CharField( required=True, label="Front of Card", widget=forms.Textarea(attrs={'class':"form-control"}) )
+	back = forms.CharField( label="Back of Card", widget=forms.Textarea(attrs={'class':"form-control"}) )
+
+	class Meta:
+		model = Card
+		fields = ("front", "back", "deck")
+		widgets = {'deck': forms.HiddenInput()}
+
 class UploadFile(forms.Form):
     file = forms.FileField(required=True, label="")
 
