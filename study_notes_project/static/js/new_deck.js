@@ -73,6 +73,55 @@ function addNewDeck() {
 	});
 }
 
+function editDeck() {
+	$('#edit-deck-submit').click(function(event){
+		event.preventDefault();
+	        var user = $("#id_user").val();
+	        var deck_id = $("#id_deck").val();
+		var deck_name = $("#id_deck_name").val();
+		var share_flag = $('#id_share_flag').is(':checked');
+		// var csrftoken = getCookie('csrftoken');
+
+		//start ajax post
+		$.ajax({
+        url : "/cards/edit_deck/", // the endpoint
+        type : "POST", // http method
+        data : { user : user, deck_id : deck_id, deck_name : deck_name, share_flag : share_flag }, // data sent with the post request
+        "beforeSend": function(xhr, settings) {
+        console.log("Before Send");
+        $.ajaxSettings.beforeSend(xhr, settings);
+    	},
+        // handle a successful response
+        success : function(json) {
+            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+            var errors = jQuery.parseJSON(json);
+
+            //erros in form
+            if (errors.deck_name != null) {
+            	var error = $('#edit-deck-error');
+            	error.text(errors.deck_name)
+            }else {
+            	//no errors in form
+            	$('#edit-deck-form').trigger("reset");
+            	var cancelButton = document.getElementById("edit-deck-cancel");
+				cancelButton.click();
+				location.reload();
+            }
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+
+		
+		
+	});
+}
+
 function addNewCard() {
     $('#make-card-submit').click(function(event){
         event.preventDefault();
@@ -203,7 +252,8 @@ function handleCardTurn(){
 }
 
 $(document).ready(function(){
-	addNewDeck();
+    addNewDeck();
+    editDeck();
     addNewCard();
     centerDeckName();
     scrollText();

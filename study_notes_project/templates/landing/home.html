@@ -82,24 +82,26 @@
       <div class="row mar-b-30">
         <div class="col-md-12">
           {% for deck in deck_list reversed %}
-          <div id={{deck.deck_id}} class="deck">
-            <div class="image-caption">
-                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
-                  <i class="deck_options fa fa-book"></i>
-                </a>
-                <a href="/cards/?deck_id={{ deck.deck_id }}" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">
-                  <i class="deck_options fa fa-edit"></i>
-                </a>
-                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Deck Settings">
-                  <i class="deck_options fa fa-gear"></i>
-                </a>
-                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
-                  <i class="deck_options fa fa-trash-o"></i>
-                </a>
+  	    {% if deck.deleted_flag == true %} <!-- this is broken for some reason == 0 is does not work -->
+            <div id={{deck.deck_id}} class="deck">
+              <div class="image-caption">
+                  <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+                    <i class="deck_options fa fa-book"></i>
+                  </a>
+                  <a href="/cards/?deck_id={{ deck.deck_id }}" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">
+                    <i class="deck_options fa fa-edit"></i>
+                  </a>
+                  <a href="/cards/edit_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
+                    <i class="deck_options fa fa-gear"></i>
+                  </a>
+                  <a href="/cards/delete_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
+                    <i class="deck_options fa fa-trash-o"></i>
+                  </a>
+                </div>
+                <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
+              <h6 class="deck_name"> {{ deck.deck_name }} </h6>
             </div>
-            <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
-            <h6 class="deck_name"> {{ deck.deck_name }} </h6>
-          </div>
+	    {% endif %}
           {% endfor %}
           <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
               <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Deck">
@@ -114,7 +116,7 @@
     <!-- End Main Container -->
 
 
-    <!-- Modal -->
+    <!-- Create Deck Modal -->
 
     <div aria-hidden="true" aria-labelledby="CreateNewDeck" role="dialog" tabindex="-1" id="CreateNewDeck" class="modal fade">
       <div class="modal-dialog">
@@ -152,6 +154,39 @@
     </div>
     <!-- End Modal -->
 
+
+    <!-- Edit Deck Modal -->
+
+    <div aria-hidden="true" aria-labelledby="EditDeck" role="dialog" tabindex="-1" id="EditDeck" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Deck Settings</h4>
+          </div>
+          <form id="edit-deck-form" method="POST" class="form-signin wow" action="" style="visibility: visible;"> {% csrf_token %}
+          <div class="modal-body">
+          <!-- Check for error messages from bad form data -->
+          
+          <p id="edit-deck-error"></p>
+          
+              <label for="id_deck_name">Deck Name:</label>
+              <input class="form-control" id="id_deck_name" name="{{ field.name}}" type="text" value="">
+              <label for="id_deck">Deck Id:</label>
+              <input class="form-control" id="id_deck" name="{{ field.name}}" type="number">
+              <label for="id_share_flag">Share With Others:</label>
+              <input id="id_share_flag" name="{{ field.name}}" type="checkbox">
+
+          </div>
+          <div class="modal-footer">
+            <button id="edit-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+            <button id="edit-deck-submit" class="btn btn-success" type="submit">Save Settings!</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
 
 
   {% endif %}

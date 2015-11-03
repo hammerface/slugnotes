@@ -5,6 +5,7 @@ import json
 from flash_cards.models import Card, Deck
 from django.core.signing import Signer
 from django.core import signing
+from django.shortcuts import get_object_or_404
 
 
 def New_Deck(request):
@@ -31,6 +32,35 @@ def New_Deck(request):
 			return HttpResponse(json.dumps(errors))
 
 	return HttpResponse(json.dumps({"success": "success"}))
+
+def Edit_Deck(request):
+        deck_id_signed = request.GET.get('deck_id')
+	deck_id = None
+	signer = Signer(request.user.id)
+	try:
+		deck_id = signer.unsign(deck_id_signed)
+	except signing.BadSignature:
+		print("Tampering detected!")
+		return HttpResponseRedirect('/')
+        deck = get_object_or_404(Deck, deck_id=deck_id)
+	deck.deck_name = "NewDeck"
+        deck.share_flag = 1
+        deck.save()
+	return HttpResponseRedirect('/')
+
+def Delete_Deck(request):
+        deck_id_signed = request.GET.get('deck_id')
+	deck_id = None
+	signer = Signer(request.user.id)
+	try:
+		deck_id = signer.unsign(deck_id_signed)
+	except signing.BadSignature:
+		print("Tampering detected!")
+		return HttpResponseRedirect('/')
+        deck = get_object_or_404(Deck, deck_id=deck_id)
+        deck.deleted_flag = 1
+        deck.save()
+	return HttpResponseRedirect('/')
 
 def Upload_File(request):
     if request.method == 'POST':
@@ -96,3 +126,17 @@ def New_Card(request):
 			return HttpResponse(json.dumps(errors))
 
 	return HttpResponse(json.dumps({"success": "success"}))
+
+def Delete_Card(request):
+        card_id = request.GET.get('card_id')
+	#card_id = card.card_id
+	#signer = Signer(request.user.id)
+	#try:
+        #card_id = signer.unsign(card_id_signed)
+	#except signing.BadSignature:
+	#	print("Tampering detected!")
+	#	return HttpResponseRedirect('/')
+        card = get_object_or_404(Card, card_id=card_id)
+        card.deleted_flag = 1
+        card.save()
+	return HttpResponseRedirect('/')
