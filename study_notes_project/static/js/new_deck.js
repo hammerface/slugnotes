@@ -132,6 +132,19 @@ $(document).ready(function(){
         $(this).css("left",padding)
     });
 
+    $('div.small_card_content').each(function(){
+        if ($(this)[0].scrollHeight == $(this)[0].clientHeight){
+            console.log("heights are equal");
+            $(this).css("display","table-cell"); 
+            $(this).addClass("link_here");
+        } else {
+            console.log("heights are not equal");      
+            $(this).siblings('.image-caption').width(185);
+            $(this).children('p').addClass("link_here")
+
+        }
+    });
+
     $('div.deck').hover(
         function(){
             $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
@@ -141,7 +154,50 @@ $(document).ready(function(){
         }
     );
 
+    $('div.small_card').hover(
+        function(){
+            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+        },
+        function(){
+            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+        }
+    );
+
+    // $(document.body).on({
+    //     mouseenter: function() {
+    //         $(this).siblings('.image-caption').slideDown(250);
+    //     },
+    //     mouseleave: function() {
+    //         $(this).siblings('.image-caption').slideUp(250);
+    //     }
+    // }, '.link_here');
+
+
+
+
     $('.image-caption a').tooltip();
+    $('div.icon-wrap').tooltip();
+
+
+    $('a.flip_card').click(function(){
+        var small_card_content = $(this).parent().siblings(".small_card_content")
+        console.log(small_card_content.children('p'));
+        small_card_content.children('p').toggleClass('hidden');
+        small_card_content.parent().toggleClass('back_of_card');
+        console.log(small_card_content.children('p'));
+        small_card_content.css("display","inline-block");
+        if (small_card_content[0].scrollHeight == small_card_content[0].clientHeight){
+            console.log("heights are equal");
+            small_card_content.css("display","table-cell"); 
+            small_card_content.siblings('.image-caption').width(200);
+        } else {
+            console.log("heights are not equal");  
+            small_card_content.css("display","inline-block");  
+            small_card_content.css("overflow-y","auto");  
+            small_card_content.siblings('.image-caption').width(185);
+
+        }
+    });
 
 
 });

@@ -8,16 +8,35 @@
     <div class="container">
       <div class="row mar-b-30">
         <div class="col-md-12">
+          {% for card in card_list %}
+          <div id={{card.card_id}} class="small_card">
+            <div class="small_card_content">
+                <p class="card_front"> {{card.front}} </p>
+                <p class="card_back hidden"> {{card.back}} </p>
+            </div>
+            <div class="image-caption image-caption-card">
+                <a class="card_options flip_card label label-info icon" data-toggle="tooltip" data-placement="top" title="Flip">
+                  <i class="deck_options fa fa-undo"></i>
+                </a>
+                <a href="/" class="card_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Card">
+                  <i class="deck_options fa fa-pencil"></i>
+                </a>
+                <a href="/" class="card_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
+                  <i class="card_options fa fa-trash-o"></i>
+                </a>
+            </div>
+          </div>
+          {% endfor %}
           <a data-toggle="modal" class="CreateNewCard" href="#CreateNewCard">
-              <div class="CreateNewCard icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s">
+              <div class="CreateNewCard icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Card">
                 <i class="fa fa-plus-circle CreateNewCard"></i>
               </div>
           </a>
-          {% for card in card_list %}
-          <div id={{card.card_id}} class="small_card">
-    		<p> {{ card.front }} </p>
-    	  </div>
-    	  {% endfor %}
+          <a class="UploadCards" href="/cards/content/">
+              <div class="UploadCards icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Upload Flash Cards">
+                <i class="fa fa-arrow-circle-up"></i>
+              </div>
+          </a>
         </div>
       </div>
     </div>
