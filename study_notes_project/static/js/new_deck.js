@@ -141,9 +141,7 @@ function addNewCard() {
         // handle a successful response
         success : function(json) {
             //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-            alert(json);
             var errors = jQuery.parseJSON(json);
-            alert(errors.front);
             //errors in form
             if (errors.front != null) {
                 var error = $('#make-card-error');
@@ -241,12 +239,13 @@ function handleCardTurn(){
             console.log("heights are equal");
             small_card_content.css("display","table-cell"); 
             small_card_content.siblings('.image-caption').width(200);
+            small_card_content.siblings('.image-caption').slideUp(250);
         } else {
             console.log("heights are not equal");  
             small_card_content.css("display","inline-block");  
             small_card_content.css("overflow-y","auto");  
             small_card_content.siblings('.image-caption').width(185);
-
+            small_card_content.siblings('.image-caption').slideUp(250);
         }
     });
 }
