@@ -6,6 +6,7 @@ from flash_cards.models import Card, Deck
 from django.core.signing import Signer
 from django.core import signing
 from django.shortcuts import get_object_or_404
+from parse_notes import parse_notes
 
 
 def New_Deck(request):
@@ -34,48 +35,75 @@ def New_Deck(request):
 	return HttpResponse(json.dumps({"success": "success"}))
 
 def Edit_Deck(request):
-        deck_id_signed = request.GET.get('deck_id')
-	deck_id = None
-	signer = Signer(request.user.id)
-	try:
-		deck_id = signer.unsign(deck_id_signed)
-	except signing.BadSignature:
+    deck_id_signed = request.GET.get('deck_id')
+    deck_id = None
+    signer = Signer(request.user.id)
+    try:
+    	deck_id = signer.unsign(deck_id_signed)
+    except signing.BadSignature:
 		print("Tampering detected!")
 		return HttpResponseRedirect('/')
-        deck = get_object_or_404(Deck, deck_id=deck_id)
-	deck.deck_name = "NewDeck"
-        deck.share_flag = 1
-        deck.save()
-	return HttpResponseRedirect('/')
+    deck = get_object_or_404(Deck, deck_id=deck_id)
+    deck.deck_name = "NewDeck"
+    deck.share_flag = 1
+    deck.save()
+    return HttpResponseRedirect('/')
 
 def Delete_Deck(request):
-        deck_id_signed = request.GET.get('deck_id')
-	deck_id = None
-	signer = Signer(request.user.id)
-	try:
-		deck_id = signer.unsign(deck_id_signed)
-	except signing.BadSignature:
-		print("Tampering detected!")
-		return HttpResponseRedirect('/')
-        deck = get_object_or_404(Deck, deck_id=deck_id)
-        deck.deleted_flag = 1
-        deck.save()
-	return HttpResponseRedirect('/')
+    deck_id_signed = request.GET.get('deck_id')
+    deck_id = None
+    signer = Signer(request.user.id)
+    try:
+        deck_id = signer.unsign(deck_id_signed)
+    except signing.BadSignature:
+        print("Tampering detected!")
+        return HttpResponseRedirect('/')
+    deck = get_object_or_404(Deck, deck_id=deck_id)
+    deck.deleted_flag = 1
+    deck.save()
+    return HttpResponseRedirect('/')
 
 def Upload_File(request):
+    signer = Signer(request.user.id)
+    deck_id_signed = request.GET.get('deck_id')
+    deck_id = None
+    try:
+        deck_id = signer.unsign(request.GET.get('deck_id'))
+    except signing.BadSignature:
+        print("Tampering detected!")
+        return HttpResponseRedirect('/')
+
+    #Notes have been uploaded to parser
     if request.method == 'POST':
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
-        	content = None
-        	if request.POST.get('text', False) != False:
-        		content = request.POST['text']
-        	if request.FILES.get('file', False) != False:
-        		content = request.FILES['file']
-        		content = content.read()
-        	return HttpResponseRedirect('/')
+            deck_id = form.cleaned_data.get('deck_id')
+            content = None
+            if request.POST.get('text', False) != False:
+                content = request.POST['text']
+            if request.FILES.get('file', False) != False:
+                content = request.FILES['file']
+                content = content.read()
+            cardslist = parse_notes(content)
+            #check that there are any cards to create
+            if cardslist:
+                front = None
+                back = None
+                #loop through card list and generate a new card for the deck
+                for card in cardslist:
+                    front = card[0]
+                    try: 
+                        back = card[1]
+                    except IndexError:
+                        back = ""
+                    new_card = Card.objects.create(deck_id = deck_id, front=front,back=back)
+            return HttpResponseRedirect('/cards/?deck_id=' + str(deck_id_signed))
     else:
-        form = UploadFile()
-    return render(request, 'landing/upload.html', {'form': form})
+        form = UploadFile(initial={"deck_id" : deck_id})
+    context = {
+        "form" : form,
+    }
+    return render(request, 'landing/upload.html', context)
 
 def View_Deck(request):
 
@@ -89,7 +117,7 @@ def View_Deck(request):
 		print("Tampering detected!")
 		return HttpResponseRedirect('/')
 	form = NewCard(initial={'deck' : request.GET.get('deck_id')})
-	cards = Card.objects.filter(deck_id=deck_id).order_by('-date_created')
+	cards = Card.objects.filter(deck_id=deck_id, deleted_flag = 0).order_by('-date_created')
 	for card in cards:
 		card_list.append({
 			"card_id" : card.card_id,
@@ -99,6 +127,7 @@ def View_Deck(request):
 	context = {
 		"form" : form,
 		"card_list" : card_list,
+        "deck_id" : deck_id_signed,
 	}
 	return render(request, 'flash_cards/view_deck.html', context)
 
