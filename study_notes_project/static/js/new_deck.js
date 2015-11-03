@@ -121,17 +121,18 @@ function addNewCard() {
         
     });
 }
-
-
-$(document).ready(function(){
-	addNewDeck();
-    addNewCard();
+//centers deck name
+function centerDeckName() {
     $('h6.deck_name').each(function() {
         var text_length = $(this).width();
         var padding = (172-text_length)/2 + 36;
         $(this).css("left",padding)
     });
+}
 
+
+//does a lot: text is too big for card it adds a scroll, if it fits it centers (cards)
+function scrollText(){
     $('div.small_card_content').each(function(){
         if ($(this)[0].scrollHeight == $(this)[0].clientHeight){
             console.log("heights are equal");
@@ -144,7 +145,10 @@ $(document).ready(function(){
 
         }
     });
+}
 
+//drop down deck
+function deckDropDown(){
     $('div.deck').hover(
         function(){
             $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
@@ -153,7 +157,10 @@ $(document).ready(function(){
             $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
         }
     );
+}
 
+//drop down cards
+function cardsDropDown(){
     $('div.small_card').hover(
         function(){
             $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
@@ -162,23 +169,18 @@ $(document).ready(function(){
             $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
         }
     );
+}
 
-    // $(document.body).on({
-    //     mouseenter: function() {
-    //         $(this).siblings('.image-caption').slideDown(250);
-    //     },
-    //     mouseleave: function() {
-    //         $(this).siblings('.image-caption').slideUp(250);
-    //     }
-    // }, '.link_here');
-
-
-
-
+//show tool tips
+function showToolTips(){
+    //on decks/cards
     $('.image-caption a').tooltip();
-    $('div.icon-wrap').tooltip();
 
+    //on create/upload
+    $('div.icon-wrap').tooltip(); 
+}
 
+function handleCardTurn(){
     $('a.flip_card').click(function(){
         var small_card_content = $(this).parent().siblings(".small_card_content")
         console.log(small_card_content.children('p'));
@@ -198,6 +200,30 @@ $(document).ready(function(){
 
         }
     });
+}
+
+$(document).ready(function(){
+	addNewDeck();
+    addNewCard();
+    centerDeckName();
+    scrollText();
+    deckDropDown();
+    cardsDropDown();
+    showToolTips();
+    handleCardTurn();
+    
+
+    // $(document.body).on({
+    //     mouseenter: function() {
+    //         $(this).siblings('.image-caption').slideDown(250);
+    //     },
+    //     mouseleave: function() {
+    //         $(this).siblings('.image-caption').slideUp(250);
+    //     }
+    // }, '.link_here');
+
+
+    
 
 
 });
