@@ -73,14 +73,16 @@ def View_Deck(request):
 	return render(request, 'flash_cards/view_deck.html', context)
 
 def New_Card(request):
-	print "I am here"
 	if request.method == 'POST':
 		deck = request.POST.get('deck')
 		front = request.POST.get('front')
 		back = request.POST.get('back')
-		data = {'deck' : deck, 'front' : front, 'back' : back}
-		print data , "here"
-		
+		signer = Signer(request.user.id)
+		try:
+			deck = signer.unsign(deck)
+		except signing.BadSignature:
+			return HttpResponseRedirect('/')
+		data = {'deck' : deck, 'front' : front, 'back' : back}		
 		form = NewCard(data)
 		if form.is_valid():
 			print "valid form"
