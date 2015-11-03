@@ -24,6 +24,21 @@ $.ajaxSetup({
     }
 });
 
+function fillEditDeckForm(){
+    $('.toggle-edit').click(function(){
+        var deck_name = $(this).parent().siblings('.deck_name').text();
+        var share_set = $(this).parent().siblings('.share-set').val();
+
+        $('#id_deck_name_edit').val(deck_name);
+        if (share_set == "no") {
+            $('#id_share_flag_edit').prop('checked', false);
+        }else if (share_set == "yes") {
+            $('#id_share_flag_edit').prop('checked', true);
+        }
+
+    });
+}
+
 //https://realpython.com/blog/python/django-and-ajax-form-submissions/
 function addNewDeck() {
 	$('#make-deck-submit').click(function(event){
@@ -261,6 +276,7 @@ $(document).ready(function(){
     cardsDropDown();
     showToolTips();
     handleCardTurn();
+    fillEditDeckForm();
     
 
     // $(document.body).on({
