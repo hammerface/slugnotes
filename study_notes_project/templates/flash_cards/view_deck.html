@@ -14,7 +14,9 @@
               </div>
           </a>
           {% for card in card_list %}
+          <div id={{card.card_id}} class="small_card">
     		<p> {{ card.front }} </p>
+    	  </div>
     	  {% endfor %}
         </div>
       </div>

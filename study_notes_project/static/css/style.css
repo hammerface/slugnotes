@@ -3033,3 +3033,11 @@ a.deck_options:hover{
 .capital{
     tex: #48cfad;
 }
+
+div.small_card{
+    height: 120px;
+    width: 160px;
+    background-color: #48cfad;
+    display: inline-block;
+    float: left;
+}
