@@ -82,37 +82,35 @@
       <div class="row mar-b-30">
         <div class="col-md-12">
           {% for deck in deck_list reversed %}
-  	    {% if deck.deleted_flag == true %} <!-- this is broken for some reason == 0 is does not work -->
-            <div id={{deck.deck_id}} class="deck">
-              <div class="image-caption">
-                  <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
-                    <i class="deck_options fa fa-book"></i>
-                  </a>
-                  <a href="/cards/?deck_id={{ deck.deck_id }}" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">
-                    <i class="deck_options fa fa-edit"></i>
-
-                  </a>
-                  <a data-toggle="modal" href="#EditDeck" class="EditDeck edit-deck-toggle toggle-edit deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
-                    <i class="deck_options fa fa-gear"></i>
-                  </a>
-                  <a href="/cards/delete_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
-                    <i class="deck_options fa fa-trash-o"></i>
-                  </a>
-                </div>
-                <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
-              <h6 class="deck_name"> {{ deck.deck_name }} </h6>
-              {% if deck.share %}
-                <input class="share-set" type="hidden" name="yes" value="yes">
-              {% else %}
-                <input class="share-set" type="hidden" name="no" value="no">
-              {% endif %}
+          <div id={{deck.deck_id}} class="deck">
+            <div class="image-caption">
+              <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+                <i class="deck_options fa fa-book"></i>
+              </a>
+              <a href="/cards/?deck_id={{ deck.deck_id }}" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">
+                <i class="deck_options fa fa-edit"></i>
+		
+              </a>
+              <a data-toggle="modal" href="#EditDeck" class="EditDeck edit-deck-toggle toggle-edit deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
+                <i class="deck_options fa fa-gear"></i>
+              </a>
+              <a href="/cards/delete_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
+                <i class="deck_options fa fa-trash-o"></i>
+              </a>
             </div>
-	    {% endif %}
+            <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
+            <h6 class="deck_name"> {{ deck.deck_name }} </h6>
+            {% if deck.share %}
+            <input class="share-set" type="hidden" name="yes" value="yes">
+            {% else %}
+            <input class="share-set" type="hidden" name="no" value="no">
+            {% endif %}
+          </div>
           {% endfor %}
           <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
-              <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Deck">
-                <i class="fa fa-plus-circle CreateNewDeck"></i>
-              </div>
+            <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Deck">
+              <i class="fa fa-plus-circle CreateNewDeck"></i>
+            </div>
           </a>
         </div>
       </div>

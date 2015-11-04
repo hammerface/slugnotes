@@ -185,7 +185,6 @@ def Edit_Card(request):
 			return HttpResponseRedirect('/')
 		data = {'deck' : deck, 'front' : front, 'back' : back}		
 		form = NewCard(data)
-                print "%s" % id_card
                 if form.is_valid():
                         card = get_object_or_404(Card, card_id=id_card)
                         card.front = front
@@ -198,15 +197,15 @@ def Edit_Card(request):
         return HttpResponse(json.dumps({"success": "success"}))
 
 def Delete_Card(request):
-        card_id = request.GET.get('card_id')
-	#card_id = card.card_id
-	#signer = Signer(request.user.id)
-	#try:
-        #card_id = signer.unsign(card_id_signed)
-	#except signing.BadSignature:
-	#	print("Tampering detected!")
-	#	return HttpResponseRedirect('/')
+        card_id = request.POST.get('card')
+        deck_id_signed = request.POST.get('deck')
+	signer = Signer(request.user.id)
+	try:
+                deck = signer.unsign(deck_id_signed)
+	except signing.BadSignature:
+		print("Tampering detected!")
+		return HttpResponse(json.dumps(errors))
         card = get_object_or_404(Card, card_id=card_id)
         card.deleted_flag = 1
         card.save()
-	return HttpResponseRedirect('/')
+	return HttpResponse(json.dumps({"success": "success"}))
