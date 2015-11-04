@@ -172,6 +172,31 @@ def New_Card(request):
 
 	return HttpResponse(json.dumps({"success": "success"}))
 
+def Edit_Card(request):
+        if request.method == 'POST':
+                id_card = request.POST.get('card')
+		deck = request.POST.get('deck')
+		front = request.POST.get('front')
+		back = request.POST.get('back')
+		signer = Signer(request.user.id)
+		try:
+			deck = signer.unsign(deck)
+		except signing.BadSignature:
+			return HttpResponseRedirect('/')
+		data = {'deck' : deck, 'front' : front, 'back' : back}		
+		form = NewCard(data)
+                print "%s" % id_card
+                if form.is_valid():
+                        card = get_object_or_404(Card, card_id=id_card)
+                        card.front = front
+                        card.back = back
+                        card.save()
+                else:
+                        errors = form.errors
+                        return HttpResponse(json.dumps(errors))
+        
+        return HttpResponse(json.dumps({"success": "success"}))
+
 def Delete_Card(request):
         card_id = request.GET.get('card_id')
 	#card_id = card.card_id

@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^cards/delete_deck/$', flash_cards.Delete_Deck),
     url(r'^cards/content/$', flash_cards.Upload_File),
     url(r'^cards/new_card/$', flash_cards.New_Card),
+    url(r'^cards/edit_card/$', flash_cards.Edit_Card),
     url(r'^cards/delete_card/$', flash_cards.Delete_Card),
     url(r'^cards/', flash_cards.View_Deck),
     

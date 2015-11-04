@@ -210,6 +210,51 @@ function addNewCard() {
         
     });
 }
+
+function editCard() {
+    $('#edit-card-submit').click(function(event){
+	event.preventDefault();
+	var card = $("#id_card").val();
+	var deck = $("#id_deck").val();
+        var front = $("#id_card_front_edit").val();
+        var back = $('#id_card_back_edit').val();
+	// var csrftoken = getCookie('csrftoken');
+        
+	//start ajax post
+	$.ajax({
+            url : "/cards/edit_card/", // the endpoint
+            type : "POST", // http method
+            data : { card : card, deck : deck, front : front, back : back }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+		console.log("Before Send");
+		$.ajaxSettings.beforeSend(xhr, settings);
+    	    },
+            // handle a successful response
+            success : function(json) {
+		//http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+		var errors = jQuery.parseJSON(json);
+		
+		//erros in form
+		if (errors.front != null) {
+            	    var error = $('#edit-card-error');
+            	    error.text(errors.front)
+		}else {
+            	    //no errors in form
+            	    $('#edit-card-form').trigger("reset");
+            	    var cancelButton = document.getElementById("edit-card-cancel");
+		    cancelButton.click();
+		    location.reload();
+		}
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+		console.log("error");
+            }
+	});
+		
+    });
+}
+
 //centers deck name
 function centerDeckName() {
     $('h6.deck_name').each(function() {
@@ -295,6 +340,7 @@ $(document).ready(function(){
     addNewDeck();
     editDeck();
     addNewCard();
+    editCard();
     centerDeckName();
     scrollText();
     deckDropDown();
