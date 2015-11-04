@@ -66,18 +66,18 @@ def Edit_Deck(request):
     return HttpResponse(json.dumps({"success": "success"}))
 
 def Delete_Deck(request):
-    deck_id_signed = request.GET.get('deck_id')
+    deck_id_signed = request.POST.get('deck')
     deck_id = None
     signer = Signer(request.user.id)
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
         print("Tampering detected!")
-        return HttpResponseRedirect('/')
+        return HttpResponse(json.dumps(errors))
     deck = get_object_or_404(Deck, deck_id=deck_id)
     deck.deleted_flag = 1
     deck.save()
-    return HttpResponseRedirect('/')
+    return HttpResponse(json.dumps({"success": "success"}))
 
 def Upload_File(request):
     signer = Signer(request.user.id)
@@ -199,6 +199,7 @@ def Edit_Card(request):
 def Delete_Card(request):
         card_id = request.POST.get('card')
         deck_id_signed = request.POST.get('deck')
+        deck_id = None
 	signer = Signer(request.user.id)
 	try:
                 deck = signer.unsign(deck_id_signed)

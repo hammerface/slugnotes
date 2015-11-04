@@ -162,6 +162,36 @@ function editDeck() {
 	});
 }
 
+function deleteDeck() {
+    $('#delete-deck-submit').click(function(event){
+	event.preventDefault();
+	var deck = $("#id_deck").val();
+        
+	//start ajax post
+	$.ajax({
+            url : "/cards/delete_deck/", // the endpoint
+            type : "POST", // http method
+            data : { deck : deck }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+		console.log("Before Send");
+		$.ajaxSettings.beforeSend(xhr, settings);
+    	    },
+            // handle a successful response
+            success : function(json) {
+            	$('#delete-deck-form').trigger("reset");
+            	var cancelButton = document.getElementById("delete-deck-cancel");
+		cancelButton.click();
+		location.reload();
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+		console.log("error");
+            }
+	});
+		
+    });
+}
+
 function addNewCard() {
     $('#make-card-submit').click(function(event){
         event.preventDefault();
@@ -370,6 +400,7 @@ function handleCardTurn(){
 $(document).ready(function(){
     addNewDeck();
     editDeck();
+    deleteDeck();
     addNewCard();
     editCard();
     deleteCard();
