@@ -39,6 +39,24 @@ function fillEditDeckForm(){
     });
 }
 
+function fillEditCardForm() {
+    $('#edit-card').click(function(){
+        var front_card = $(this).parent().siblings('.small_card_content').children('.card_front').text();
+        var back_card = $(this).parent().siblings('.small_card_content').children('.card_back').text();
+
+        $('#id_card_front_edit').val(front_card);
+        $('#id_card_back_edit').val(back_card);
+
+        // $('#id_deck_name_edit').val(deck_name);
+        // if (share_set == "no") {
+        //     $('#id_share_flag_edit').prop('checked', false);
+        // }else if (share_set == "yes") {
+        //     $('#id_share_flag_edit').prop('checked', true);
+        // }
+
+    });
+}
+
 //https://realpython.com/blog/python/django-and-ajax-form-submissions/
 function addNewDeck() {
 	$('#make-deck-submit').click(function(event){
@@ -277,6 +295,7 @@ $(document).ready(function(){
     showToolTips();
     handleCardTurn();
     fillEditDeckForm();
+    fillEditCardForm();
     
 
     // $(document.body).on({

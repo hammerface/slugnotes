@@ -19,7 +19,7 @@ class NewDeck(forms.ModelForm):
 		deck_name = self.cleaned_data['deck_name']
 		total = None
 	
-		total = Deck.objects.filter(deck_name=deck_name, user_id=user_id)
+		total = Deck.objects.filter(deck_name=deck_name, user_id=user_id, deleted_flag = 0)
 		if not total:
 			return deck_name
 		if "deck_name" in self.changed_data:

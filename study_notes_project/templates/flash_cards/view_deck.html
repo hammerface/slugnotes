@@ -19,7 +19,7 @@
                   <a class="card_options flip_card label label-info icon" data-toggle="tooltip" data-placement="top" title="Flip">
                     <i class="deck_options fa fa-undo"></i>
                   </a>
-                  <a href="/" class="card_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Card">
+                  <a id="edit-card" data-toggle="modal" href="#EditCard" class="EditCard card_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Card">
                     <i class="deck_options fa fa-pencil"></i>
                   </a>
                   <a href="/cards/delete_card/?card_id={{card.card_id}}" class="card_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
@@ -44,6 +44,42 @@
     </div>
     <!-- End Main Container -->
 
+
+    <!-- Edit Card Modal -->
+    <div aria-hidden="true" aria-labelledby="EditCard" role="dialog" tabindex="-1" id="EditCard" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit Flash Card</h4>
+          </div>
+          <form id="edit-card-form" method="POST" class="form-signin wow" action="" style="visibility: visible;"> {% csrf_token %}
+          <div class="modal-body">
+            <!-- Check for error messages from bad form data -->
+            <p id="edit-card-error"></p>
+            <!-- {{form}} -->
+            {% for field in form %} <!-- front back deck -->
+              {% if field.name == "front" %}
+                <label for="id_card_front_edit">{{field.label}}</label>
+                <textarea class="form-control" id="id_card_front_edit" name="{{ field.name }}"></textarea>
+              {% elif field.name == "back" %}
+                <label for="id_card_back_edit">{{field.label}}</label>
+                <textarea class="form-control" id="id_card_back_edit" name="{{ field.name }}"></textarea>
+              {% elif field.name == "deck" %}
+                {{ field.as_hidden }}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button id="edit-card-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+            <button id="edit-card-submit" class="btn btn-success" type="submit">Save Changes!</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+
     <!-- New Card Modal -->
     <div aria-hidden="true" aria-labelledby="CreateNewCard" role="dialog" tabindex="-1" id="CreateNewCard" class="modal fade">
       <div class="modal-dialog">
@@ -67,5 +103,8 @@
       </div>
     </div>
     <!-- End Modal -->
+
+
+    
 
 {% endblock %}
