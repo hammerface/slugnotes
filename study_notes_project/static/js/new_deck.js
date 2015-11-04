@@ -39,8 +39,15 @@ function fillEditDeckForm(){
     });
 }
 
+
+
 function fillEditCardForm() {
-    $('#edit-card').click(function(){
+    $('.edit-deck-toggle').click(function(){
+        var deck_id = $(this).parent().parent().attr('id');
+        $('input[name=edit-deck-id]').val(deck_id);
+    });
+
+    $('.edit-card').click(function(){
         var front_card = $(this).parent().siblings('.small_card_content').children('.card_front').text();
         var back_card = $(this).parent().siblings('.small_card_content').children('.card_back').text();
 
@@ -109,12 +116,12 @@ function addNewDeck() {
 function editDeck() {
 	$('#edit-deck-submit').click(function(event){
 		event.preventDefault();
-	        var user = $("#id_user").val();
-	        var deck_id = $("#id_deck").val();
-		var deck_name = $("#id_deck_name").val();
-		var share_flag = $('#id_share_flag').is(':checked');
+	    var user = $("#id_user").val();
+	    var deck_id = $("input[name=edit-deck-id]").val();
+		var deck_name = $("#id_deck_name_edit").val();
+		var share_flag = $('#id_share_flag_edit').is(':checked');
 		// var csrftoken = getCookie('csrftoken');
-
+        
 		//start ajax post
 		$.ajax({
         url : "/cards/edit_deck/", // the endpoint

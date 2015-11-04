@@ -35,19 +35,35 @@ def New_Deck(request):
 	return HttpResponse(json.dumps({"success": "success"}))
 
 def Edit_Deck(request):
-    deck_id_signed = request.GET.get('deck_id')
-    deck_id = None
-    signer = Signer(request.user.id)
-    try:
-    	deck_id = signer.unsign(deck_id_signed)
-    except signing.BadSignature:
-		print("Tampering detected!")
-		return HttpResponseRedirect('/')
-    deck = get_object_or_404(Deck, deck_id=deck_id)
-    deck.deck_name = "NewDeck"
-    deck.share_flag = 1
-    deck.save()
-    return HttpResponseRedirect('/')
+    if request.method == 'POST':
+        deck_id_signed = request.POST.get('deck_id')
+        deck_id = None
+        signer = Signer(request.user.id)
+        try:
+        	deck_id = signer.unsign(deck_id_signed)
+        except signing.BadSignature:
+    		print("Tampering detected!")
+    		return HttpResponseRedirect('/')
+        deck_name = request.POST.get('deck_name')
+        user = request.POST.get('user')
+        share_flag = request.POST.get('share_flag')
+        if share_flag == 'false':
+            share_flag = 0
+        else:
+            share_flag = 1
+        data = {'user' : user, 'deck_name' : deck_name, "share_flag" : share_flag}
+        form = NewDeck(data)
+        if form.is_valid():
+
+            deck = get_object_or_404(Deck, deck_id=deck_id)
+            deck.deck_name = deck_name
+            deck.share_flag = share_flag
+            deck.save()
+        else:
+            errors = form.errors
+            return HttpResponse(json.dumps(errors))
+    
+    return HttpResponse(json.dumps({"success": "success"}))
 
 def Delete_Deck(request):
     deck_id_signed = request.GET.get('deck_id')

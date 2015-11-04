@@ -92,7 +92,7 @@
                     <i class="deck_options fa fa-edit"></i>
 
                   </a>
-                  <a id="edit-deck-toggle" data-toggle="modal" href="#EditDeck" class="EditDeck toggle-edit deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
+                  <a data-toggle="modal" href="#EditDeck" class="EditDeck edit-deck-toggle toggle-edit deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
                     <i class="deck_options fa fa-gear"></i>
                   </a>
                   <a href="/cards/delete_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
@@ -161,7 +161,7 @@
     <!-- End Modal -->
 
 
-    <!-- Edit Deck Modal -->
+    <!-- Edit Deck Modal (Deck Settings) -->
 
     <div aria-hidden="true" aria-labelledby="EditDeck" role="dialog" tabindex="-1" id="EditDeck" class="modal fade">
       <div class="modal-dialog">
@@ -189,10 +189,14 @@
                 {% elif field.name == "share_flag" %}
                   <label for="id_share_flag_edit">Share With Others:</label>
                   <input id="id_share_flag_edit" name="{{ field.name}}" type="checkbox">
-                {% else %}
+                {% elif field.name == "user" %}
                   {{ field.as_hidden }}
+                
+
                 {% endif %}
+                
               {% endfor %}
+              <input type="hidden" name="edit-deck-id" value="">
           </div>
           <div class="modal-footer">
             <button id="edit-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
