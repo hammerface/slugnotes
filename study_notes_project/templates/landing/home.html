@@ -88,11 +88,11 @@
                   <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
                     <i class="deck_options fa fa-book"></i>
                   </a>
-                  <a id="edit-deck-toggle" data-toggle="modal" href="#EditDeck" class="EditDeck toggle-edit deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">
+                  <a href="/cards/?deck_id={{ deck.deck_id }}" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">
                     <i class="deck_options fa fa-edit"></i>
 
                   </a>
-                  <a href="/cards/edit_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
+                  <a id="edit-deck-toggle" data-toggle="modal" href="#EditDeck" class="EditDeck toggle-edit deck_options label label-info icon" data-toggle="modal" data-placement="top" title="Deck Settings">
                     <i class="deck_options fa fa-gear"></i>
                   </a>
                   <a href="/cards/delete_deck/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
