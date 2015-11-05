@@ -39,7 +39,12 @@ function fillEditDeckForm(){
     });
 }
 
-
+function fillDeleteDeckForm(){
+    $('.toggle-delete-deck').click(function(){
+	var deck_id = $(this).parent().parent().attr('id');
+        $('input[name=id-deck-id]').val(deck_id);
+    });
+}
 
 function fillEditCardForm() {
     $('.edit-deck-toggle').click(function(){
@@ -165,7 +170,7 @@ function editDeck() {
 function deleteDeck() {
     $('#delete-deck-submit').click(function(event){
 	event.preventDefault();
-	var deck = $("#id_deck").val();
+	var deck = $("input[name=id-deck-id]").val();
         
 	//start ajax post
 	$.ajax({
@@ -411,6 +416,7 @@ $(document).ready(function(){
     showToolTips();
     handleCardTurn();
     fillEditDeckForm();
+    fillDeleteDeckForm();
     fillEditCardForm();
     
 
