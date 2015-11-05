@@ -10,7 +10,6 @@
         <div class="col-md-12">
           {% for card in card_list %}
           <div id={{card.card_id}} class="small_card">
-	    <input id="id_card" name="card" type="hidden" value={{card.card_id}}>
             <div class="small_card_content">
               <p class="card_front">{{card.front}}</p>
               <p class="card_back hidden">{{card.back}}</p>
@@ -19,10 +18,10 @@
               <a class="card_options flip_card label label-info icon" data-toggle="tooltip" data-placement="top" title="Flip">
                 <i class="deck_options fa fa-undo"></i>
               </a>
-              <a data-toggle="modal" href="#EditCard" class="EditCard edit-card card_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Card">
+              <a data-toggle="modal" href="#EditCard" class="EditCard get-card-id edit-card card_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Card">
                 <i class="deck_options fa fa-pencil"></i>
               </a>
-              <a data-toggle="modal" href="#DeleteCard" class="DeleteCard card_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
+              <a data-toggle="modal" href="#DeleteCard" class="DeleteCard get-card-id card_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Delete">
                 <i class="card_options fa fa-trash-o"></i>
               </a>
             </div>
@@ -67,6 +66,7 @@
                 {{ field.as_hidden }}
               {% endif %}
             {% endfor %}
+            <input type="hidden" name="id-card-id" value="">	
           </div>
           <div class="modal-footer">
             <button id="edit-card-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
@@ -95,6 +95,7 @@
           <div class="modal-footer">
             <button id="delete-card-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
             <button id="delete-card-submit" class="btn btn-success" type="submit">Delete!</button>
+	    <input type="hidden" name="id-card-id" value="">
           </div>
           </form>
         </div>

@@ -67,6 +67,11 @@ function fillEditCardForm() {
         // }
 
     });
+
+    $('.get-card-id').click(function(){
+	var card_id = $(this).parent().parent().attr('id');
+        $('input[name=id-card-id]').val(card_id);
+    });
 }
 
 //https://realpython.com/blog/python/django-and-ajax-form-submissions/
@@ -249,7 +254,7 @@ function addNewCard() {
 function editCard() {
     $('#edit-card-submit').click(function(event){
 	event.preventDefault();
-	var card = $("#id_card").val();
+	var card = $("input[name=id-card-id]").val();
 	var deck = $("#id_deck").val();
         var front = $("#id_card_front_edit").val();
         var back = $('#id_card_back_edit').val();
@@ -293,7 +298,7 @@ function editCard() {
 function deleteCard() {
     $('#delete-card-submit').click(function(event){
 	event.preventDefault();
-	var card = $("#id_card").val();
+	var card = $("input[name=id-card-id]").val();
 	var deck = $("#id_deck").val();
         
 	//start ajax post
