@@ -83,6 +83,7 @@ function fillEditCardForm() {
 function addNewDeck() {
 	$('#make-deck-submit').click(function(event){
 		event.preventDefault();
+        $("#make-deck-submit").disabled = true;
 		var user = $("#id_user").val();
 		var deck_name = $("#id_deck_name").val();
 		var share_flag = $('#id_share_flag').is(':checked');
@@ -106,6 +107,7 @@ function addNewDeck() {
             if (errors.deck_name != null) {
             	var error = $('#make-deck-error');
             	error.text(errors.deck_name)
+                $("#make-deck-submit").disabled = false;
             }else {
             	//no errors in form
             	$('#make-deck-form').trigger("reset");
