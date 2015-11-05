@@ -35,33 +35,49 @@ def New_Deck(request):
 	return HttpResponse(json.dumps({"success": "success"}))
 
 def Edit_Deck(request):
-    deck_id_signed = request.GET.get('deck_id')
-    deck_id = None
-    signer = Signer(request.user.id)
-    try:
-    	deck_id = signer.unsign(deck_id_signed)
-    except signing.BadSignature:
-		print("Tampering detected!")
-		return HttpResponseRedirect('/')
-    deck = get_object_or_404(Deck, deck_id=deck_id)
-    deck.deck_name = "NewDeck"
-    deck.share_flag = 1
-    deck.save()
-    return HttpResponseRedirect('/')
+    if request.method == 'POST':
+        deck_id_signed = request.POST.get('deck_id')
+        deck_id = None
+        signer = Signer(request.user.id)
+        try:
+        	deck_id = signer.unsign(deck_id_signed)
+        except signing.BadSignature:
+    		print("Tampering detected!")
+    		return HttpResponseRedirect('/')
+        deck_name = request.POST.get('deck_name')
+        user = request.POST.get('user')
+        share_flag = request.POST.get('share_flag')
+        if share_flag == 'false':
+            share_flag = 0
+        else:
+            share_flag = 1
+        data = {'user' : user, 'deck_name' : deck_name, "share_flag" : share_flag}
+        form = NewDeck(data)
+        if form.is_valid():
+
+            deck = get_object_or_404(Deck, deck_id=deck_id)
+            deck.deck_name = deck_name
+            deck.share_flag = share_flag
+            deck.save()
+        else:
+            errors = form.errors
+            return HttpResponse(json.dumps(errors))
+    
+    return HttpResponse(json.dumps({"success": "success"}))
 
 def Delete_Deck(request):
-    deck_id_signed = request.GET.get('deck_id')
+    deck_id_signed = request.POST.get('deck')
     deck_id = None
     signer = Signer(request.user.id)
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
         print("Tampering detected!")
-        return HttpResponseRedirect('/')
+        return HttpResponse(json.dumps(errors))
     deck = get_object_or_404(Deck, deck_id=deck_id)
     deck.deleted_flag = 1
     deck.save()
-    return HttpResponseRedirect('/')
+    return HttpResponse(json.dumps({"success": "success"}))
 
 def Upload_File(request):
     signer = Signer(request.user.id)
@@ -156,16 +172,41 @@ def New_Card(request):
 
 	return HttpResponse(json.dumps({"success": "success"}))
 
+def Edit_Card(request):
+        if request.method == 'POST':
+                id_card = request.POST.get('card')
+		deck = request.POST.get('deck')
+		front = request.POST.get('front')
+		back = request.POST.get('back')
+		signer = Signer(request.user.id)
+		try:
+			deck = signer.unsign(deck)
+		except signing.BadSignature:
+			return HttpResponseRedirect('/')
+		data = {'deck' : deck, 'front' : front, 'back' : back}		
+		form = NewCard(data)
+                if form.is_valid():
+                        card = get_object_or_404(Card, card_id=id_card)
+                        card.front = front
+                        card.back = back
+                        card.save()
+                else:
+                        errors = form.errors
+                        return HttpResponse(json.dumps(errors))
+        
+        return HttpResponse(json.dumps({"success": "success"}))
+
 def Delete_Card(request):
-        card_id = request.GET.get('card_id')
-	#card_id = card.card_id
-	#signer = Signer(request.user.id)
-	#try:
-        #card_id = signer.unsign(card_id_signed)
-	#except signing.BadSignature:
-	#	print("Tampering detected!")
-	#	return HttpResponseRedirect('/')
+        card_id = request.POST.get('card')
+        deck_id_signed = request.POST.get('deck')
+        deck_id = None
+	signer = Signer(request.user.id)
+	try:
+                deck = signer.unsign(deck_id_signed)
+	except signing.BadSignature:
+		print("Tampering detected!")
+		return HttpResponse(json.dumps(errors))
         card = get_object_or_404(Card, card_id=card_id)
         card.deleted_flag = 1
         card.save()
-	return HttpResponseRedirect('/')
+	return HttpResponse(json.dumps({"success": "success"}))

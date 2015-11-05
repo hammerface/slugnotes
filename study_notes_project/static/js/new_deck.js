@@ -39,6 +39,31 @@ function fillEditDeckForm(){
     });
 }
 
+
+
+function fillEditCardForm() {
+    $('.edit-deck-toggle').click(function(){
+        var deck_id = $(this).parent().parent().attr('id');
+        $('input[name=edit-deck-id]').val(deck_id);
+    });
+
+    $('.edit-card').click(function(){
+        var front_card = $(this).parent().siblings('.small_card_content').children('.card_front').text();
+        var back_card = $(this).parent().siblings('.small_card_content').children('.card_back').text();
+
+        $('#id_card_front_edit').val(front_card);
+        $('#id_card_back_edit').val(back_card);
+
+        // $('#id_deck_name_edit').val(deck_name);
+        // if (share_set == "no") {
+        //     $('#id_share_flag_edit').prop('checked', false);
+        // }else if (share_set == "yes") {
+        //     $('#id_share_flag_edit').prop('checked', true);
+        // }
+
+    });
+}
+
 //https://realpython.com/blog/python/django-and-ajax-form-submissions/
 function addNewDeck() {
 	$('#make-deck-submit').click(function(event){
@@ -91,12 +116,12 @@ function addNewDeck() {
 function editDeck() {
 	$('#edit-deck-submit').click(function(event){
 		event.preventDefault();
-	        var user = $("#id_user").val();
-	        var deck_id = $("#id_deck").val();
-		var deck_name = $("#id_deck_name").val();
-		var share_flag = $('#id_share_flag').is(':checked');
+	    var user = $("#id_user").val();
+	    var deck_id = $("input[name=edit-deck-id]").val();
+		var deck_name = $("#id_deck_name_edit").val();
+		var share_flag = $('#id_share_flag_edit').is(':checked');
 		// var csrftoken = getCookie('csrftoken');
-
+        
 		//start ajax post
 		$.ajax({
         url : "/cards/edit_deck/", // the endpoint
@@ -135,6 +160,36 @@ function editDeck() {
 		
 		
 	});
+}
+
+function deleteDeck() {
+    $('#delete-deck-submit').click(function(event){
+	event.preventDefault();
+	var deck = $("#id_deck").val();
+        
+	//start ajax post
+	$.ajax({
+            url : "/cards/delete_deck/", // the endpoint
+            type : "POST", // http method
+            data : { deck : deck }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+		console.log("Before Send");
+		$.ajaxSettings.beforeSend(xhr, settings);
+    	    },
+            // handle a successful response
+            success : function(json) {
+            	$('#delete-deck-form').trigger("reset");
+            	var cancelButton = document.getElementById("delete-deck-cancel");
+		cancelButton.click();
+		location.reload();
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+		console.log("error");
+            }
+	});
+		
+    });
 }
 
 function addNewCard() {
@@ -183,6 +238,82 @@ function addNewCard() {
         
     });
 }
+
+function editCard() {
+    $('#edit-card-submit').click(function(event){
+	event.preventDefault();
+	var card = $("#id_card").val();
+	var deck = $("#id_deck").val();
+        var front = $("#id_card_front_edit").val();
+        var back = $('#id_card_back_edit').val();
+	// var csrftoken = getCookie('csrftoken');
+        
+	//start ajax post
+	$.ajax({
+            url : "/cards/edit_card/", // the endpoint
+            type : "POST", // http method
+            data : { card : card, deck : deck, front : front, back : back }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+		console.log("Before Send");
+		$.ajaxSettings.beforeSend(xhr, settings);
+    	    },
+            // handle a successful response
+            success : function(json) {
+		//http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+		var errors = jQuery.parseJSON(json);
+		
+		//erros in form
+		if (errors.front != null) {
+            	    var error = $('#edit-card-error');
+            	    error.text(errors.front)
+		}else {
+            	    //no errors in form
+            	    $('#edit-card-form').trigger("reset");
+            	    var cancelButton = document.getElementById("edit-card-cancel");
+		    cancelButton.click();
+		    location.reload();
+		}
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+		console.log("error");
+            }
+	});
+		
+    });
+}
+
+function deleteCard() {
+    $('#delete-card-submit').click(function(event){
+	event.preventDefault();
+	var card = $("#id_card").val();
+	var deck = $("#id_deck").val();
+        
+	//start ajax post
+	$.ajax({
+            url : "/cards/delete_card/", // the endpoint
+            type : "POST", // http method
+            data : { card : card, deck : deck }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+		console.log("Before Send");
+		$.ajaxSettings.beforeSend(xhr, settings);
+    	    },
+            // handle a successful response
+            success : function(json) {
+            	$('#delete-card-form').trigger("reset");
+            	var cancelButton = document.getElementById("delete-card-cancel");
+		cancelButton.click();
+		location.reload();
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+		console.log("error");
+            }
+	});
+		
+    });
+}
+
 //centers deck name
 function centerDeckName() {
     $('h6.deck_name').each(function() {
@@ -268,7 +399,10 @@ function handleCardTurn(){
 $(document).ready(function(){
     addNewDeck();
     editDeck();
+    deleteDeck();
     addNewCard();
+    editCard();
+    deleteCard();
     centerDeckName();
     scrollText();
     deckDropDown();
@@ -276,6 +410,7 @@ $(document).ready(function(){
     showToolTips();
     handleCardTurn();
     fillEditDeckForm();
+    fillEditCardForm();
     
 
     // $(document.body).on({
