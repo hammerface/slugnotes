@@ -7,6 +7,7 @@
     <!-- Main Container -->
     <div class="container">
       <div class="row mar-b-30">
+        <p>{{ deck_name }}</p>
         <div class="col-md-12">
           {% for card in card_list %}
           <div id={{card.card_id}} class="small_card">
@@ -119,7 +120,7 @@
           </div>
           <div class="modal-footer">
             <button id="make-card-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-            <button id="make-card-submit" class="btn btn-success" type="submit">Make Card!</button>
+            <button id="make-card-submit" class="btn btn-success" type="submit" onclick="this.disabled=true;">Make Card!</button>
           </div>
           </form>
         </div>
