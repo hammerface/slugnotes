@@ -134,6 +134,7 @@ def View_Deck(request):
     form = NewCard(initial={'deck' : request.GET.get('deck_id')})
     cards = Card.objects.filter(deck_id=deck_id, deleted_flag = 0).order_by('-date_created')
     deck = Deck.objects.filter(deck_id=deck_id)
+    print "here"
     deck_name = ""
     try:
         deck_name = deck[0].deck_name
@@ -142,16 +143,16 @@ def View_Deck(request):
     for card in cards:
         card_list.append({
             "card_id" : card.card_id,
-			"front" : card.front,
-			"back" : card.back,
-			}) 
-	context = {
-		"form" : form,
-		"card_list" : card_list,
+            "front" : card.front,
+            "back" : card.back,
+            }) 
+    context = {
+        "form" : form,
+        "card_list" : card_list,
         "deck_id" : deck_id_signed,
         "deck_name" : deck_name, 
-	}
-	return render(request, 'flash_cards/view_deck.html', context)
+    }
+    return render(request, 'flash_cards/view_deck.html', context)
 
 def New_Card(request):
 	if request.method == 'POST':
