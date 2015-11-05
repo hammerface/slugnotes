@@ -122,28 +122,34 @@ def Upload_File(request):
     return render(request, 'landing/upload.html', context)
 
 def View_Deck(request):
-
-	deck_id_signed = request.GET.get('deck_id')
-	deck_id = None
-	card_list =[]
-	signer = Signer(request.user.id)
-	try:
-		deck_id = signer.unsign(deck_id_signed)
-	except signing.BadSignature:
-		print("Tampering detected!")
-		return HttpResponseRedirect('/')
-	form = NewCard(initial={'deck' : request.GET.get('deck_id')})
-	cards = Card.objects.filter(deck_id=deck_id, deleted_flag = 0).order_by('-date_created')
-	for card in cards:
-		card_list.append({
-			"card_id" : card.card_id,
+    deck_id_signed = request.GET.get('deck_id')
+    deck_id = None
+    card_list =[]
+    signer = Signer(request.user.id)
+    try:
+        deck_id = signer.unsign(deck_id_signed)
+    except signing.BadSignature:
+        print("Tampering detected!")
+        return HttpResponseRedirect('/')
+    form = NewCard(initial={'deck' : request.GET.get('deck_id')})
+    cards = Card.objects.filter(deck_id=deck_id, deleted_flag = 0).order_by('-date_created')
+    deck = Deck.objects.filter(deck_id=deck_id)
+    deck_name = ""
+    try:
+        deck_name = deck[0].deck_name
+    except IndexError:
+        deck_name = ""
+    for card in cards:
+        card_list.append({
+            "card_id" : card.card_id,
 			"front" : card.front,
 			"back" : card.back,
-			})
+			}) 
 	context = {
 		"form" : form,
 		"card_list" : card_list,
         "deck_id" : deck_id_signed,
+        "deck_name" : deck_name, 
 	}
 	return render(request, 'flash_cards/view_deck.html', context)
 

@@ -24,8 +24,17 @@ $.ajaxSetup({
     }
 });
 
+/**
+ * Set the deck_id as a hidden field for the edit deck (deck settings) form
+ * then set the deck name and share flag for the edit deck form
+ */
 function fillEditDeckForm(){
-    $('.toggle-edit').click(function(){
+    $('.edit-deck-toggle').click(function(){
+        var deck_id = $(this).parent().parent().attr('id');
+        $('input[name=edit-deck-id]').val(deck_id);
+   
+
+   
         var deck_name = $(this).parent().siblings('.deck_name').text();
         var share_set = $(this).parent().siblings('.share-set').val();
 
@@ -39,13 +48,20 @@ function fillEditDeckForm(){
     });
 }
 
-
-
-function fillEditCardForm() {
-    $('.edit-deck-toggle').click(function(){
-        var deck_id = $(this).parent().parent().attr('id');
-        $('input[name=edit-deck-id]').val(deck_id);
+function fillDeleteDeckForm(){
+    $('.toggle-delete-deck').click(function(){
+	var deck_id = $(this).parent().parent().attr('id');
+        $('input[name=id-deck-id]').val(deck_id);
     });
+}
+
+/**
+ * When edit card button is clicked fill in the edit form with the 
+ * front and back of card text. Also fill in the id of the card 
+ * to the hidden form field.
+ */
+function fillEditCardForm() {
+    
 
     $('.edit-card').click(function(){
         var front_card = $(this).parent().siblings('.small_card_content').children('.card_front').text();
@@ -54,13 +70,12 @@ function fillEditCardForm() {
         $('#id_card_front_edit').val(front_card);
         $('#id_card_back_edit').val(back_card);
 
-        // $('#id_deck_name_edit').val(deck_name);
-        // if (share_set == "no") {
-        //     $('#id_share_flag_edit').prop('checked', false);
-        // }else if (share_set == "yes") {
-        //     $('#id_share_flag_edit').prop('checked', true);
-        // }
 
+    });
+
+    $('.get-card-id').click(function(){
+	var card_id = $(this).parent().parent().attr('id');
+        $('input[name=id-card-id]').val(card_id);
     });
 }
 
@@ -165,7 +180,7 @@ function editDeck() {
 function deleteDeck() {
     $('#delete-deck-submit').click(function(event){
 	event.preventDefault();
-	var deck = $("#id_deck").val();
+	var deck = $("input[name=id-deck-id]").val();
         
 	//start ajax post
 	$.ajax({
@@ -242,10 +257,10 @@ function addNewCard() {
 function editCard() {
     $('#edit-card-submit').click(function(event){
 	event.preventDefault();
-	var card = $("#id_card").val();
+	var card = $("input[name=id-card-id]").val();
 	var deck = $("#id_deck").val();
-        var front = $("#id_card_front_edit").val();
-        var back = $('#id_card_back_edit').val();
+    var front = $("#id_card_front_edit").val();
+    var back = $('#id_card_back_edit').val();
 	// var csrftoken = getCookie('csrftoken');
         
 	//start ajax post
@@ -286,7 +301,7 @@ function editCard() {
 function deleteCard() {
     $('#delete-card-submit').click(function(event){
 	event.preventDefault();
-	var card = $("#id_card").val();
+	var card = $("input[name=id-card-id]").val();
 	var deck = $("#id_deck").val();
         
 	//start ajax post
@@ -410,6 +425,7 @@ $(document).ready(function(){
     showToolTips();
     handleCardTurn();
     fillEditDeckForm();
+    fillDeleteDeckForm();
     fillEditCardForm();
     
 
