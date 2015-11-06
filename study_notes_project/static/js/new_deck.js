@@ -32,9 +32,7 @@ function fillEditDeckForm(){
     $('.edit-deck-toggle').click(function(){
         var deck_id = $(this).parent().parent().attr('id');
         $('input[name=edit-deck-id]').val(deck_id);
-   
 
-   
         var deck_name = $(this).parent().siblings('.deck_name').text();
         var share_set = $(this).parent().siblings('.share-set').val();
 
@@ -47,11 +45,12 @@ function fillEditDeckForm(){
 
     });
 }
-
 function fillDeleteDeckForm(){
     $('.toggle-delete-deck').click(function(){
-	var deck_id = $(this).parent().parent().attr('id');
+	   var deck_id = $(this).parent().parent().attr('id');
         $('input[name=id-deck-id]').val(deck_id);
+        deck_name = $(this).parent().siblings('.deck_name').text()
+        $('#delete-deck-name-span').text(deck_name)
     });
 }
 
@@ -83,6 +82,7 @@ function fillEditCardForm() {
 function addNewDeck() {
 	$('#make-deck-submit').click(function(event){
 		event.preventDefault();
+        $("#make-deck-submit").disabled = true;
 		var user = $("#id_user").val();
 		var deck_name = $("#id_deck_name").val();
 		var share_flag = $('#id_share_flag').is(':checked');
@@ -106,6 +106,7 @@ function addNewDeck() {
             if (errors.deck_name != null) {
             	var error = $('#make-deck-error');
             	error.text(errors.deck_name)
+                $("#make-deck-submit").disabled = false;
             }else {
             	//no errors in form
             	$('#make-deck-form').trigger("reset");
@@ -178,6 +179,9 @@ function editDeck() {
 }
 
 function deleteDeck() {
+
+
+
     $('#delete-deck-submit').click(function(event){
 	event.preventDefault();
 	var deck = $("input[name=id-deck-id]").val();

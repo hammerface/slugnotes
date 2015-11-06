@@ -52,16 +52,21 @@ def Edit_Deck(request):
         else:
             share_flag = 1
         data = {'user' : user, 'deck_name' : deck_name, "share_flag" : share_flag}
-        form = NewDeck(data)
-        if form.is_valid():
-
-            deck = get_object_or_404(Deck, deck_id=deck_id)
-            deck.deck_name = deck_name
+        deck = get_object_or_404(Deck, deck_id=deck_id)
+        if deck.deck_name == deck_name:
             deck.share_flag = share_flag
             deck.save()
         else:
-            errors = form.errors
-            return HttpResponse(json.dumps(errors))
+            form = NewDeck(data)
+            if form.is_valid():
+
+                #deck = get_object_or_404(Deck, deck_id=deck_id)
+                deck.deck_name = deck_name
+                deck.share_flag = share_flag
+                deck.save()
+            else:
+                errors = form.errors
+                return HttpResponse(json.dumps(errors))
     
     return HttpResponse(json.dumps({"success": "success"}))
 
@@ -155,29 +160,29 @@ def View_Deck(request):
     return render(request, 'flash_cards/view_deck.html', context)
 
 def New_Card(request):
-	if request.method == 'POST':
-		deck = request.POST.get('deck')
-		front = request.POST.get('front')
-		back = request.POST.get('back')
-		signer = Signer(request.user.id)
-		try:
-			deck = signer.unsign(deck)
-		except signing.BadSignature:
-			return HttpResponseRedirect('/')
-		data = {'deck' : deck, 'front' : front, 'back' : back}		
-		form = NewCard(data)
-		if form.is_valid():
-			print "valid form"
-			card = form.save(commit=False)
-			card.deck_id = deck
-			card.save()
-		else:
-			print "error"
-			errors = form.errors
-			print errors
-			return HttpResponse(json.dumps(errors))
+    if request.method == 'POST':
+        deck = request.POST.get('deck')
+        front = request.POST.get('front')
+        back = request.POST.get('back')
+        signer = Signer(request.user.id)
+        try:
+            deck = signer.unsign(deck)
+        except signing.BadSignature:
+            return HttpResponseRedirect('/')
+        data = {'deck' : deck, 'front' : front, 'back' : back}	
+        form = NewCard(data)
+        if form.is_valid():
+            print "valid form"
+            card = form.save(commit=False)
+            card.deck_id = deck
+            card.save()
+        else:
+            print "error"
+            errors = form.errors
+            print errors
+            return HttpResponse(json.dumps(errors))
 
-	return HttpResponse(json.dumps({"success": "success"}))
+    return HttpResponse(json.dumps({"success": "success"}))
 
 def Edit_Card(request):
         if request.method == 'POST':
