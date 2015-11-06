@@ -796,6 +796,14 @@ ul.about-flex-slides { margin-left: 0 }
     padding: 0;
     margin-bottom: 40px;
 }
+
+.breadcrumbs {
+    background: #34495e;
+    color: #fff;
+    padding: 10px 0;
+    margin-bottom: 40px;
+}
+
 .breadcrumb {
     margin-bottom: 0;
     background: none;

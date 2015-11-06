@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-    <!--necessary for the css-->
-    <div class="div_to_make_pretty">
+    <!-- Deck Name Title -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <h3>{{ deck_name }}</h3>
+                </div>
+            </div>
+        </div>
     </div>
-    
+    <!-- End Title -->
+
     <!-- Main Container -->
     <div class="container">
       <div class="row mar-b-30">
-        <p>{{ deck_name }}</p>
         <div class="col-md-12">
           {% for card in card_list reversed %}
           <div id={{card.card_id}} class="small_card">
