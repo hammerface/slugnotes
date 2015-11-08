@@ -7,6 +7,7 @@ from django.core.signing import Signer
 from django.core import signing
 from django.shortcuts import get_object_or_404
 from parse_notes import parse_notes
+import re
 
 
 def New_Deck(request):
@@ -42,7 +43,7 @@ def Edit_Deck(request):
         try:
         	deck_id = signer.unsign(deck_id_signed)
         except signing.BadSignature:
-    		print("Tampering detected!")
+    		print("Tampering detected!!")
     		return HttpResponseRedirect('/')
         deck_name = request.POST.get('deck_name')
         user = request.POST.get('user')
@@ -77,7 +78,7 @@ def Delete_Deck(request):
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
-        print("Tampering detected!")
+        print("Tampering detected! Delete deck")
         return HttpResponse(json.dumps(errors))
     deck = get_object_or_404(Deck, deck_id=deck_id)
     deck.deleted_flag = 1
@@ -91,7 +92,7 @@ def Upload_File(request):
     try:
         deck_id = signer.unsign(request.GET.get('deck_id'))
     except signing.BadSignature:
-        print("Tampering detected!")
+        print("Tampering detected! Upload file")
         return HttpResponseRedirect('/')
 
     #Notes have been uploaded to parser
@@ -109,15 +110,21 @@ def Upload_File(request):
             #check that there are any cards to create
             if cardslist:
                 front = None
-                back = None
+                back = ""
                 #loop through card list and generate a new card for the deck
                 for card in cardslist:
-                    front = card[0]
-                    try: 
-                        back = card[1]
-                    except IndexError:
-                        back = ""
+                    print card
+                    if len(card) > 1:
+                        front = card.pop(0)
+                        for line in card:
+                            print line
+                            back += re.sub(r'\r', '', line) + "\n"
+                    else:
+                        front = card.pop(0)
+                    print front 
+                    print back
                     new_card = Card.objects.create(deck_id = deck_id, front=front,back=back)
+                    back = ""
             return HttpResponseRedirect('/cards/?deck_id=' + str(deck_id_signed))
     else:
         form = UploadFile(initial={"deck_id" : deck_id})
@@ -134,7 +141,7 @@ def View_Deck(request):
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
-        print("Tampering detected!")
+        print("Tampering detected! View deck")
         return HttpResponseRedirect('/')
     form = NewCard(initial={'deck' : request.GET.get('deck_id')})
     cards = Card.objects.filter(deck_id=deck_id, deleted_flag = 0).order_by('-date_created')
@@ -216,9 +223,16 @@ def Delete_Card(request):
 	try:
                 deck = signer.unsign(deck_id_signed)
 	except signing.BadSignature:
-		print("Tampering detected!")
+		print("Tampering detected! Delete card")
 		return HttpResponse(json.dumps(errors))
         card = get_object_or_404(Card, card_id=card_id)
         card.deleted_flag = 1
         card.save()
 	return HttpResponse(json.dumps({"success": "success"}))
+
+
+def Search(request):
+    context = {
+        "query" : request.GET.get('query')
+    }
+    return render(request, 'flash_cards/search.html', context)

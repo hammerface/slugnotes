@@ -93,7 +93,12 @@
                       </ul>
                   </li>
                   {% if user.is_authenticated %}
-                  <li><input class="form-control search" placeholder=" Search" type="text"></li>
+                  <li>
+                    <form method="GET" action="/cards/search/"> {% csrf_token %}
+                      <input id="search-bar" class="form-control search" name="query" placeholder=" Search" type="text">
+                      
+                    </form>
+                  </li>
                   {% endif %}
               </ul>
           </div>

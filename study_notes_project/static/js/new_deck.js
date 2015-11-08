@@ -431,7 +431,15 @@ $(document).ready(function(){
     fillEditDeckForm();
     fillDeleteDeckForm();
     fillEditCardForm();
-    
+    $(document).keypress(function(e) {
+
+    if(e.which == 13) {
+        var width = $('.search').width()
+        if (width == 138) {
+            alert("search start");
+        }
+    }
+});
 
     // $(document.body).on({
     //     mouseenter: function() {
