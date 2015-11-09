@@ -259,6 +259,17 @@ def Search(request):
     }
     return render(request, 'flash_cards/search.html', context)
 
+def Shared_Decks(request):
+    u_id = request.GET.get('u_id')
+    shared_decks = Deck.objects.filter(user_id = u_id, share_flag = 1)
+    form = NewDeck(initial={'user' : request.user.id})
+    context = {
+        "shared_user_id" : u_id,
+        "shared_decks" : shared_decks,
+        "clone_form" : form,
+    }
+    return render(request, 'flash_cards/shared_profile.html', context)
+
 def Clone(request):
     if request.method == 'POST':
         user = request.POST.get('user')

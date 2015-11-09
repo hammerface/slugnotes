@@ -8,7 +8,7 @@
 {% for user in user_list %}
 <p>Username: {{ user.username }}</p>
 <p>User id : {{ user.user }}</p>
-
+<a href="/cards/shared_decks/?u_id={{ user.user }}">{{ user.username }}'s: decks</a>
 
 {% endfor %}
 {% else %}
@@ -96,5 +96,6 @@
       </div>
     </div>
     <!-- End Modal -->
+
 
 {% endblock %}
