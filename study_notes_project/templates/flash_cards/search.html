@@ -39,6 +39,7 @@
 	<div class="row mar-b-30">
 		<div class="col-md-12">
 			{% for deck in deck_list %}
+      <!-- Set the id to the deck_id of the user that created the deck -->
 			<div id={{deck.orig_user_id}} class="deck">
 				<div class="image-caption">
 					<a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
