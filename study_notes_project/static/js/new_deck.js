@@ -129,6 +129,64 @@ function addNewDeck() {
 	});
 }
 
+function cloneDeck() {
+    $('.clone-deck-toggle').click(function(){
+        var deck_id = $(this).parent().parent().attr('id');
+        $('input[name=clone-deck-id]').val(deck_id);
+
+    });
+
+
+
+    $('#clone-deck-submit').click(function(event){
+        event.preventDefault();
+        $("#clone-deck-submit").disabled = true;
+        var user = $("#id_user").val();
+        var deck_name = $("#id_deck_name").val();
+        var share_flag = $('#id_share_flag').is(':checked');
+        var clone_deck_id = $('#clone-deck-id-input').val()
+        // var csrftoken = getCookie('csrftoken');
+        //start ajax post
+        $.ajax({
+        url : "/cards/clone/", // the endpoint
+        type : "POST", // http method
+        data : { user : user, deck_name : deck_name, share_flag : share_flag, clone_deck_id : clone_deck_id }, // data sent with the post request
+        "beforeSend": function(xhr, settings) {
+        console.log("Before Send");
+        $.ajaxSettings.beforeSend(xhr, settings);
+        },
+        // handle a successful response
+        success : function(json) {
+            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+            var errors = jQuery.parseJSON(json);
+
+            //erros in form
+            if (errors.deck_name != null) {
+                var error = $('#clone-deck-error');
+                error.text(errors.deck_name)
+                $("#clone-deck-submit").disabled = false;
+            }else {
+                //no errors in form
+                $('#clone-deck-form').trigger("reset");
+                var cancelButton = document.getElementById("clone-deck-cancel");
+                cancelButton.click();
+                location.reload();
+            }
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log("error");
+            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+
+        
+        
+    });
+}
+
 function editDeck() {
 	$('#edit-deck-submit').click(function(event){
 		event.preventDefault();
@@ -431,7 +489,7 @@ $(document).ready(function(){
     fillEditDeckForm();
     fillDeleteDeckForm();
     fillEditCardForm();
-    
+    cloneDeck();
 
     // $(document.body).on({
     //     mouseenter: function() {

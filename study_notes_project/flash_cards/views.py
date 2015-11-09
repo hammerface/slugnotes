@@ -240,17 +240,51 @@ def Search(request):
     for user in users:
         print user
         user_list.append({
+            "user" : user.user_id,
             "username" : user.username,
             })
     for deck in decks:
         print deck
         deck_list.append({
+            "orig_user_id" : deck.user_id,
             "deck_name" : deck.deck_name,
             "share" : deck.share_flag
             })
-
+    form = NewDeck(initial={'user' : request.user.id})
     context = {
         "user_list" : user_list,
         "deck_list" : deck_list,
+        "clone_form" : form,
     }
     return render(request, 'flash_cards/search.html', context)
+
+def Clone(request):
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        deck_name = request.POST.get('deck_name')
+        share_flag = request.POST.get('share_flag')
+        clone_deck_id = request.POST.get('clone_deck_id')
+        if share_flag == 'false':
+            share_flag = 0
+        else:
+            share_flag = 1
+        data = {'user' : user, 'deck_name' : deck_name, 'share_flag' : share_flag}
+        #create the new deck
+        form = NewDeck(data)
+        if form.is_valid():
+            deck = form.save(commit=False)
+            deck.user_id = user
+            deck.save()
+            new_deck_id = deck.deck_id
+            #add all the cards from the shared deck to your new deck
+            cards = Card.objects.filter(deck_id = clone_deck_id)
+            for card in cards:
+                new_card = Card.objects.create(deck_id = new_deck_id, front=card.front,back=card.back)
+
+        else:
+            print "error"
+            errors = form.errors
+            print errors
+            return HttpResponse(json.dumps(errors))
+
+    return HttpResponse(json.dumps({"success": "success"}))
