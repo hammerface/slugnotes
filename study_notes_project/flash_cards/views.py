@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from parse_notes import parse_notes
 import re
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 def New_Deck(request):
@@ -234,7 +235,7 @@ def Search(request):
     users = User.objects.filter(username__contains=str(query))
     user_list = []
     #SQL SELECT * FROM flash_cards_deck where deck_name like '%hello%' and deleted_flag = 0 and share_flag = 1
-    decks = Deck.objects.filter(deck_name__contains=str(query), share_flag = 1, deleted_flag = 0)
+    decks = Deck.objects.filter(deck_name__contains=str(query), share_flag = 1, deleted_flag = 0).exclude(user_id=request.user.id)
     deck_list = []
     for user in users:
         print user
