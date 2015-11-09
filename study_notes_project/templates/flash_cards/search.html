@@ -1,9 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
-	<!--necessary for the css-->
-    <div class="div_to_make_pretty">
-    </div>
-    {{ query }}
+<!--necessary for the css-->
+<div class="div_to_make_pretty">
+</div>
+<p>Users:</p> 
+{% if user_list %}
+{% for user in user_list %}
+<p>Username: {{ user.username }}</p>
+
+
+{% endfor %}
+{% else %}
+<p>No users matched your search</p>
+{% endif %}
+
+
+<br>
+<br>
+
+
+<div class="container">
+	<h1>Decks Available:</h1>
+	{% if deck_list %}
+	<div class="row mar-b-30">
+		<div class="col-md-12">
+			{% for deck in deck_list %}
+			<div  class="deck">
+				<div class="image-caption">
+					<a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+						<i class="deck_options fa fa-book"></i>
+					</a>
+
+
+
+				</div>
+				<img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
+				<h6 class="deck_name">{{ deck.deck_name }}</h6>
+				{% if deck.share %}
+				<input class="share-set" type="hidden" name="yes" value="yes">
+				{% else %}
+				<input class="share-set" type="hidden" name="no" value="no">
+				{% endif %}
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+	{% else %}
+	<p>No decks matched that search</p>
+	{% endif %}
+</div>
 
 
 

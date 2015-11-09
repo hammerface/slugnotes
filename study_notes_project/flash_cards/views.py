@@ -8,6 +8,7 @@ from django.core import signing
 from django.shortcuts import get_object_or_404
 from parse_notes import parse_notes
 import re
+from django.contrib.auth.models import User
 
 
 def New_Deck(request):
@@ -113,7 +114,6 @@ def Upload_File(request):
                 back = ""
                 #loop through card list and generate a new card for the deck
                 for card in cardslist:
-                    print card
                     if len(card) > 1:
                         front = card.pop(0)
                         for line in card:
@@ -121,8 +121,6 @@ def Upload_File(request):
                             back += re.sub(r'\r', '', line) + "\n"
                     else:
                         front = card.pop(0)
-                    print front 
-                    print back
                     new_card = Card.objects.create(deck_id = deck_id, front=front,back=back)
                     back = ""
             return HttpResponseRedirect('/cards/?deck_id=' + str(deck_id_signed))
@@ -232,7 +230,26 @@ def Delete_Card(request):
 
 
 def Search(request):
+    query = request.GET.get('query')
+    users = User.objects.filter(username__contains=str(query))
+    user_list = []
+    #SQL SELECT * FROM flash_cards_deck where deck_name like '%hello%' and deleted_flag = 0 and share_flag = 1
+    decks = Deck.objects.filter(deck_name__contains=str(query), share_flag = 1, deleted_flag = 0)
+    deck_list = []
+    for user in users:
+        print user
+        user_list.append({
+            "username" : user.username,
+            })
+    for deck in decks:
+        print deck
+        deck_list.append({
+            "deck_name" : deck.deck_name,
+            "share" : deck.share_flag
+            })
+
     context = {
-        "query" : request.GET.get('query')
+        "user_list" : user_list,
+        "deck_list" : deck_list,
     }
     return render(request, 'flash_cards/search.html', context)
