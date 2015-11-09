@@ -238,9 +238,8 @@ def Search(request):
     decks = Deck.objects.filter(deck_name__contains=str(query), share_flag = 1, deleted_flag = 0).exclude(user_id=request.user.id)
     deck_list = []
     for user in users:
-        print user
         user_list.append({
-            "user" : user.user_id,
+            "user" : user.id,
             "username" : user.username,
             })
     for deck in decks:
