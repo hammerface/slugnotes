@@ -234,6 +234,7 @@ def Search(request):
     query = request.GET.get('query')
     users = User.objects.filter(username__contains=str(query))
     user_list = []
+    signer = Signer(request.user.id)
     #SQL SELECT * FROM flash_cards_deck where deck_name like '%hello%' and deleted_flag = 0 and share_flag = 1
     decks = Deck.objects.filter(deck_name__contains=str(query), share_flag = 1, deleted_flag = 0).exclude(user_id=request.user.id)
     deck_list = []
@@ -245,17 +246,18 @@ def Search(request):
             "public_deck_count" : public_deck_count,
             })
     for deck in decks:
-        print deck
+        print deck.deck_id
         deck_list.append({
-            "orig_user_id" : deck.user_id,
+            "orig_deck_id" : signer.sign(deck.deck_id),
             "deck_name" : deck.deck_name,
-            "share" : deck.share_flag
+            "share" : deck.share_flag,
             })
     form = NewDeck(initial={'user' : request.user.id})
     context = {
         "user_list" : user_list,
         "deck_list" : deck_list,
         "clone_form" : form,
+        "sign" : signer.sign(request.user.id),
     }
     return render(request, 'flash_cards/search.html', context)
 
@@ -272,10 +274,17 @@ def Shared_Decks(request):
 
 def Clone(request):
     if request.method == 'POST':
+        signer = Signer(request.user.id)
+
         user = request.POST.get('user')
         deck_name = request.POST.get('deck_name')
         share_flag = request.POST.get('share_flag')
         clone_deck_id = request.POST.get('clone_deck_id')
+        try:
+            user = signer.unsign(user)
+            clone_deck_id = signer.unsign(clone_deck_id)
+        except signing.BadSignature:
+            return HttpResponse(json.dumps({"Tampering": "bad signature"}))
         if share_flag == 'false':
             share_flag = 0
         else:
@@ -289,7 +298,7 @@ def Clone(request):
             deck.save()
             new_deck_id = deck.deck_id
             #add all the cards from the shared deck to your new deck
-            cards = Card.objects.filter(deck_id = clone_deck_id)
+            cards = Card.objects.filter(deck_id = clone_deck_id, deleted_flag = 0)
             for card in cards:
                 new_card = Card.objects.create(deck_id = new_deck_id, front=card.front,back=card.back)
 

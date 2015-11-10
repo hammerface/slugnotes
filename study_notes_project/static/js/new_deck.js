@@ -131,8 +131,8 @@ function addNewDeck() {
 
 function cloneDeck() {
     $('.clone-deck-toggle').click(function(){
-        var deck_id = $(this).parent().parent().attr('id');
-        $('input[name=clone-deck-id]').val(deck_id);
+        var orig_deck_id = $(this).parent().parent().attr('id');
+        $('input[name=clone-deck-id]').val(orig_deck_id);
 
     });
 
@@ -141,7 +141,7 @@ function cloneDeck() {
     $('#clone-deck-submit').click(function(event){
         event.preventDefault();
         $("#clone-deck-submit").disabled = true;
-        var user = $("#id_user").val();
+        var user = $("#user-id").val();
         var deck_name = $("#id_deck_name").val();
         var share_flag = $('#id_share_flag').is(':checked');
         var clone_deck_id = $('#clone-deck-id-input').val()
@@ -170,7 +170,7 @@ function cloneDeck() {
                 $('#clone-deck-form').trigger("reset");
                 var cancelButton = document.getElementById("clone-deck-cancel");
                 cancelButton.click();
-                location.reload();
+                //location.reload();
             }
         },
         // handle a non-successful response
