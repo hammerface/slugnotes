@@ -264,11 +264,20 @@ def Search(request):
 def Shared_Decks(request):
     u_id = request.GET.get('u_id')
     shared_decks = Deck.objects.filter(user_id = u_id, share_flag = 1)
+    signer = Signer(request.user.id)
+    deck_list = []
+    for deck in shared_decks:
+        deck_list.append({
+            "orig_deck_id" : signer.sign(deck.deck_id),
+            "deck_name" : deck.deck_name,
+            "share" : deck.share_flag,
+        })
     form = NewDeck(initial={'user' : request.user.id})
     context = {
         "shared_user_id" : u_id,
-        "shared_decks" : shared_decks,
+        "shared_decks" : deck_list,
         "clone_form" : form,
+        "sign" : signer.sign(request.user.id)
     }
     return render(request, 'flash_cards/shared_profile.html', context)
 
