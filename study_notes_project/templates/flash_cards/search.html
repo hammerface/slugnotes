@@ -3,8 +3,9 @@
 <!--necessary for the css-->
 <div class="div_to_make_pretty">
 </div>
-<div class="container">
+<div class="container search_results">
 <!-- User Results -->
+<div class="user_search_results">
 <h1>Users:</h1> 
 {% if user_list %}
   <div class="row mar-b-30">
@@ -25,6 +26,7 @@
             </div>
         </a>
         <h6 class="user_name">{{ user.username }}</h6>
+        <h6 class="public_decks">Number of Public Decks: {{user.public_deck_count}} </h6>
       </div>
       {% endfor %}
     </div>
@@ -32,8 +34,10 @@
   {% else %}
   <p>No users matched that search</p>
   {% endif %}
+</div>
 <!-- End User Results -->
 <!-- Deck Results -->
+<div class="deck_search_results">
 	<h1>Decks Available:</h1>
 	{% if deck_list %}
 	<div class="row mar-b-30">
@@ -64,6 +68,7 @@
 	{% else %}
 	<p>No decks matched that search</p>
 	{% endif %}
+</div>
 </div>
 <!-- End Deck Results -->
 

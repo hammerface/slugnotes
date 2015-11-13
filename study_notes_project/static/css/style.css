@@ -3002,7 +3002,7 @@ div.header h3{
     margin-right:4px;
 }
 
-div.CreateNewDeck, div.CreateNewCard, div.UploadCards, div.User{
+div.CreateNewDeck, div.CreateNewCard, div.UploadCards, div.ViewUser{
     float: left;
     display: inline-block;
     margin: 28px 53px;
@@ -3010,7 +3010,7 @@ div.CreateNewDeck, div.CreateNewCard, div.UploadCards, div.User{
     color: #fff;
 }
 
-div.CreateNewDeck:hover, div.CreateNewCard:hover, div.UploadCards:hover, div.User:hover{
+div.CreateNewDeck:hover, div.CreateNewCard:hover, div.UploadCards:hover, div.ViewUser:hover{
     cursor:pointer;
     background: #37BC9B;
     border-radius: 3px;
@@ -3023,7 +3023,15 @@ div.CreateNewDeck:hover, div.CreateNewCard:hover, div.UploadCards:hover, div.Use
     transition: all .3s ease;
 }
 
-div.deck {
+div.ViewUser{
+    font-size: 20%;
+}
+
+div.user_search_results, div.deck_search_results {
+    padding-bottom: 60px;
+}
+
+div.deck, div.user {
     display: inline-block;
     padding: 13px;
     float: left;
