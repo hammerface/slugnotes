@@ -144,7 +144,7 @@ def View_Deck(request):
         return HttpResponseRedirect('/')
     form = NewCard(initial={'deck' : request.GET.get('deck_id')})
     cards = Card.objects.filter(deck_id=deck_id, deleted_flag = 0).order_by('-date_created')
-    deck = Deck.objects.filter(deck_id=deck_id)
+    deck = Deck.objects.filter(deck_id=deck_id, deleted_flag = 0)
     print "here"
     deck_name = ""
     try:
@@ -328,3 +328,40 @@ def Clone(request):
             return HttpResponse(json.dumps(errors))
 
     return HttpResponse(json.dumps({"success": "success"}))
+
+
+#When a user clicks on a deck from the search results
+def View_Shared_Deck(request):
+    signer = Signer(request.user.id)
+    deck_id_signed = request.GET.get('deck_id')
+    deck_name = request.GET.get('deck_name')
+    deck_id = None
+    card_list = []
+    username = ""
+    user_id = None
+    try:
+        deck_id = signer.unsign(deck_id_signed)
+    except signing.BadSignature:
+        print "Tampering Detected! View Shared Deck"
+        return HttpResponseRedirect('/')
+    cards = Card.objects.filter(deck_id = deck_id, deleted_flag = 0).order_by('-date_created')
+    deck = Deck.objects.filter(deck_id = deck_id, deleted_flag = 0)
+    try:
+        user_id = deck[0].user_id
+        user = User.objects.filter(id = user_id)
+        username = user[0].username
+    except IndexError:
+        username=""
+    for card in cards:
+        card_list.append({
+            "card_id" : card.card_id,
+            "front" : card.front,
+            "back" : card.back,
+            })
+    context = {
+        "username" : username,
+        "deck_name" : deck_name,
+        "card_list" : card_list
+
+    }
+    return render(request, 'flash_cards/view_shared_deck.html', context)
