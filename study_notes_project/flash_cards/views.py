@@ -247,10 +247,20 @@ def Search(request):
             })
     for deck in decks:
         print deck.deck_id
+        username = ""
+        
+        user = User.objects.filter(id = deck.user_id)
+        card_count = Card.objects.filter(deck_id = deck.deck_id, deleted_flag = 0).count()
+        try:
+            username = user[0].username
+        except IndexError:
+            username = ""
         deck_list.append({
             "orig_deck_id" : signer.sign(deck.deck_id),
             "deck_name" : deck.deck_name,
             "share" : deck.share_flag,
+            "username" : username,
+            "card_count" : card_count
             })
     form = NewDeck(initial={'user' : request.user.id})
     context = {
