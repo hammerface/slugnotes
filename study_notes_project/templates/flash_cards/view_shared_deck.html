@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Title -->
+<div class="breadcrumbs">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-sm-4">
+         <h3>{{ deck_name }} by {{ user_name }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Title -->
+
+<!-- Main Container -->
+<div class="container">
+  <div class="row mar-b-30">
+    <div class="col-md-12">
+      {% for card in card_list reversed %}
+        <div id={{card.card_id}} class="small_card">
+          <div class="small_card_content">
+            <p class="card_front">{{card.front}}</p>
+            <p class="card_back hidden">{{card.back|linebreaksbr}}</p>
+          </div>
+          <div class="image-caption image-caption-card">
+            <a class="card_options flip_card label label-info icon" data-toggle="tooltip" data-placement="top" title="Flip">
+              <i class="deck_options fa fa-undo"></i>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- End Main Container -->
+
+{% endblock %}

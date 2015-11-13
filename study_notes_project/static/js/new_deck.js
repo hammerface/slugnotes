@@ -131,8 +131,8 @@ function addNewDeck() {
 
 function cloneDeck() {
     $('.clone-deck-toggle').click(function(){
-        var deck_id = $(this).parent().parent().attr('id');
-        $('input[name=clone-deck-id]').val(deck_id);
+        var orig_deck_id = $(this).parent().parent().attr('id');
+        $('input[name=clone-deck-id]').val(orig_deck_id);
 
     });
 
@@ -141,7 +141,7 @@ function cloneDeck() {
     $('#clone-deck-submit').click(function(event){
         event.preventDefault();
         $("#clone-deck-submit").disabled = true;
-        var user = $("#id_user").val();
+        var user = $("#user-id").val();
         var deck_name = $("#id_deck_name").val();
         var share_flag = $('#id_share_flag').is(':checked');
         var clone_deck_id = $('#clone-deck-id-input').val()
@@ -170,7 +170,7 @@ function cloneDeck() {
                 $('#clone-deck-form').trigger("reset");
                 var cancelButton = document.getElementById("clone-deck-cancel");
                 cancelButton.click();
-                location.reload();
+                //location.reload();
             }
         },
         // handle a non-successful response
@@ -473,6 +473,28 @@ function handleCardTurn(){
     });
 }
 
+function getSharedProfile() {
+    $('button[name=shared-profile-button]').click(function(event){
+	//event.preventDefault();
+	var u_name = $(this).parent().parent().attr('id');
+	var u_id = $(this).attr('id');
+	var csrftoken = getCookie('csrftoken');
+	
+	//start ajax post
+	$.ajax({
+            url : "/cards/shared_decks/", // the endpoint
+            type : "POST", // http method
+            data : { u_id : u_id, u_name : u_name , csrftoken : csrftoken }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+		$.ajaxSettings.beforeSend(xhr, settings);
+    	    },
+	    success : function(json) {
+		location.replase(json);
+            }
+	});
+    });
+}
+
 $(document).ready(function(){
     addNewDeck();
     editDeck();
@@ -490,6 +512,7 @@ $(document).ready(function(){
     fillDeleteDeckForm();
     fillEditCardForm();
     cloneDeck();
+    getSharedProfile();
 
     // $(document.body).on({
     //     mouseenter: function() {

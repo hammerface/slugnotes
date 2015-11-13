@@ -1,94 +1,101 @@
 {% extends "base.html" %}
 {% block content %}
-<!--necessary for the css-->
-<div class="div_to_make_pretty">
-</div>
-<div class="container search_results">
-<!-- User Results -->
-<div class="user_search_results">
-<h1>Users:</h1> 
-{% if user_list %}
-  <div class="row mar-b-30">
-    <div class="col-md-12">
-      {% for user in user_list %}
-      <div id="user_{{user.user}}" class="user">
-        <div class="image-caption">
-          <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
-            <i class="deck_options fa fa-book"></i>
-          </a>
-          <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Clone">
-            <i class="deck_options fa fa-book"></i>
-          </a>
-        </div>
-        <a data-toggle="modal" class="ViewUser" href="">
-            <div class="ViewUser icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="View User's Decks">
-              <i class="fa fa-smile-o ViewUser"></i>
-            </div>
-        </a>
-        <h6 class="user_name">{{ user.username }}</h6>
-        <h6 class="public_decks">Number of Public Decks: {{user.public_deck_count}} </h6>
+
+<!-- Title -->
+<div class="breadcrumbs">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-sm-4">
+        <h3>Search Results for: {{ query }} </h3>
       </div>
-      {% endfor %}
     </div>
   </div>
-  {% else %}
-  <p>No users matched that search</p>
-  {% endif %}
 </div>
-<!-- End User Results -->
-<!-- Deck Results -->
-<div class="deck_search_results">
-	<h1>Decks Available:</h1>
-	{% if deck_list %}
-	<div class="row mar-b-30">
-		<div class="col-md-12">
-			{% for deck in deck_list %}
-      <!-- Set the id to the deck_id of the user that created the deck -->
-			<div id={{deck.orig_user_id}} class="deck">
-				<div class="image-caption">
-					<a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
-						<i class="deck_options fa fa-book"></i>
-					</a>
-					<a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Clone">
-						<i class="deck_options fa fa-book"></i>
-					</a>
-				</div>
-				<img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
-				<h6 class="deck_name">{{ deck.deck_name }}</h6>
-				{% if deck.share %}
-				<input class="share-set" type="hidden" name="yes" value="yes">
-				{% else %}
-				<input class="share-set" type="hidden" name="no" value="no">
-				{% endif %}
-			</div>
-			{% endfor %}
+<!-- End Title -->
 
-		</div>
-	</div>
-	{% else %}
-	<p>No decks matched that search</p>
-	{% endif %}
+<!-- Search Results Container-->
+<div class="container">
+
+  <!-- User Results -->
+  <div class="user_search_results">
+  <h1>Users:</h1> 
+    {% if user_list %}
+      <div class="row mar-b-30">
+        <div class="col-md-12">
+          {% for user in user_list %}
+            <div id="user_{{user.user}}" class="user">
+              <a class="ViewProfile">
+                <div class="ViewUser icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="View User's Decks">
+                  <i class="fa fa-smile-o ViewUser"></i>
+                </div>
+                <h6 class="user_name">{{ user.username }}</h6>
+                <h6 class="public_decks">Number of Public Decks: {{user.public_deck_count}} </h6>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p>No users matched that search</p>
+    {% endif %}
+  </div>
+  <!-- End User Results -->
+
+  <!-- Deck Results -->
+  <div class="deck_search_results">
+    <h1>Decks:</h1>
+    {% if deck_list %}
+      <div class="row mar-b-30">
+	      <div class="col-md-12">
+          {% for deck in deck_list %}
+            <!-- Set the id to the deck_id of the user that created the deck -->
+            <div id={{deck.orig_deck_id}} class="deck">
+				      <div class="image-caption">
+                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+					        <i class="deck_options fa fa-book"></i>
+                </a>
+                <a href="/" class="ViewDeck deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
+                  <i class="deck_options fa fa-eye"></i>
+                </a>
+                <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Clone">
+						      <i class="deck_options fa fa-copy"></i>
+                </a>
+				      </div>
+				      <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
+				      <h6 class="deck_name">{{ deck.deck_name }}</h6>
+				      {% if deck.share %}
+			          <input class="share-set" type="hidden" name="yes" value="yes">
+			        {% else %}
+			          <input class="share-set" type="hidden" name="no" value="no">
+			        {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p>No decks matched that search</p>
+    {% endif %}
+  </div>
+  <!-- End Deck Results -->
+
 </div>
-</div>
-<!-- End Deck Results -->
+<!-- End Search Results Container -->
 
 
 
 <!-- Clone Deck Modal -->
-
-    <div aria-hidden="true" aria-labelledby="CloneNewDeck" role="dialog" tabindex="-1" id="CloneDeck" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Clone Deck</h4>
-          </div>
-          <form id="clone-deck-form" method="POST" class="form-signin wow" action="" style="visibility: visible;"> {% csrf_token %}
-          <div class="modal-body">
+<div aria-hidden="true" aria-labelledby="CloneNewDeck" role="dialog" tabindex="-1" id="CloneDeck" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Clone Deck</h4>
+      </div>
+      <form id="clone-deck-form" method="POST" class="form-signin" action="" style="visibility: visible;">
+        {% csrf_token %}
+        <div class="modal-body">
           <!-- Check for error messages from bad form data -->
-          
           <p id="clone-deck-error"></p>
-          
           {% for field in clone_form %}
             {% if field.name == "deck_name" %}
               <label for="id_deck_name">Deck Name:</label>
@@ -96,21 +103,23 @@
             {% elif field.name == "share_flag" %}
               <label for="id_share_flag">Share With Others:</label>
               <input id="id_share_flag" name="{{ field.name}}" type="checkbox">
-            {% elif field.name == "user" %}
-              {{ field.as_hidden }}
+            
+              
             {% endif %}
           {% endfor %}
+          <!-- original deck id -->
           <input id="clone-deck-id-input" type="hidden" name="clone-deck-id" value="">
-
-          </div>
-          <div class="modal-footer">
-            <button id="clone-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-            <button id="clone-deck-submit" class="btn btn-success" type="submit">Clone Deck!</button>
-          </div>
-          </form>
+          <input id="user-id" class="curr-user" type="hidden" name="curr-user" value="{{ sign }}"
         </div>
-      </div>
+        <div class="modal-footer">
+          <button id="clone-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+          <button id="clone-deck-submit" class="btn btn-success" type="submit">Clone Deck!</button>
+        </div>
+      </form>
     </div>
-    <!-- End Modal -->
+  </div>
+</div>
+
+<!-- End Modal -->
 
 {% endblock %}
