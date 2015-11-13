@@ -10,7 +10,7 @@ from parse_notes import parse_notes
 import re
 from django.contrib.auth.models import User
 from django.db.models import Q
-
+from django.template import RequestContext, loader
 
 def New_Deck(request):
 	if request.method == 'POST':
@@ -262,9 +262,15 @@ def Search(request):
     return render(request, 'flash_cards/search.html', context)
 
 def Shared_Decks(request):
-    u_id = request.GET.get('u_id')
+    print "GOTHERE"
+    u_id = request.POST.get('u_id')
+    u_name = request.POST.get('u_name')
+    csrftoken = request.POST.get('csrftoken')
     shared_decks = Deck.objects.filter(user_id = u_id, share_flag = 1)
     signer = Signer(request.user.id)
+    print u_id
+    print u_name
+    singed_u_id = signer.sign(u_id)
     deck_list = []
     for deck in shared_decks:
         deck_list.append({
@@ -277,9 +283,12 @@ def Shared_Decks(request):
         "shared_user_id" : u_id,
         "shared_decks" : deck_list,
         "clone_form" : form,
-        "sign" : signer.sign(request.user.id)
+        "sign" : signer.sign(request.user.id),
+        "csrf_token" : csrftoken
     }
-    return render(request, 'flash_cards/shared_profile.html', context)
+    print "got to end"
+    template = loader.get_template('flash_cards/shared_profile.html')
+    return HttpResponse(template.render(context))#render(request, 'flash_cards/shared_profile.html', context)
 
 def Clone(request):
     if request.method == 'POST':

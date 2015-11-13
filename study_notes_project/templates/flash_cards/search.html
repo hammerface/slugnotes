@@ -12,12 +12,19 @@
     </div>
 <p>Users:</p> 
 {% if user_list %}
-{% for user in user_list %}
-<p>Username: {{ user.username }}</p>
-<p>User id : {{ user.user }}</p>
-<a href="/cards/shared_decks/?u_id={{ user.user }}">{{ user.username }}'s: decks</a>
-
-{% endfor %}
+<div class="row mar-b-30">
+  <div class="col-md-12">
+    {% for user in user_list %}
+    <div id={{user.username}} class="deck">
+      <form id="share-profile-form" method="POST" action="">
+        {% csrf_token %}
+	<h6>{{ user.username }}</h6>
+	<button id="{{user.user}}" name="shared-profile-button" class="" type="submit">Shared Decks</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% else %}
 <p>No users matched your search</p>
 {% endif %}
@@ -103,6 +110,5 @@
 </div>
 
 <!-- End Modal -->
-
 
 {% endblock %}
