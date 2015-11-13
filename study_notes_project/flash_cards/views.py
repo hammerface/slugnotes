@@ -334,11 +334,11 @@ def Clone(request):
 def View_Shared_Deck(request):
     signer = Signer(request.user.id)
     deck_id_signed = request.GET.get('deck_id')
-    deck_name = request.GET.get('deck_name')
     deck_id = None
     card_list = []
     username = ""
     user_id = None
+    deck_name = ""
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
@@ -348,6 +348,7 @@ def View_Shared_Deck(request):
     deck = Deck.objects.filter(deck_id = deck_id, deleted_flag = 0)
     try:
         user_id = deck[0].user_id
+        deck_name = deck[0].deck_name
         user = User.objects.filter(id = user_id)
         username = user[0].username
     except IndexError:
