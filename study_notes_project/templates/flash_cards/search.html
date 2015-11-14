@@ -25,7 +25,7 @@
           {% for user in user_list %}
             <div id="user_{{user.user}}" class="UserResult">
               <div class="image-caption image-caption-search-result">
-                <a href="/" class="user_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
+                <a href="/cards/shared_decks/?u_id={{ user.signed_user }}" class="user_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
                   <i class="deck_options fa fa-eye"></i>
                 </a>
               </div>
