@@ -246,7 +246,6 @@ def Search(request):
             "public_deck_count" : public_deck_count,
             })
     for deck in decks:
-        print deck.deck_id
         username = ""
         
         user = User.objects.filter(id = deck.user_id)
@@ -281,7 +280,7 @@ def Shared_Decks(request):
         user = signer.unsign(u_id)
     except signing.BadSignature:
         return HttpResponse(json.dumps({"Tampering": "bad signature"}))
-    shared_decks = Deck.objects.filter(user_id = user, share_flag = 1)
+    shared_decks = Deck.objects.filter(user_id = user, share_flag = 1, deleted_flag = 0)
     deck_list = []
     for deck in shared_decks:
         deck_list.append({

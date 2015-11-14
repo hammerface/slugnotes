@@ -16,13 +16,14 @@
 <!-- Search Results Container-->
 <div class="container">
 
-  <!-- User Results -->
+  <!-- User Results: only show users that have public decks -->
   <div class="user_search_results">
   <h1>Users:</h1> 
     {% if user_list %}
       <div class="row mar-b-30">
         <div class="col-md-12">
           {% for user in user_list %}
+          {% if user.public_deck_count > 0 %}
             <div id="user_{{user.user}}" class="UserResult">
               <div class="image-caption image-caption-search-result">
                 <a href="/cards/shared_decks/?u_id={{ user.signed_user }}" class="user_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
@@ -35,6 +36,7 @@
               <h4>{{ user.username }}</h4>
               <h5>Number of Decks: {{user.public_deck_count}} </h5>
             </div>
+          {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -72,7 +74,7 @@
         </div>
       </div>
     {% else %}
-      <p>No decks matched that search</p>
+      <p>No public decks matched that search</p>
     {% endif %}
   </div>
   <!-- End Deck Results -->
