@@ -430,6 +430,30 @@ function deckDropDown(){
     );
 }
 
+//drop down user result
+function userResultDropDown(){
+    $('div.UserResult').hover(
+        function(){
+            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+        },
+        function(){
+            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+        }
+    );
+}
+
+//drop down user result
+function deckResultDropDown(){
+    $('div.DeckResult').hover(
+        function(){
+            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+        },
+        function(){
+            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+        }
+    );
+}
+
 //drop down cards
 function cardsDropDown(){
     $('div.small_card').hover(
@@ -507,6 +531,8 @@ $(document).ready(function(){
     scrollText();
     deckDropDown();
     cardsDropDown();
+    userResultDropDown();
+    deckResultDropDown();
     showToolTips();
     handleCardTurn();
     fillEditDeckForm();

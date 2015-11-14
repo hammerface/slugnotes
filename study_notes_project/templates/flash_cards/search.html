@@ -24,7 +24,12 @@
         <div class="col-md-12">
           {% for user in user_list %}
             <div id="user_{{user.user}}" class="UserResult">
-              <div class="User icon-wrap ico-bg round-five {% cycle 'user_color1' 'user_color2' 'user_color3' %}" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="View User">
+              <div class="image-caption image-caption-search-result">
+                <a href="/" class="user_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
+                  <i class="deck_options fa fa-eye"></i>
+                </a>
+              </div>
+              <div class="User icon-wrap ico-bg round-five {% cycle 'user_color1' 'user_color2' 'user_color3' %}">
                 <i class="fa fa-smile-o"></i>
               </div>
               <h4>{{ user.username }}</h4>
@@ -46,12 +51,22 @@
       <div class="row mar-b-30">
 	      <div class="col-md-12">
           {% for deck in deck_list %}
-            <!-- Set the id to the deck_id of the user that created the deck -->
             <div id={{deck.orig_deck_id}} class="DeckResult">
+              <div class="image-caption image-caption-search-result">
+                <a href="/" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+                  <i class="deck_options fa fa-book"></i>
+                </a>
+                <a href="/cards/view_shared_deck/?deck_id={{ deck.orig_deck_id }}" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
+                  <i class="deck_options fa fa-eye"></i>
+                </a>
+                <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Clone">
+                  <i class="deck_options fa fa-copy"></i>
+                </a>
+              </div>
 				      <img class="DeckResult" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
 				      <h4>{{ deck.deck_name }}</h4>
-              <h5>By: sarawoods2 </h5>
-              <h5>Number of Cards: 12 <h5>
+              <h5>By: {{ deck.username }} </h5>
+              <h5>Number of Cards: {{ deck.card_count }} <h5>
             </div>
           {% endfor %}
         </div>
@@ -93,7 +108,7 @@
           {% endfor %}
           <!-- original deck id -->
           <input id="clone-deck-id-input" type="hidden" name="clone-deck-id" value="">
-          <input id="user-id" class="curr-user" type="hidden" name="curr-user" value="{{ sign }}"
+          <input id="user-id" class="curr-user" type="hidden" name="curr-user" value="{{ sign }}">
         </div>
         <div class="modal-footer">
           <button id="clone-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
