@@ -8,6 +8,10 @@
       <div class="col-lg-4 col-sm-4">
          <h3>{{ deck_name }} by: {{ username }}</h3>
       </div>
+      <div class="col-lg-8 col-sm-8">
+        <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle btn btn-success breadcrumbs-button pull-right">Clone</a>
+        <a href="/" class="btn btn-success breadcrumbs-button pull-right">Study</a>
+      </div>
     </div>
   </div>
 </div>
@@ -34,5 +38,44 @@
   </div>
 </div>
 <!-- End Main Container -->
+
+<!-- Clone Deck Modal -->
+<div aria-hidden="true" aria-labelledby="CloneNewDeck" role="dialog" tabindex="-1" id="CloneDeck" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Clone Deck</h4>
+      </div>
+      <form id="clone-deck-form" method="POST" class="form-signin" action="" style="visibility: visible;">
+        {% csrf_token %}
+        <div class="modal-body">
+          <!-- Check for error messages from bad form data -->
+          <p id="clone-deck-error"></p>
+          {% for field in clone_form %}
+            {% if field.name == "deck_name" %}
+              <label for="id_deck_name">Deck Name:</label>
+              <input class="form-control" id="id_deck_name" name="{{ field.name}}" type="text">
+            {% elif field.name == "share_flag" %}
+              <label for="id_share_flag">Share With Others:</label>
+              <input id="id_share_flag" name="{{ field.name}}" type="checkbox">
+            
+              
+            {% endif %}
+          {% endfor %}
+          <!-- original deck id -->
+          <input id="clone-deck-id-input" type="hidden" name="clone-deck-id" value="">
+          <input id="user-id" class="curr-user" type="hidden" name="curr-user" value="{{ sign }}">
+        </div>
+        <div class="modal-footer">
+          <button id="clone-deck-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+          <button id="clone-deck-submit" class="btn btn-success" type="submit">Clone Deck!</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- End Modal -->
 
 {% endblock %}

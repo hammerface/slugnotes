@@ -2583,7 +2583,7 @@ p { text-align: left }
     transition: all .3s ease;
 }
 .btn.btn-success {
-    background-color: #8cc152;
+    background-color: #00A8B3;;
     border: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
@@ -2594,7 +2594,7 @@ p { text-align: left }
 .btn.btn-success:hover,
 .btn.btn-success:active,
 .btn.btn-success.hover {
-    background-color: #a0d468;
+    background-color: #00bfcc;
     border: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
@@ -3136,4 +3136,9 @@ p.card_front, p.card_back {
 div.back_of_card{
     background-color: #34495E;
     color:#fff;
+}
+
+.breadcrumbs-button{
+    margin-top: 12px;
+    margin-right: 14px;
 }
