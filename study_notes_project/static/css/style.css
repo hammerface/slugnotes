@@ -3002,7 +3002,7 @@ div.header h3{
     margin-right:4px;
 }
 
-div.CreateNewDeck, div.CreateNewCard, div.UploadCards, div.ViewUser{
+div.CreateNewDeck, div.CreateNewCard, div.UploadCards div.User{
     float: left;
     display: inline-block;
     margin: 28px 53px;
@@ -3010,7 +3010,7 @@ div.CreateNewDeck, div.CreateNewCard, div.UploadCards, div.ViewUser{
     color: #fff;
 }
 
-div.CreateNewDeck:hover, div.CreateNewCard:hover, div.UploadCards:hover, div.ViewUser:hover{
+div.CreateNewDeck:hover, div.CreateNewCard:hover, div.UploadCards:hover{
     cursor:pointer;
     background: #37BC9B;
     border-radius: 3px;
@@ -3023,12 +3023,12 @@ div.CreateNewDeck:hover, div.CreateNewCard:hover, div.UploadCards:hover, div.Vie
     transition: all .3s ease;
 }
 
-div.ViewUser{
-    font-size: 20%;
-}
-
-div.user_search_results, div.deck_search_results {
-    padding-bottom: 60px;
+div.User {
+    font-size: 4em;
+    margin: 10px;
+    height: 60px;
+    width: 60px;
+    line-height: 60px;
 }
 
 div.deck, div.user {
@@ -3036,6 +3036,37 @@ div.deck, div.user {
     padding: 13px;
     float: left;
     position: relative;
+}
+
+div.UserResult, div.DeckResult {
+    display: inline-block;
+    margin: 8px;
+    float: left;
+    position: relative;
+    width: 265px;
+    height: 100px;
+}
+
+div.user_color1{
+    background-color: #48cfad;
+}
+
+div.user_color2{
+    background-color: #00A8B3;
+}
+
+div.user_color3{
+    background-color: #34495E;
+}
+
+img.DeckResult {
+    width: 60px;
+    height: 44px;
+    margin-top: 22px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 14px;
+    float: left;
 }
 
 img.deck{
@@ -3049,13 +3080,6 @@ h6.deck_name{
     text-align: center;
     position: absolute; 
     top: 92px; 
-}
-
-h6.user_name{
-    color: #34495E;
-    text-align: center;
-    position: absolute; 
-    top: 92px;    
 }
 
 a.deck_options, a.card_options{

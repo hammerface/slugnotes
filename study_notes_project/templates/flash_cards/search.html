@@ -23,14 +23,12 @@
       <div class="row mar-b-30">
         <div class="col-md-12">
           {% for user in user_list %}
-            <div id="user_{{user.user}}" class="user">
-              <a class="ViewProfile">
-                <div class="ViewUser icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="View User's Decks">
-                  <i class="fa fa-smile-o ViewUser"></i>
-                </div>
-                <h6 class="user_name">{{ user.username }}</h6>
-                <h6 class="public_decks">Number of Public Decks: {{user.public_deck_count}} </h6>
-              </a>
+            <div id="user_{{user.user}}" class="UserResult">
+              <div class="User icon-wrap ico-bg round-five {% cycle 'user_color1' 'user_color2' 'user_color3' %}" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="View User">
+                <i class="fa fa-smile-o"></i>
+              </div>
+              <h4>{{ user.username }}</h4>
+              <h5>Number of Decks: {{user.public_deck_count}} </h5>
             </div>
           {% endfor %}
         </div>
@@ -49,25 +47,11 @@
 	      <div class="col-md-12">
           {% for deck in deck_list %}
             <!-- Set the id to the deck_id of the user that created the deck -->
-            <div id={{deck.orig_deck_id}} class="deck">
-				      <div class="image-caption">
-                <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
-					        <i class="deck_options fa fa-book"></i>
-                </a>
-                <a href="/" class="ViewDeck deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
-                  <i class="deck_options fa fa-eye"></i>
-                </a>
-                <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Clone">
-						      <i class="deck_options fa fa-copy"></i>
-                </a>
-				      </div>
-				      <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
-				      <h6 class="deck_name">{{ deck.deck_name }}</h6>
-				      {% if deck.share %}
-			          <input class="share-set" type="hidden" name="yes" value="yes">
-			        {% else %}
-			          <input class="share-set" type="hidden" name="no" value="no">
-			        {% endif %}
+            <div id={{deck.orig_deck_id}} class="DeckResult">
+				      <img class="DeckResult" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>
+				      <h4>{{ deck.deck_name }}</h4>
+              <h5>By: sarawoods2 </h5>
+              <h5>Number of Cards: 12 <h5>
             </div>
           {% endfor %}
         </div>
