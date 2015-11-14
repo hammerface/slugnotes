@@ -349,6 +349,7 @@ def View_Shared_Deck(request):
     username = ""
     user_id = None
     deck_name = ""
+    form = NewDeck(initial={'user' : request.user.id})
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
@@ -372,7 +373,10 @@ def View_Shared_Deck(request):
     context = {
         "username" : username,
         "deck_name" : deck_name,
-        "card_list" : card_list
+        "card_list" : card_list,
+        "sign" : signer.sign(request.user.id),
+        "orig_deck_id" : deck_id_signed,
+        "clone_form" : form
 
     }
     return render(request, 'flash_cards/view_shared_deck.html', context)
