@@ -77,6 +77,24 @@
 
 
   {% if user.is_authenticated %}
+    <!-- Title -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <h3>Your Decks</h3>
+                </div>
+                <div class="col-lg-8 col-sm-8">
+                  <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
+                    <div class="pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay=".6s" data-toggle="tooltip" data-placement="top" title="Create a New Deck">
+                      <i class="fa fa-plus-circle"></i>
+                    </div>
+                  </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Title -->
     <!-- Main Container -->
     <div class="container">
       <div class="row mar-b-30">
@@ -107,11 +125,6 @@
             {% endif %}
           </div>
           {% endfor %}
-          <a data-toggle="modal" class="CreateNewDeck" href="#CreateNewDeck">
-            <div class="CreateNewDeck icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Deck">
-              <i class="fa fa-plus-circle CreateNewDeck"></i>
-            </div>
-          </a>
         </div>
       </div>
     </div>
