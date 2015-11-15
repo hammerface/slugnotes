@@ -87,24 +87,20 @@ def Delete_Deck(request):
     return HttpResponse(json.dumps({"success": "success"}))
 
 def Upload_File(request):
-    signer = Signer(request.user.id)
-    deck_id_signed = request.GET.get('deck_id')
-    deck_id = None
-    try:
-        deck_id = signer.unsign(request.GET.get('deck_id'))
-    except signing.BadSignature:
-        print("Tampering detected! Upload file")
-        return HttpResponseRedirect('/')
-
-    #Notes have been uploaded to parser
     if request.method == 'POST':
+        deck_id = request.POST.get('deck_id')
+        signer = Signer(request.user.id)
+        try:
+            deck_id = signer.unsign(deck_id)
+        except signing.BadSignature:
+            return HttpResponse(json.dumps({"error": "error"}))
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
-            deck_id = form.cleaned_data.get('deck_id')
             content = None
             if request.POST.get('text', False) != False:
                 content = request.POST['text']
             if request.FILES.get('file', False) != False:
+                print request.FILES['file']
                 content = request.FILES['file']
                 content = content.read()
             cardslist = parse_notes(content)
@@ -123,13 +119,13 @@ def Upload_File(request):
                         front = card.pop(0)
                     new_card = Card.objects.create(deck_id = deck_id, front=front,back=back)
                     back = ""
-            return HttpResponseRedirect('/cards/?deck_id=' + str(deck_id_signed))
-    else:
-        form = UploadFile(initial={"deck_id" : deck_id})
-    context = {
-        "form" : form,
-    }
-    return render(request, 'landing/upload.html', context)
+        else:
+            print "error in Upload File"
+            errors = form.errors
+            print errors
+            print json.dumps(errors)
+            return HttpResponse(json.dumps(errors))
+    return HttpResponse(json.dumps({"success": "success"}))
 
 def View_Deck(request):
     deck_id_signed = request.GET.get('deck_id')
@@ -156,13 +152,16 @@ def View_Deck(request):
             "front" : card.front,
             "back" : card.back,
             }) 
+    upload_form = UploadFile(initial={"deck_id" : signer.sign(deck_id)})
     context = {
+        "upload_form" : upload_form,
         "form" : form,
         "card_list" : card_list,
         "deck_id" : deck_id_signed,
         "deck_name" : deck_name, 
     }
     return render(request, 'flash_cards/view_deck.html', context)
+
 
 def New_Card(request):
     if request.method == 'POST':

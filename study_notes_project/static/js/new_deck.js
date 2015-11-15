@@ -317,6 +317,53 @@ function addNewCard() {
     });
 }
 
+
+function uploadCards() {
+    $('#upload-cards-submit').click(function(event){
+    event.preventDefault();
+    var deck_id = $("#id_deck").val();
+    var file = $("#id_file_upload").get(0).files;
+    var text = $('#id_text_upload').val();
+    var formData = new FormData($("#upload-notes-form")[0]);
+
+    //start ajax post
+    $.ajax({
+            url : "/cards/upload_file/", // the endpoint
+            type : "POST", // http method
+            processData: false,
+            contentType: false,
+            data : formData, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+        console.log("Before Send");
+        $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            // handle a successful response
+            success : function(json) {
+        //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+        var errors = jQuery.parseJSON(json);
+        console.log("Errors : "+errors);
+        
+        //erros in form
+        if (errors.__all__ != null) {
+                    var error = $('#upload-cards-error');
+                    error.text(errors.__all__)
+        }else {
+                    //no errors in form
+                    $('#upload-notes-form').trigger("reset");
+                    var cancelButton = document.getElementById("upload-cards-cancel");
+            cancelButton.click();
+            location.reload();
+        }
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+        console.log("error");
+            }
+    });
+        
+    });
+}
+
 function editCard() {
     $('#edit-card-submit').click(function(event){
 	event.preventDefault();
@@ -406,11 +453,9 @@ function centerDeckName() {
 function scrollText(){
     $('div.small_card_content').each(function(){
         if ($(this)[0].scrollHeight == $(this)[0].clientHeight){
-            console.log("heights are equal");
             $(this).css("display","table-cell"); 
             $(this).addClass("link_here");
-        } else {
-            console.log("heights are not equal");      
+        } else {    
             $(this).siblings('.image-caption').width(185);
             $(this).children('p').addClass("link_here")
 
@@ -480,18 +525,14 @@ function showToolTips(){
 function handleCardTurn(){
     $('a.flip_card').click(function(){
         var small_card_content = $(this).parent().siblings(".small_card_content")
-        console.log(small_card_content.children('p'));
         small_card_content.children('p').toggleClass('hidden');
         small_card_content.parent().toggleClass('back_of_card');
-        console.log(small_card_content.children('p'));
         small_card_content.css("display","inline-block");
         if (small_card_content[0].scrollHeight == small_card_content[0].clientHeight){
-            console.log("heights are equal");
             small_card_content.css("display","table-cell"); 
             small_card_content.siblings('.image-caption').width(200);
             small_card_content.siblings('.image-caption').slideUp(250);
-        } else {
-            console.log("heights are not equal");  
+        } else { 
             small_card_content.css("display","inline-block");  
             small_card_content.css("overflow-y","auto");  
             small_card_content.siblings('.image-caption').width(185);
@@ -500,12 +541,20 @@ function handleCardTurn(){
     });
 }
 
+function updateFileName(){
+    document.getElementById("id_file_upload").onchange = function () {
+        var filename = this.value.split("\\")[2];
+        document.getElementById("selected_file").value = filename;
+    };
+}
+
 $(document).ready(function(){
     addNewDeck();
     editDeck();
     deleteDeck();
     addNewCard();
     editCard();
+    uploadCards();
     deleteCard();
     centerDeckName();
     scrollText();
@@ -519,19 +568,5 @@ $(document).ready(function(){
     fillDeleteDeckForm();
     fillEditCardForm();
     cloneDeck();
-    getSharedProfile();
-
-    // $(document.body).on({
-    //     mouseenter: function() {
-    //         $(this).siblings('.image-caption').slideDown(250);
-    //     },
-    //     mouseleave: function() {
-    //         $(this).siblings('.image-caption').slideUp(250);
-    //     }
-    // }, '.link_here');
-
-
-    
-
-
+    updateFileName();
 });

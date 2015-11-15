@@ -46,6 +46,8 @@ class UploadFile(forms.Form):
         cleaned_data = super(UploadFile, self).clean()
         file = cleaned_data.get('file')
         text = cleaned_data.get('text')
+        if file == None and text == "":
+			raise forms.ValidationError('Please fill out a field.')
 
         if file and text:
             raise forms.ValidationError('Only fill out one field please.', code='invalid')
@@ -57,14 +59,4 @@ class UploadFile(forms.Form):
 	        	raise forms.ValidationError('The file has no extension, please use a .txt file')
 	        if extension != 'txt':
 	        	raise forms.ValidationError('Please select a .txt file')
-
-        
-
-
-
-
-    # def check_fields(self):
-    # 	print self.cleaned_data['text']
-    # 	print self.cleaned_data['file']
-    # 	return 
 

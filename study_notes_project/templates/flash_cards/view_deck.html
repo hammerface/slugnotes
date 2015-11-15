@@ -13,7 +13,7 @@
                       <i class="breadcrumbs-button fa fa-book"></i>
                     </div>
                   </a>
-                  <a class="UploadCards" href="/cards/content/?deck_id={{deck_id}}">
+                  <a class="UploadCards" data-toggle="modal" href="#UploadCards">
                     <div class="pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1s" data-toggle="tooltip" data-placement="top" title="Upload Flash Cards">
                       <i class="fa fa-arrow-circle-up"></i>
                     </div>
@@ -56,6 +56,49 @@
       </div>
     </div>
     <!-- End Main Container -->
+
+    <!-- Upload Cards Modal -->
+    <div aria-hidden="true" aria-labelledby="UploadCards" role="dialog" tabindex="-1" id="UploadCards" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Upload Flash Cards</h4>
+          </div>
+          <p> This is how you do it </p>
+          <form id="upload-notes-form" class="form-signin" action="" method="POST" style="visibility: visible;">
+            {% csrf_token %}
+            <div class="modal-body">
+              <p id="upload-cards-error"></p>
+              {% for field in upload_form %}
+                {% if field.name == "file" %}
+                <label for="id_file_upload">Upload flash cards from a ".txt" file</label>
+                <div class="file_upload btn btn-success">
+                  <span>Choose a File</span>
+                  <input id="id_file_upload" name="{{ field.name }}" type="file" class="upload" />
+                </div>
+                <input id="selected_file" placeholder="No File Chosen" disabled="disabled" />
+                {% elif field.name == "text" %}
+                  <br>
+                  <br>
+                  <h4>OR</h4>
+                  <br>
+                  <label for="id_text_upload">Upload flash cards by copying and pasting text</label>
+                  <textarea class="form-control" id="id_text_upload" name="{{ field.name }}"></textarea>
+                {% else %}
+                  {{ field.as_hidden }}
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button id="upload-cards-cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+              <button id="upload-cards-submit" class="btn btn-success" type="submit">Upload</button>
+            </div>
+          </form> 
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
     
     <!-- Edit Card Modal -->
     <div aria-hidden="true" aria-labelledby="EditCard" role="dialog" tabindex="-1" id="EditCard" class="modal fade">
@@ -65,7 +108,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Edit Flash Card</h4>
           </div>
-          <form id="edit-card-form" method="POST" class="form-signin wow" action="" style="visibility: visible;"> {% csrf_token %}
+          <form id="edit-card-form" method="POST" class="form-signin" action="" style="visibility: visible;"> {% csrf_token %}
           <div class="modal-body">
             <!-- Check for error messages from bad form data -->
             <p id="edit-card-error"></p>
@@ -101,7 +144,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Delete Flash Card</h4>
           </div>
-          <form id="delete-card-form" method="POST" class="form-signin wow" action="" style="visibility: visible;"> {% csrf_token %}
+          <form id="delete-card-form" method="POST" class="form-signin" action="" style="visibility: visible;"> {% csrf_token %}
           <div class="modal-body">
             <!-- Check for error messages from bad form data -->
             <p id="delete-card-error"></p>
