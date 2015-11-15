@@ -10,7 +10,6 @@ from parse_notes import parse_notes
 import re
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.template import RequestContext, loader
 
 def New_Deck(request):
 	if request.method == 'POST':
@@ -242,11 +241,11 @@ def Search(request):
         public_deck_count = Deck.objects.filter(user_id = user.id, share_flag = 1).count()
         user_list.append({
             "user" : user.id,
+            "signed_user" : signer.sign(user.id),
             "username" : user.username,
             "public_deck_count" : public_deck_count,
             })
     for deck in decks:
-        print deck.deck_id
         username = ""
         
         user = User.objects.filter(id = deck.user_id)
@@ -273,15 +272,15 @@ def Search(request):
     return render(request, 'flash_cards/search.html', context)
 
 def Shared_Decks(request):
-    print "GOTHERE"
-    u_id = request.POST.get('u_id')
-    u_name = request.POST.get('u_name')
-    csrftoken = request.POST.get('csrftoken')
-    shared_decks = Deck.objects.filter(user_id = u_id, share_flag = 1)
+    u_id = request.GET.get('u_id')
+    user = None
+    user_name = None
     signer = Signer(request.user.id)
-    print u_id
-    print u_name
-    singed_u_id = signer.sign(u_id)
+    try:
+        user = signer.unsign(u_id)
+    except signing.BadSignature:
+        return HttpResponse(json.dumps({"Tampering": "bad signature"}))
+    shared_decks = Deck.objects.filter(user_id = user, share_flag = 1, deleted_flag = 0)
     deck_list = []
     for deck in shared_decks:
         deck_list.append({
@@ -290,16 +289,17 @@ def Shared_Decks(request):
             "share" : deck.share_flag,
         })
     form = NewDeck(initial={'user' : request.user.id})
+    getname = User.objects.filter(id = user)
+    for user_obj in getname:
+        user_name = user_obj.username
     context = {
-        "shared_user_id" : u_id,
+        "shared_user_id" : user,
+        "shared_user_name" : user_name,
         "shared_decks" : deck_list,
         "clone_form" : form,
-        "sign" : signer.sign(request.user.id),
-        "csrf_token" : csrftoken
+        "sign" : signer.sign(request.user.id)
     }
-    print "got to end"
-    template = loader.get_template('flash_cards/shared_profile.html')
-    return HttpResponse(template.render(context))#render(request, 'flash_cards/shared_profile.html', context)
+    return render(request, 'flash_cards/shared_profile.html', context)
 
 def Clone(request):
     if request.method == 'POST':
@@ -349,6 +349,7 @@ def View_Shared_Deck(request):
     username = ""
     user_id = None
     deck_name = ""
+    form = NewDeck(initial={'user' : request.user.id})
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
@@ -372,7 +373,10 @@ def View_Shared_Deck(request):
     context = {
         "username" : username,
         "deck_name" : deck_name,
-        "card_list" : card_list
+        "card_list" : card_list,
+        "sign" : signer.sign(request.user.id),
+        "orig_deck_id" : deck_id_signed,
+        "clone_form" : form
 
     }
     return render(request, 'flash_cards/view_shared_deck.html', context)

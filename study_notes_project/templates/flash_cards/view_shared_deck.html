@@ -9,7 +9,7 @@
          <h3>{{ deck_name }} by: {{ username }}</h3>
       </div>
       <div class="col-lg-8 col-sm-8">
-        <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle btn btn-success breadcrumbs-button pull-right">Clone</a>
+        <a data-toggle="modal" href="#CloneDeck" class="CloneDeck btn btn-success breadcrumbs-button pull-right">Clone</a>
         <a href="/" class="btn btn-success breadcrumbs-button pull-right">Study</a>
       </div>
     </div>
@@ -64,7 +64,7 @@
             {% endif %}
           {% endfor %}
           <!-- original deck id -->
-          <input id="clone-deck-id-input" type="hidden" name="clone-deck-id" value="">
+          <input id="clone-deck-id-input" type="hidden" name="clone-deck-id" value="{{ orig_deck_id }}">
           <input id="user-id" class="curr-user" type="hidden" name="curr-user" value="{{ sign }}">
         </div>
         <div class="modal-footer">

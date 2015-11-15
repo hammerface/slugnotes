@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="div_to_make_pretty">
-</div>
+<div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <h3>{{ shared_user_name }}'s Decks</h3>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <div class="container">
@@ -13,8 +20,11 @@
               <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
                 <i class="deck_options fa fa-book"></i>
               </a>
+              <a href="/cards/view_shared_deck/?deck_id={{ deck.orig_deck_id }}" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
+                  <i class="deck_options fa fa-eye"></i>
+              </a>
               <a data-toggle="modal" href="#CloneDeck" class="CloneDeck clone-deck-toggle deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Clone">
-                <i class="deck_options fa fa-book"></i>
+                <i class="deck_options fa fa-copy"></i>
               </a>
             </div>
             <img class="deck" src="{% cycle '/static/img/StackOfFlashCards.png' '/static/img/StackOfFlashCards2.png' '/static/img/StackOfFlashCards3.png' %}"></img>

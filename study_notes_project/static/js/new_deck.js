@@ -500,28 +500,6 @@ function handleCardTurn(){
     });
 }
 
-function getSharedProfile() {
-    $('button[name=shared-profile-button]').click(function(event){
-	//event.preventDefault();
-	var u_name = $(this).parent().parent().attr('id');
-	var u_id = $(this).attr('id');
-	var csrftoken = getCookie('csrftoken');
-	
-	//start ajax post
-	$.ajax({
-            url : "/cards/shared_decks/", // the endpoint
-            type : "POST", // http method
-            data : { u_id : u_id, u_name : u_name , csrftoken : csrftoken }, // data sent with the post request
-            "beforeSend": function(xhr, settings) {
-		$.ajaxSettings.beforeSend(xhr, settings);
-    	    },
-	    success : function(json) {
-		location.replase(json);
-            }
-	});
-    });
-}
-
 $(document).ready(function(){
     addNewDeck();
     editDeck();
