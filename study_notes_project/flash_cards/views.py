@@ -379,3 +379,34 @@ def View_Shared_Deck(request):
 
     }
     return render(request, 'flash_cards/view_shared_deck.html', context)
+
+def Study(request):
+    signer = Signer(request.user.id)
+    deck_id_signed = request.GET.get('deck_id')
+    deck_id = None
+    deckname = ""
+    card_list = []
+    try:
+        deck_id = signer.unsign(deck_id_signed)
+    except signing.BadSignature:
+        print "Tampering Detected! Study"
+        return HttpResponseRedirect('/')
+    deck = Deck.objects.filter(deck_id = deck_id, deleted_flag = 0)
+    try:
+        deckname = deck[0].deck_name
+    except IndexError:
+        deckname = ""
+    cards = Card.objects.filter(deck_id = deck_id, deleted_flag = 0)
+    for card in cards:
+        card_list.append({
+            "card_id" : card.card_id,
+            "front" : card.front,
+            "back" : card.back,
+            })
+    context = {
+        "deckname" : deckname,
+        "card_list" : card_list,
+
+    }
+
+    return render(request, 'flash_cards/study.html', context)

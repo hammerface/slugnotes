@@ -102,7 +102,7 @@
           {% for deck in deck_list reversed %}
           <div id={{deck.deck_id}} class="deck">
             <div class="image-caption">
-              <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+              <a href="/cards/study/?deck_id={{ deck.deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
                 <i class="deck_options fa fa-book"></i>
               </a>
               <a href="/cards/?deck_id={{ deck.deck_id }}" class="deck_options label magnefig label-info icon" data-toggle="tooltip" data-placement="top" title="Edit Flash Cards">

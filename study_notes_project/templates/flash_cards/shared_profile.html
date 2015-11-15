@@ -17,7 +17,7 @@
           {% for deck in shared_decks reversed %}
           <div id={{deck.orig_deck_id}} class="deck">
             <div class="image-caption">
-              <a href="/" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+              <a href="/cards/study/?deck_id={{ deck.orig_deck_id }}" class="deck_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
                 <i class="deck_options fa fa-book"></i>
               </a>
               <a href="/cards/view_shared_deck/?deck_id={{ deck.orig_deck_id }}" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">

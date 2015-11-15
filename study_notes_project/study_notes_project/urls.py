@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^cards/search/$', flash_cards.Search),
     url(r'^cards/view_shared_deck/$', flash_cards.View_Shared_Deck),
     url(r'^cards/shared_decks/$', flash_cards.Shared_Decks),
+    url(r'^cards/study/$',flash_cards.Study),
     url(r'^cards/', flash_cards.View_Deck),
     
 ]
