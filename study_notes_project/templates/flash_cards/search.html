@@ -55,7 +55,7 @@
           {% for deck in deck_list %}
             <div id={{deck.orig_deck_id}} class="DeckResult">
               <div class="image-caption image-caption-search-result">
-                <a href="/" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
+                <a href="/cards/study/?deck_id={{deck.orig_deck_id}}" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="Study">
                   <i class="deck_options fa fa-book"></i>
                 </a>
                 <a href="/cards/view_shared_deck/?deck_id={{ deck.orig_deck_id }}" class="deck_result_options label label-info icon" data-toggle="tooltip" data-placement="top" title="View">
