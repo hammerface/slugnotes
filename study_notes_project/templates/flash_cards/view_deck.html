@@ -8,7 +8,21 @@
                     <h3>{{ deck_name }}</h3>
                 </div>
                 <div class="col-lg-8 col-sm-8">
-                  <a data-toggle="modal" href="/" class="btn btn-success breadcrumbs-button pull-right">Study</a>
+                  <a href="/"> 
+                    <div class="pull-right left-align breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Study">
+                      <i class="breadcrumbs-button fa fa-book"></i>
+                    </div>
+                  </a>
+                  <a class="UploadCards" href="/cards/content/?deck_id={{deck_id}}">
+                    <div class="pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Upload Flash Cards">
+                      <i class="fa fa-arrow-circle-up"></i>
+                    </div>
+                  </a>
+                  <a data-toggle="modal" class="CreateNewCard" href="#CreateNewCard">
+                    <div class="pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Card">
+                      <i class="fa fa-plus-circle"></i>
+                    </div>
+                  </a>
                 </div>
             </div>
         </div>
@@ -38,16 +52,6 @@
             </div>
           </div>
           {% endfor %}
-          <a data-toggle="modal" class="CreateNewCard" href="#CreateNewCard">
-            <div class="CreateNewCard icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Create a New Card">
-              <i class="fa fa-plus-circle CreateNewCard"></i>
-            </div>
-          </a>
-          <a class="UploadCards" href="/cards/content/?deck_id={{deck_id}}">
-            <div class="UploadCards icon-wrap ico-bg round-five wow pulse" data-wow-duration="2s" data-wow-delay=".8s" data-toggle="tooltip" data-placement="top" title="Upload Flash Cards">
-              <i class="fa fa-arrow-circle-up UploadCards"></i>
-            </div>
-          </a>
         </div>
       </div>
     </div>

@@ -3139,6 +3139,19 @@ div.back_of_card{
 }
 
 .breadcrumbs-button{
-    margin-top: 12px;
-    margin-right: 14px;
+    background-color: #34495E;
+    color: #fff;
+    font-size: 38px;
+    margin: 6px;
+    text-align: center;
+    width:54px;
+    height:54px;
+}
+
+.breadcrumbs-button.left-align{
+    text-align:left;
+}
+
+.breadcrumbs-button:hover{
+    color:#48cfad;
 }

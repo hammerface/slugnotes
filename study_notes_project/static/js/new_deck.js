@@ -473,6 +473,8 @@ function showToolTips(){
 
     //on create/upload
     $('div.icon-wrap').tooltip(); 
+
+    $('div.breadcrumbs-button').tooltip();
 }
 
 function handleCardTurn(){
