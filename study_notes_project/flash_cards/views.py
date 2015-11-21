@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from parse_notes import parse_notes
 import re
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
 def New_Deck(request):
@@ -227,7 +228,7 @@ def Delete_Card(request):
         card.save()
 	return HttpResponse(json.dumps({"success": "success"}))
 
-
+@login_required
 def Search(request):
     query = request.GET.get('query')
     users = User.objects.filter(username__contains=str(query))
