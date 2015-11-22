@@ -106,7 +106,7 @@ function addNewDeck() {
             //erros in form
             if (errors.deck_name != null) {
             	var error = $('#make-deck-error');
-            	error.text(errors.deck_name)
+            	error.text(errors.deck_name);
                 $("#make-deck-submit").disabled = false;
             }else {
             	//no errors in form
@@ -171,6 +171,8 @@ function cloneDeck() {
                 $('#clone-deck-form').trigger("reset");
                 var cancelButton = document.getElementById("clone-deck-cancel");
                 cancelButton.click();
+                var error = $('#clone-deck-error');
+                error.text("");
                 //location.reload();
             }
         },
