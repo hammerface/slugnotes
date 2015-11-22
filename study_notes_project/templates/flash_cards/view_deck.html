@@ -36,7 +36,7 @@
           {% for card in card_list reversed %}
           <div id={{card.card_id}} class="small_card">
             <div class="small_card_content">
-              <p class="card_front">{{card.front}}</p>
+              <p class="card_front">{{card.front|linebreaksbr}}</p>
               <p class="card_back hidden">{{card.back|linebreaksbr}}</p>
             </div>
             <div class="image-caption image-caption-card">

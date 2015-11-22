@@ -63,10 +63,10 @@ function fillEditCardForm() {
     
 
     $('.edit-card').click(function(){
-        var front_card = $(this).parent().siblings('.small_card_content').children('.card_front').text();
+        var front_card = $(this).parent().siblings('.small_card_content').children('.card_front').html();
         var back_card = $(this).parent().siblings('.small_card_content').children('.card_back').html();
         back_card = back_card.replace(/<br\s*[\/]?>/gi, "\n");
-        
+        front_card = front_card.replace(/<br\s*[\/]?>/gi, "\n");
         $('#id_card_front_edit').val(front_card);
         $('#id_card_back_edit').val(back_card);
 
