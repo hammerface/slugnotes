@@ -27,8 +27,8 @@ $('div.fcseq_flip').click(function(){
     containing_div.toggleClass('fcseq_card_back');
 });
 
-$('div.fcseq_next').click(function(){
-    alert("click!");
+$('div.fcseq_next, div.fcseq_prev').click(function(){
+    alert("clicl");
     // toggle color class for div
     var containing_div = $('.seq-screen')
     containing_div.removeClass('fcseq_card_front fcseq_card_back');
