@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-lg-8 col-sm-8">
                   <a class="seq-next"> 
-                    <div class="pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1.4s" data-toggle="tooltip" data-placement="top" title="Next">
+                    <div class="fcseq_next pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1.4s" data-toggle="tooltip" data-placement="top" title="Next">
                       <i class="breadcrumbs-button fa fa-arrow-right"></i>
                     </div>
                   </a>
@@ -29,35 +29,33 @@
     </div>
     <!-- End Title -->
 
-  <div class="container fcseq_container">
-  <div id="sequence" class="seq">
-
-    <div class="seq-screen">
-      <ul class="seq-canvas">
-
-        {% for card in card_list %}
-        <li class="seq-step{{ forloop.counter }} seq-in" id="step{{ forloop.counter }}">
-          <div class="seq-content">
-            <h2 data-seq class="seq-title fcseq_card_front">{{ card.front }}</h2>
-            <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card.back }}</h2>
-          </div>
-        </li>
-        {% endfor %}
-
-      </ul>
+  {% if not card_list%}
+  <div class="container">
+    <div class="row mar-b-30">
+      <div class="col-md-12 no_cards">
+        <h1> There are no cards to study! </h1>
+      </div>
     </div>
-        <ul rel="sequence" class="seq-pagination" role="navigation" aria-label="Pagination">
-      <li><a href="#step1" rel="step1" title="Go to step 1">Step 1</a></li>
-      <li><a href="#step2" rel="step2" title="Go to step 2">Step 2</a></li>
-      <li><a href="#step3" rel="step3" title="Go to step 3">Step 3</a></li>
-    </ul>
   </div>
+  {% else %}  
+
+  <div class="container fcseq_container">
+    <div id="sequence" class="seq">
+      <div class="seq-screen fcseq_card_front">
+        <ul class="seq-canvas">
+          {% for card in card_list %}
+          <li class="seq-step{{ forloop.counter }} seq-in" id="step{{ forloop.counter }}">
+            <div class="seq-content">
+              <h2 data-seq class="seq-title fcseq_card_front">{{ card.front }}</h2>
+              <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card.back }}</h2>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
-
-
-
-{{ card_list }}
-
+  {% endif %}
 
 
 {% endblock %}

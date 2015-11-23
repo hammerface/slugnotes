@@ -17,10 +17,20 @@ var mySequence = sequence(sequenceElement, options);
 
 
 $('div.fcseq_flip').click(function(){
-    alert("flip");
+    // toggle hidden class for headers
     var card_content = $('.seq-in');
-    console.log(card_content.find('.fcseq_card_front'));
     card_content.find('.fcseq_card_front').toggleClass('hidden');
-    console.log(card_content.find('.fcseq_card_back'));
     card_content.find('.fcseq_card_back').toggleClass('hidden');
+    // toggle color class for div
+    var containing_div = $('.seq-screen')
+    containing_div.toggleClass('fcseq_card_front');
+    containing_div.toggleClass('fcseq_card_back');
+});
+
+$('div.fcseq_next').click(function(){
+    alert("click!");
+    // toggle color class for div
+    var containing_div = $('.seq-screen')
+    containing_div.removeClass('fcseq_card_front fcseq_card_back');
+    containing_div.addClass('fcseq_card_front');
 });
