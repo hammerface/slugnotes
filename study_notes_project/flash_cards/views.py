@@ -407,6 +407,7 @@ def Study(request):
     context = {
         "deckname" : deckname,
         "card_list" : card_list,
+        "deck_id_signed" : deck_id_signed,
 
     }
 
