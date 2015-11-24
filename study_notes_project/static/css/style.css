@@ -3174,3 +3174,28 @@ div.back_of_card{
     opacity: 0;
     filter: alpha(opacity=0);
 }
+
+a:hover{
+    cursor:pointer;
+}
+
+div.format-help{
+    margin-left: 125px;
+    margin-right: 125px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding: 20px;
+    text-align: center;
+}
+
+#upload-notes-form{
+    margin-top: 0px;
+}
+
+a.deck_link{
+    color:#fff;
+}
+
+a.deck_link:hover{
+    color:#48cfad;
+}

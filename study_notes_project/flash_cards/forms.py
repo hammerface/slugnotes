@@ -27,8 +27,8 @@ class NewDeck(forms.ModelForm):
 
 class NewCard(forms.ModelForm):
 
-	front = forms.CharField( required=True, label="Front of Card", widget=forms.Textarea(attrs={'class':"form-control"}) )
-	back = forms.CharField( required=False, label="Back of Card", widget=forms.Textarea(attrs={'class':"form-control"}) )
+	front = forms.CharField( required=True, max_length=1000, label="Front of Card", widget=forms.Textarea(attrs={'class':"form-control"}) )
+	back = forms.CharField( required=False, max_length=2000, label="Back of Card", widget=forms.Textarea(attrs={'class':"form-control"}) )
 
 	class Meta:
 		model = Card

@@ -110,7 +110,7 @@ def Upload_File(request):
                 front = None
                 back = ""
                 #loop through card list and generate a new card for the deck
-                for card in cardslist:
+                for card in reversed(cardslist):
                     if len(card) > 1:
                         front = card.pop(0)
                         for line in card:
@@ -397,7 +397,7 @@ def Study(request):
         deckname = deck[0].deck_name
     except IndexError:
         deckname = ""
-    cards = Card.objects.filter(deck_id = deck_id, deleted_flag = 0)
+    cards = Card.objects.filter(deck_id = deck_id, deleted_flag = 0).order_by('-date_created')
     for card in cards:
         card_list.append({
             "card_id" : card.card_id,

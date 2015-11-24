@@ -133,7 +133,7 @@ html,
 .seq.seq-active {
   /* when JS is enabled */
   /* Hide anything that goes beyond the boundaries of the Sequence container */
-  overflow: hidden;
+  overflow: auto;
 }
 
 .seq.seq-active .seq-pagination {
@@ -237,13 +237,7 @@ html,
 
 /*# sourceMappingURL=sequence-theme.starter-basic.css.map */
 
-
-
-
-
-
-
-
+/* Added for Flash Card sequence */
 
 .fcseq_container{
   margin-bottom: 40px;
@@ -263,6 +257,23 @@ div.fcseq_card_back {
 div.no_cards {
   text-align: center;
 }
+
+div.single_card{
+  text-align: center;
+}
+
+div.center{
+  display: inline-block;
+}
+
+div.centered-div{
+  text-align: center;
+}
+
+#sequence{
+  overflow: hidden;
+}
+
 
 
 

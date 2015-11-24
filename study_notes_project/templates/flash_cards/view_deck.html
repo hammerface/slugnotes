@@ -65,6 +65,25 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Upload Flash Cards</h4>
           </div>
+          <div class="format-help">
+            <div class="panel-group wow fadeInUp" id="accordion" data-wow-duration="2s">
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-heading-faq">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    What format should the notes be in?
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body panel-faq">
+                                    <p>- Just take your notes as usual<br>F: If you want text to be on the front of a flashcard prefix the line with a "F:"<br>B: If you want text to be on the back of a flashcard prefix the line with a "B:"<br>- All lines that don't start with "F:" or "B:" are ignored.<br>B: You can have multiple "B:"'s following an "F:" and they will be placed onto the back of the same flashcard!<br>F: You can copy/paste this text into the box below and upload.<br>B: You will see some beautiful sample flash cards.</p>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+          </div>
           <form id="upload-notes-form" class="form-signin" action="" method="POST" style="visibility: visible;">
             {% csrf_token %}
             <div class="modal-body">

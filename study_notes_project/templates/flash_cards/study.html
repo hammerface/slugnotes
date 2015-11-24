@@ -1,37 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Deck Name Title -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-sm-4">
-                    <a href="/cards/?deck_id={{ deck_id_signed }}" style="color:green;">
-                      <h3>{{ deckname }}</h3>
-                    </a>
-                </div>
-                <div class="col-lg-8 col-sm-8">
-                  <a class="seq-next"> 
-                    <div class="fcseq_next pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1.4s" data-toggle="tooltip" data-placement="top" title="Next">
-                      <i class="breadcrumbs-button fa fa-arrow-right"></i>
-                    </div>
-                  </a>
-                  <a class="fcseq_flip">
-                    <div class="fcseq_flip pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1s" data-toggle="tooltip" data-placement="top" title="Flip">
-                      <i class="fa fa-undo"></i>
-                    </div>
-                  </a>
-                  <a class="seq-prev">
-                    <div class="fcseq_prev pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay=".6s" data-toggle="tooltip" data-placement="top" title="Previous">
-                      <i class="fa fa-arrow-left"></i>
-                    </div>
-                  </a>
-                </div>
-            </div>
-        </div>
+<!-- Deck Name and Control Buttons -->
+<div class="breadcrumbs">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-sm-4 con">
+        <a href="/cards/?deck_id={{ deck_id_signed }}" class="deck_link">
+          <h3>{{ deckname }}</h3>
+        </a>
+      </div>
+      <div class="col-lg-4 col-sm-4 centered-div">
+        <a class="seq-prev">
+          <div class="fcseq_prev center breadcrumbs-button round-five" style="visibility:hidden;">
+            <i class="fa fa-arrow-left"></i>
+          </div>
+        </a>
+        <a class="fcseq_flip">
+          {% if not card_list%}
+          <div class="fcseq_flip center breadcrumbs-button round-five" style="visibility:hidden;">
+          {% else %}
+          <div class="fcseq_flip center breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay=".6s">
+          {% endif %}
+            <i class="fa fa-undo"></i>
+          </div>
+        </a>
+        <a class="seq-next"> 
+          {% if not card_list or card_list|length == 1 %}
+          <div class="fcseq_next center breadcrumbs-button round-five" style="visibility:hidden;">
+          {% else %}
+          <div class="fcseq_next center breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1s">
+          {% endif %}
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-4 col-sm-4">
+        <a class="fcseq_random">
+          {% if not card_list or card_list|length == 1 %}
+          <div class="fcseq_random pull-right breadcrumbs-button round-five" style="visibility:hidden;">
+          {% else %}
+          <div class="fcseq_random pull-right breadcrumbs-button round-five wow pulse" data-wow-duration="2s" data-wow-delay="1.4s">
+          {% endif %}
+            <i class="fa fa-random"></i>
+          </div>
+        </a>
+      </div>
     </div>
-    <!-- End Title -->
+  </div>
+</div>
+<!-- End Deck Name and Control Buttons -->
 
-  {% if not card_list%}
+<!-- Flash Card Sequence -->
+{% if not card_list%}
   <div class="container">
     <div class="row mar-b-30">
       <div class="col-md-12 no_cards">
@@ -39,25 +59,41 @@
       </div>
     </div>
   </div>
-  {% else %}  
-
-  <div class="container fcseq_container">
-    <div id="sequence" class="seq">
-      <div class="seq-screen fcseq_card_front">
-        <ul class="seq-canvas">
-          {% for card in card_list %}
-          <li class="seq-step{{ forloop.counter }} seq-in" id="step{{ forloop.counter }}">
-            <div class="seq-content">
-              <h2 data-seq class="seq-title fcseq_card_front">{{ card.front }}</h2>
-              <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card.back }}</h2>
-            </div>
-          </li>
-          {% endfor %}
-        </ul>
+{% else %}  
+  {% if card_list|length == 1 %}
+    <div class="container fcseq_container">
+      <div class="seq fcseq_card_front">
+        <div class="seq-screen">
+          <ul class="seq-canvas" id="{{card_list|length}}">
+            <li class="seq-step1 seq-in" id="step1">
+              <div class="seq-content">
+                <h2 data-seq class="seq-title fcseq_card_front">{{ card_list.0.front }}</h2>
+                <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card_list.0.back }}</h2>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
+  {% else %}
+    <div class="container fcseq_container">
+      <div id="sequence" class="seq fcseq_card_front">
+        <div class="seq-screen">
+          <ul class="seq-canvas" id="{{card_list|length}}">
+            {% for card in card_list reversed %}
+            <li class="seq-step{{ forloop.counter }} seq-in fcseq_card" id="step{{ forloop.counter }}">
+              <div class="seq-content">
+                <h2 data-seq class="seq-title fcseq_card_front">{{ card.front }}</h2>
+                <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card.back }}</h2>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
   {% endif %}
-
+{% endif %}
+<!-- End Flash Card Sequence -->
 
 {% endblock %}
