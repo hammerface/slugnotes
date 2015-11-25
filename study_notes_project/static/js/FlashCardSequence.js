@@ -147,6 +147,8 @@ $('div.fcseq_random').click(function(){
 	list[i].id = "step" + (i + 1);
     }
 
+    console.log(list);
+
     // Go to the first card.
     // this doesn't seem to work when you are already at the front,
     // also text from previous card lingers.
