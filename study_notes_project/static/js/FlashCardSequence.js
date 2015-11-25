@@ -44,6 +44,8 @@ $('div.fcseq_next').click(function(){
     var numcards = mySequence.$steps.length;
     var currentcardnum = mySequence.currentStepId;
 
+    console.log(currentcardnum);
+    
     // if current card is 1 and clicking next button, 
     // make previous button visible
     if(1 == currentcardnum){
@@ -91,6 +93,7 @@ $('div.fcseq_prev').click(function(){
 
     var numcards = mySequence.$steps.length;
     var currentcardnum = mySequence.currentStepId;
+    console.log(currentcardnum);
 
     // if current card is last and clicking previous button,
     // toggle no click on next
@@ -149,20 +152,31 @@ $('div.fcseq_random').click(function(){
 	list[i].id = "step" + (i + 1);
     }
 
+    console.log(list);
+    
     // Go to the first card.
     // this doesn't seem to work when you are already at the front,
     // also text from previous card lingers.
+    mySequence.goTo(2, 1);
     mySequence.goTo(1, -1);
-
+    mySequence.currentStepId = 1;
+    
+    console.log(mySequence.currentStepId);
+    
     // back to start, so prev is hidden.
     $('a.seq-prev div').css('visibility', 'hidden');
+    $('a.seq-prev').removeClass('prevent-click');
+    $('a.seq-prev').addClass('prevent-click');
 
     // back to start, so next is visible if >1 cards, otherwise hidden. 
     if (len < 2) {
 	$('a.seq-next div').css('visibility', 'hidden');
+	$('a.seq-next').removeClass('prevent-click');
+	$('a.seq-next').addClass('prevent-click');
     }
     else {
 	$('a.seq-next div').css('visibility', 'visible');
+	$('a.seq-next').removeClass('prevent-click');
     }
 });
 
