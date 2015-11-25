@@ -5,9 +5,13 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-4 col-sm-4 con">
+        {% if deck_creator_id == current_user_id %}
         <a href="/cards/?deck_id={{ deck_id_signed }}" class="deck_link">
           <h3>{{ deckname }}</h3>
         </a>
+        {% else %}
+          <h3>{{ deckname }}</h3>
+        {% endif %}
       </div>
       <div class="col-lg-4 col-sm-4 centered-div">
         <a class="seq-prev prevent-click">
