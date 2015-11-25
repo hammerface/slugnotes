@@ -134,7 +134,43 @@ $('div.fcseq_prev').click(function(){
 
 $('div.fcseq_random').click(function(){
     alert("randomize!");
-    // grab all <li> elements
-    // reorder them by changing their id's
+
+    // Get the list of cards and the length of that list.
+    var list = mySequence.$steps;
+    var len = mySequence.$steps.length;
+
+    // Scramble the the cards.
+    shuffleArray(list);    
+
+    // Assign a new id to the cards matching their new order.
+    for (var i = 0; i < len; ++i) {
+	list[i].id = "step" + (i + 1);
+    }
+
+    // Go to the first card.
+    // this doesn't seem to work when you are already at the front,
+    // also text from previous card lingers.
+    mySequence.goTo(1, -1);
+
+    // back to start, so prev is hidden.
+    $('a.seq-prev div').css('visibility', 'hidden');
+
+    // back to start, so next is visible if >1 cards, otherwise hidden. 
+    if (len < 2) {
+	$('a.seq-next div').css('visibility', 'hidden');
+    }
+    else {
+	$('a.seq-next div').css('visibility', 'visible');
+    }
 });
 
+// shuffles the elements of an array.
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
