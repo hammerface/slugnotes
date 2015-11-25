@@ -44,6 +44,8 @@ $('div.fcseq_next').click(function(){
     var numcards = mySequence.$steps.length;
     var currentcardnum = mySequence.currentStepId;
 
+    console.log("currentcardnum: " + currentcardnum);
+
     // if current card is 1 and clicking next button, 
     // make previous button visible
     if(1 == currentcardnum){
