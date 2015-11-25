@@ -40,18 +40,19 @@ $('div.fcseq_flip').click(function(){
 
 $('div.fcseq_next').click(function(){
     var card_content = $('.seq-in');
-    var numcards = $('ul.seq-canvas').attr('id');
-    var currentcard = $('.seq-in').attr('id');
-    var currentcardnum = currentcard.substring(4);
+
+    var numcards = mySequence.$steps.length;
+    var currentcardnum = mySequence.currentStepId;
+
     // if current card is 1 and clicking next button, 
     // make previous button visible
-    if(1==currentcardnum){
+    if(1 == currentcardnum){
         $('a.seq-prev div').css('visibility', 'visible');
         $('a.seq-prev').toggleClass('prevent-click');
     }
     // if current card is second to last card and clicking next button, 
     // make next button hidden
-    if(Number(numcards)-1==Number(currentcardnum)){
+    if(numcards-1 == currentcardnum){
         $('a.seq-next div').css('visibility', 'hidden');
         $('a.seq-next').toggleClass('prevent-click');
     }
@@ -87,18 +88,19 @@ $('div.fcseq_next').click(function(){
 
 $('div.fcseq_prev').click(function(){
     var card_content = $('.seq-in');
-    var numcards = $('ul.seq-canvas').attr('id');
-    var currentcard = $('.seq-in').attr('id');
-    var currentcardnum = currentcard.substring(4);
+
+    var numcards = mySequence.$steps.length;
+    var currentcardnum = mySequence.currentStepId;
+
     // if current card is last and clicking previous button,
     // toggle no click on next
-    if(numcards==currentcardnum){
+    if(numcards == currentcardnum){
         $("a.seq-next div").css('visibility', 'visible');
         $('a.seq-next').toggleClass('prevent-click');
     }
     // if current card is 2 and clicking previous button,
     // toggle no click on prev
-    if(2==currentcardnum){
+    if(2 == currentcardnum){
         $('a.seq-prev div').css('visibility', 'hidden');
         $('a.seq-prev').toggleClass('prevent-click');
     }
@@ -115,7 +117,7 @@ $('div.fcseq_prev').click(function(){
         // add hidden class to back of the card
         card_content.find('.fcseq_card_back').addClass('hidden');
 
-    },400)
+    }, 400)
 
     // after new card begins to animate on screen
     setTimeout(function(){

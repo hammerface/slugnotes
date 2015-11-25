@@ -387,6 +387,7 @@ def Study(request):
     deck_id = None
     deckname = ""
     card_list = []
+    current_user_id = request.user.id
     try:
         deck_id = signer.unsign(deck_id_signed)
     except signing.BadSignature:
@@ -395,6 +396,7 @@ def Study(request):
     deck = Deck.objects.filter(deck_id = deck_id, deleted_flag = 0)
     try:
         deckname = deck[0].deck_name
+        deck_creator_id = deck[0].user_id
     except IndexError:
         deckname = ""
     cards = Card.objects.filter(deck_id = deck_id, deleted_flag = 0).order_by('-date_created')
@@ -408,6 +410,8 @@ def Study(request):
         "deckname" : deckname,
         "card_list" : card_list,
         "deck_id_signed" : deck_id_signed,
+        "deck_creator_id" : deck_creator_id,
+        "current_user_id" : current_user_id,
 
     }
 
