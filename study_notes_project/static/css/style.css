@@ -3097,6 +3097,10 @@ h6.deck_name{
     top: 92px; 
 }
 
+.prevent-click{
+    pointer-events:none;
+}
+
 a.deck_options, a.card_options, a.user_result_options, a.deck_result_options{
     background-color:#000;
     opacity: .7;

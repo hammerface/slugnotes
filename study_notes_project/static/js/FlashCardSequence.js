@@ -48,11 +48,13 @@ $('div.fcseq_next').click(function(){
     // make previous button visible
     if(1 == currentcardnum){
         $('a.seq-prev div').css('visibility', 'visible');
+        $('a.seq-prev').toggleClass('prevent-click');
     }
     // if current card is second to last card and clicking next button, 
     // make next button hidden
     if(numcards-1 == currentcardnum){
         $('a.seq-next div').css('visibility', 'hidden');
+        $('a.seq-next').toggleClass('prevent-click');
     }
     // after current card is animated off screen
     setTimeout(function(){
@@ -94,11 +96,13 @@ $('div.fcseq_prev').click(function(){
     // toggle no click on next
     if(numcards == currentcardnum){
         $("a.seq-next div").css('visibility', 'visible');
+        $('a.seq-next').toggleClass('prevent-click');
     }
     // if current card is 2 and clicking previous button,
     // toggle no click on prev
     if(2 == currentcardnum){
         $('a.seq-prev div').css('visibility', 'hidden');
+        $('a.seq-prev').toggleClass('prevent-click');
     }
     // after current card is animated off screen
     setTimeout(function(){
