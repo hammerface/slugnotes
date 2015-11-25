@@ -10,7 +10,7 @@
         </a>
       </div>
       <div class="col-lg-4 col-sm-4 centered-div">
-        <a class="seq-prev">
+        <a class="seq-prev prevent-click">
           <div class="fcseq_prev center breadcrumbs-button round-five" style="visibility:hidden;">
             <i class="fa fa-arrow-left"></i>
           </div>
@@ -67,8 +67,8 @@
           <ul class="seq-canvas" id="{{card_list|length}}">
             <li class="seq-step1 seq-in" id="step1">
               <div class="seq-content">
-                <h2 data-seq class="seq-title fcseq_card_front">{{ card_list.0.front }}</h2>
-                <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card_list.0.back }}</h2>
+                <h2 data-seq class="seq-title fcseq_card_front">{{ card_list.0.front|linebreaksbr }}</h2>
+                <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card_list.0.back|linebreaksbr }}</h2>
               </div>
             </li>
           </ul>
@@ -83,8 +83,8 @@
             {% for card in card_list reversed %}
             <li class="seq-step{{ forloop.counter }} seq-in fcseq_card" id="step{{ forloop.counter }}">
               <div class="seq-content">
-                <h2 data-seq class="seq-title fcseq_card_front">{{ card.front }}</h2>
-                <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card.back }}</h2>
+                <h2 data-seq class="seq-title fcseq_card_front">{{ card.front|linebreaksbr }}</h2>
+                <h2 data-seq class="seq-title fcseq_card_back hidden">{{ card.back|linebreaksbr }}</h2>
               </div>
             </li>
             {% endfor %}
