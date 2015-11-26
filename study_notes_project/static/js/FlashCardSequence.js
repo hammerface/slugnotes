@@ -93,6 +93,7 @@ $('div.fcseq_prev').click(function(){
 
     var numcards = mySequence.$steps.length;
     var currentcardnum = mySequence.currentStepId;
+    console.log(currentcardnum);
 
     // if current card is last and clicking previous button,
     // toggle no click on next
@@ -137,46 +138,40 @@ $('div.fcseq_prev').click(function(){
 });
 
 $('div.fcseq_random').click(function(){
-    alert("randomize!");
+    // randomizing a "ul" in html was based off of 
+    // http://stackoverflow.com/questions/7070054/javascript-shuffle-html-list-element-order
+    var ul = document.querySelector("ul.seq-canvas"), // get the list
+    random_ul = ul.cloneNode(true), // clone the list
+    i = random_ul.children.length + 1;
 
-    // Get the list of cards and the length of that list.
-    var list = mySequence.$steps;
-    var len = mySequence.$steps.length;
+    // shuffle the cloned list
+    while( i-- > 0 )
+        random_ul.appendChild( random_ul.children[Math.random() * i |0] );
+    // copy shuffled list back to DOM element
+    ul.parentNode.replaceChild(random_ul, ul);
 
-    // Scramble the the cards.
-    shuffleArray(list);    
-
-    // Assign a new id to the cards matching their new order.
-    for (var i = 0; i < len; ++i) {
-	list[i].id = "step" + (i + 1);
-    }
-
-    console.log(list);
-
-    // Go to the first card.
-    // this doesn't seem to work when you are already at the front,
-    // also text from previous card lingers.
-    mySequence.goTo(1, -1);
-
-    // back to start, so prev is hidden.
+    // set previous button to be hidden and unclickable
     $('a.seq-prev div').css('visibility', 'hidden');
+    $('a.seq-prev').removeClass('prevent-click');
+    $('a.seq-prev').addClass('prevent-click');
 
-    // back to start, so next is visible if >1 cards, otherwise hidden. 
-    if (len < 2) {
-	$('a.seq-next div').css('visibility', 'hidden');
-    }
-    else {
-	$('a.seq-next div').css('visibility', 'visible');
-    }
+    // set the next button to be visible and clickable
+    $('a.seq-next div').css('visibility', 'visible');
+    $('a.seq-next').removeClass('prevent-click');
+
+    // set the color of the cards to the front-color
+    var containing_div = $('.seq');
+    containing_div.removeClass('fcseq_card_front fcseq_card_back');
+    containing_div.addClass('fcseq_card_front');
+
+    // set the current card to display it's front
+    var card_content = $('.seq-in');
+    card_content.find('.fcseq_card_front, .fcseq_card_back').removeClass('hidden');
+    card_content.find('.fcseq_card_back').addClass('hidden');
+
+    // destroy the current sequence and make a new one with the newly randomized cards
+    mySequence.destroy();
+    mySequence = sequence(sequenceElement, options);
+
 });
 
-// shuffles the elements of an array.
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
