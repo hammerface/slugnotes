@@ -87,46 +87,38 @@ function addNewDeck() {
 		var user = $("#id_user").val();
 		var deck_name = $("#id_deck_name").val();
 		var share_flag = $('#id_share_flag').is(':checked');
-		// var csrftoken = getCookie('csrftoken');
 
 		//start ajax post
 		$.ajax({
-        url : "/cards/new_deck/", // the endpoint
-        type : "POST", // http method
-        data : { user : user, deck_name : deck_name, share_flag : share_flag }, // data sent with the post request
-        "beforeSend": function(xhr, settings) {
-        console.log("Before Send");
-        $.ajaxSettings.beforeSend(xhr, settings);
-    	},
-        // handle a successful response
-        success : function(json) {
-            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-            var errors = jQuery.parseJSON(json);
+            url : "/cards/new_deck/", // the endpoint
+            type : "POST", // http method
+            data : { user : user, deck_name : deck_name, share_flag : share_flag }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+                $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            // handle a successful response
+            success : function(json) {
+                //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+                var errors = jQuery.parseJSON(json);
 
-            //erros in form
-            if (errors.deck_name != null) {
-            	var error = $('#make-deck-error');
-            	error.text(errors.deck_name);
-                $("#make-deck-submit").disabled = false;
-            }else {
+                //errors in form
+                if (errors.deck_name != null) {
+            	   var error = $('#make-deck-error');
+            	   error.text(errors.deck_name);
+                    $("#make-deck-submit").disabled = false;
+                } else {
             	//no errors in form
-            	$('#make-deck-form').trigger("reset");
-            	var cancelButton = document.getElementById("make-deck-cancel");
-				cancelButton.click();
-				location.reload();
+            	   $('#make-deck-form').trigger("reset");
+            	   var cancelButton = document.getElementById("make-deck-cancel");
+				    cancelButton.click();
+				    location.reload();
+                }
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                console.log("error");
             }
-        },
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log("error");
-            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-
-		
-		
+        });
 	});
 }
 
@@ -137,8 +129,6 @@ function cloneDeck() {
 
     });
 
-
-
     $('#clone-deck-submit').click(function(event){
         event.preventDefault();
         $("#clone-deck-submit").disabled = true;
@@ -146,47 +136,38 @@ function cloneDeck() {
         var deck_name = $("#id_deck_name").val();
         var share_flag = $('#id_share_flag').is(':checked');
         var clone_deck_id = $('#clone-deck-id-input').val()
-        // var csrftoken = getCookie('csrftoken');
         //start ajax post
         $.ajax({
-        url : "/cards/clone/", // the endpoint
-        type : "POST", // http method
-        data : { user : user, deck_name : deck_name, share_flag : share_flag, clone_deck_id : clone_deck_id }, // data sent with the post request
-        "beforeSend": function(xhr, settings) {
-        console.log("Before Send");
-        $.ajaxSettings.beforeSend(xhr, settings);
-        },
-        // handle a successful response
-        success : function(json) {
-            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-            var errors = jQuery.parseJSON(json);
+            url : "/cards/clone/", // the endpoint
+            type : "POST", // http method
+            data : { user : user, deck_name : deck_name, share_flag : share_flag, clone_deck_id : clone_deck_id }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+                $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            // handle a successful response
+            success : function(json) {
+                //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+                var errors = jQuery.parseJSON(json);
 
-            //erros in form
-            if (errors.deck_name != null) {
-                var error = $('#clone-deck-error');
-                error.text(errors.deck_name)
-                $("#clone-deck-submit").disabled = false;
-            }else {
-                //no errors in form
-                $('#clone-deck-form').trigger("reset");
-                var cancelButton = document.getElementById("clone-deck-cancel");
-                cancelButton.click();
-                var error = $('#clone-deck-error');
-                error.text("");
-                //location.reload();
+                //errors in form
+                if (errors.deck_name != null) {
+                    var error = $('#clone-deck-error');
+                    error.text(errors.deck_name)
+                    $("#clone-deck-submit").disabled = false;
+                } else {
+                    //no errors in form
+                    $('#clone-deck-form').trigger("reset");
+                    var cancelButton = document.getElementById("clone-deck-cancel");
+                    cancelButton.click();
+                    var error = $('#clone-deck-error');
+                    error.text("");
+                }
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                console.log("error");
             }
-        },
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log("error");
-            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-
-        
-        
+        });
     });
 }
 
@@ -197,78 +178,63 @@ function editDeck() {
 	    var deck_id = $("input[name=edit-deck-id]").val();
 		var deck_name = $("#id_deck_name_edit").val();
 		var share_flag = $('#id_share_flag_edit').is(':checked');
-		// var csrftoken = getCookie('csrftoken');
-        
 		//start ajax post
 		$.ajax({
-        url : "/cards/edit_deck/", // the endpoint
-        type : "POST", // http method
-        data : { user : user, deck_id : deck_id, deck_name : deck_name, share_flag : share_flag }, // data sent with the post request
-        "beforeSend": function(xhr, settings) {
-        console.log("Before Send");
-        $.ajaxSettings.beforeSend(xhr, settings);
-    	},
-        // handle a successful response
-        success : function(json) {
-            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-            var errors = jQuery.parseJSON(json);
+            url : "/cards/edit_deck/", // the endpoint
+            type : "POST", // http method
+            data : { user : user, deck_id : deck_id, deck_name : deck_name, share_flag : share_flag }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+                $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            // handle a successful response
+            success : function(json) {
+                //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+                var errors = jQuery.parseJSON(json);
 
-            //erros in form
-            if (errors.deck_name != null) {
-            	var error = $('#edit-deck-error');
-            	error.text(errors.deck_name)
-            }else {
-            	//no errors in form
-            	$('#edit-deck-form').trigger("reset");
-            	var cancelButton = document.getElementById("edit-deck-cancel");
-				cancelButton.click();
-				location.reload();
+                //errors in form
+                if (errors.deck_name != null) {
+            	   var error = $('#edit-deck-error');
+            	   error.text(errors.deck_name)
+                } else {
+            	   //no errors in form
+            	   $('#edit-deck-form').trigger("reset");
+            	   var cancelButton = document.getElementById("edit-deck-cancel");
+				    cancelButton.click();
+				    location.reload();
+                }
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                console.log("error");
             }
-        },
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log("error");
-            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-
-		
-		
+        });
 	});
 }
 
 function deleteDeck() {
-
-
-
     $('#delete-deck-submit').click(function(event){
-	event.preventDefault();
-	var deck = $("input[name=id-deck-id]").val();
-        
-	//start ajax post
-	$.ajax({
+    	event.preventDefault();
+    	var deck = $("input[name=id-deck-id]").val();
+    	//start ajax post
+    	$.ajax({
             url : "/cards/delete_deck/", // the endpoint
             type : "POST", // http method
             data : { deck : deck }, // data sent with the post request
             "beforeSend": function(xhr, settings) {
-		console.log("Before Send");
-		$.ajaxSettings.beforeSend(xhr, settings);
-    	    },
+                $.ajaxSettings.beforeSend(xhr, settings);
+        	},
             // handle a successful response
             success : function(json) {
             	$('#delete-deck-form').trigger("reset");
             	var cancelButton = document.getElementById("delete-deck-cancel");
-		cancelButton.click();
-		location.reload();
+        		cancelButton.click();
+    	       	location.reload();
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-		console.log("error");
+        		console.log("error");
             }
-	});
-		
+    	});		
     });
 }
 
@@ -278,166 +244,149 @@ function addNewCard() {
         var deck = $("#id_deck").val();
         var front = $("#id_front").val();
         var back = $('#id_back').val();
-        // var csrftoken = getCookie('csrftoken');
+
         //start ajax post
         $.ajax({
-        url : "/cards/new_card/", // the endpoint
-        type : "POST", // http method
-        data : { deck : deck, front : front, back : back }, // data sent with the post request
-        "beforeSend": function(xhr, settings) {
-        console.log("Before Send");
-        $.ajaxSettings.beforeSend(xhr, settings);
-        },
-        // handle a successful response
-        success : function(json) {
-            //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-            var errors = jQuery.parseJSON(json);
-            //errors in form
-            if (errors.front != null) {
-                var error = $('#make-card-error');
-                error.text(errors.front)
-            }else {
-                //no errors in form
-                console.log("Trying to submit.");
-                $('#make-card-form').trigger("reset");
-                var cancelButton = document.getElementById("make-card-cancel");
-                cancelButton.click();
-                location.reload();
+            url : "/cards/new_card/", // the endpoint
+            type : "POST", // http method
+            data : { deck : deck, front : front, back : back }, // data sent with the post request
+            "beforeSend": function(xhr, settings) {
+                $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            // handle a successful response
+            success : function(json) {
+                //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+                var errors = jQuery.parseJSON(json);
+                //errors in form
+                if (errors.front != null) {
+                    var error = $('#make-card-error');
+                    error.text(errors.front)
+                } else {
+                    //no errors in form
+                    $('#make-card-form').trigger("reset");
+                    var cancelButton = document.getElementById("make-card-cancel");
+                    cancelButton.click();
+                    location.reload();
+                }
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                console.log("error"); 
             }
-        },
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log("error");
-            //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-               // " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-
-        
-        
+        });
     });
 }
 
 
 function uploadCards() {
     $('#upload-cards-submit').click(function(event){
-    event.preventDefault();
-    var deck_id = $("#id_deck").val();
-    var file = $("#id_file_upload").get(0).files;
-    var text = $('#id_text_upload').val();
-    var formData = new FormData($("#upload-notes-form")[0]);
+        event.preventDefault();
+        var deck_id = $("#id_deck").val();
+        var file = $("#id_file_upload").get(0).files;
+        var text = $('#id_text_upload').val();
+        var formData = new FormData($("#upload-notes-form")[0]);
 
-    //start ajax post
-    $.ajax({
+        //start ajax post
+        $.ajax({
             url : "/cards/upload_file/", // the endpoint
             type : "POST", // http method
             processData: false,
             contentType: false,
             data : formData, // data sent with the post request
             "beforeSend": function(xhr, settings) {
-        console.log("Before Send");
-        $.ajaxSettings.beforeSend(xhr, settings);
+                $.ajaxSettings.beforeSend(xhr, settings);
             },
             // handle a successful response
             success : function(json) {
-        //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-        var errors = jQuery.parseJSON(json);
-        console.log("Errors : "+errors);
-        
-        //erros in form
-        if (errors.__all__ != null) {
+                //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+                var errors = jQuery.parseJSON(json);
+            
+                //errors in form
+                if (errors.__all__ != null) {
                     var error = $('#upload-cards-error');
                     error.text(errors.__all__)
-        }else {
+                } else {
                     //no errors in form
                     $('#upload-notes-form').trigger("reset");
                     var cancelButton = document.getElementById("upload-cards-cancel");
-            cancelButton.click();
-            location.reload();
-        }
+                    cancelButton.click();
+                    location.reload();
+                }
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-        console.log("error");
+                console.log("error");
             }
-    });
-        
+        });        
     });
 }
 
 function editCard() {
     $('#edit-card-submit').click(function(event){
-	event.preventDefault();
-	var card = $("input[name=id-card-id]").val();
-	var deck = $("#id_deck").val();
-    var front = $("#id_card_front_edit").val();
-    var back = $('#id_card_back_edit').val();
-	// var csrftoken = getCookie('csrftoken');
-        
-	//start ajax post
-	$.ajax({
+    	event.preventDefault();
+    	var card = $("input[name=id-card-id]").val();
+    	var deck = $("#id_deck").val();
+        var front = $("#id_card_front_edit").val();
+        var back = $('#id_card_back_edit').val();
+            
+    	//start ajax post
+    	$.ajax({
             url : "/cards/edit_card/", // the endpoint
             type : "POST", // http method
             data : { card : card, deck : deck, front : front, back : back }, // data sent with the post request
             "beforeSend": function(xhr, settings) {
-		console.log("Before Send");
-		$.ajaxSettings.beforeSend(xhr, settings);
+        		$.ajaxSettings.beforeSend(xhr, settings);
     	    },
             // handle a successful response
             success : function(json) {
-		//http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
-		var errors = jQuery.parseJSON(json);
-		
-		//erros in form
-		if (errors.front != null) {
-            	    var error = $('#edit-card-error');
-            	    error.text(errors.front)
-		}else {
-            	    //no errors in form
-            	    $('#edit-card-form').trigger("reset");
-            	    var cancelButton = document.getElementById("edit-card-cancel");
-		    cancelButton.click();
-		    location.reload();
-		}
+                //http://stackoverflow.com/questions/2624761/returning-form-errors-for-ajax-request-in-django
+                var errors = jQuery.parseJSON(json);
+                //errors in form
+                if (errors.front != null) {
+                    var error = $('#edit-card-error');
+                    error.text(errors.front)
+                } else {
+                    //no errors in form
+                    $('#edit-card-form').trigger("reset");
+                    var cancelButton = document.getElementById("edit-card-cancel");
+                    cancelButton.click();
+                    location.reload();
+                }
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-		console.log("error");
+    	       console.log("error");
             }
-	});
-		
+    	});	
     });
 }
 
 function deleteCard() {
     $('#delete-card-submit').click(function(event){
-	event.preventDefault();
-	var card = $("input[name=id-card-id]").val();
-	var deck = $("#id_deck").val();
-        
-	//start ajax post
-	$.ajax({
+    	event.preventDefault();
+    	var card = $("input[name=id-card-id]").val();
+    	var deck = $("#id_deck").val();
+            
+    	//start ajax post
+    	$.ajax({
             url : "/cards/delete_card/", // the endpoint
             type : "POST", // http method
             data : { card : card, deck : deck }, // data sent with the post request
             "beforeSend": function(xhr, settings) {
-		console.log("Before Send");
-		$.ajaxSettings.beforeSend(xhr, settings);
-    	    },
+                $.ajaxSettings.beforeSend(xhr, settings);
+        	},
             // handle a successful response
             success : function(json) {
-            	$('#delete-card-form').trigger("reset");
+                $('#delete-card-form').trigger("reset");
             	var cancelButton = document.getElementById("delete-card-cancel");
-		cancelButton.click();
-		location.reload();
+                cancelButton.click();
+                location.reload();
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-		console.log("error");
+                console.log("error");
             }
-	});
-		
+    	});
     });
 }
 
@@ -469,10 +418,10 @@ function scrollText(){
 function deckDropDown(){
     $('div.deck').hover(
         function(){
-            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+            $(this).find('.image-caption').slideDown(250);
         },
         function(){
-            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+            $(this).find('.image-caption').slideUp(250);
         }
     );
 }
@@ -481,10 +430,10 @@ function deckDropDown(){
 function userResultDropDown(){
     $('div.UserResult').hover(
         function(){
-            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+            $(this).find('.image-caption').slideDown(250);
         },
         function(){
-            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+            $(this).find('.image-caption').slideUp(250);
         }
     );
 }
@@ -493,10 +442,10 @@ function userResultDropDown(){
 function deckResultDropDown(){
     $('div.DeckResult').hover(
         function(){
-            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+            $(this).find('.image-caption').slideDown(250);
         },
         function(){
-            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+            $(this).find('.image-caption').slideUp(250);
         }
     );
 }
@@ -505,10 +454,10 @@ function deckResultDropDown(){
 function cardsDropDown(){
     $('div.small_card').hover(
         function(){
-            $(this).find('.image-caption').slideDown(250); //.fadeIn(250)
+            $(this).find('.image-caption').slideDown(250);
         },
         function(){
-            $(this).find('.image-caption').slideUp(250); //.fadeOut(205)
+            $(this).find('.image-caption').slideUp(250);
         }
     );
 }
@@ -544,10 +493,10 @@ function handleCardTurn(){
 }
 
 function updateFileName(){
-    document.getElementById("id_file_upload").onchange = function () {
+    $("#id_file_upload").change(function () {
         var filename = this.value.split("\\")[2];
         document.getElementById("selected_file").value = filename;
-    };
+    });
 }
 
 
