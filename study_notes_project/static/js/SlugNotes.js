@@ -244,6 +244,7 @@ function addNewCard() {
         var deck = $("#id_deck").val();
         var front = $("#id_front").val();
         var back = $('#id_back').val();
+        $("#make-card-submit").disabled = true;
 
         //start ajax post
         $.ajax({
@@ -261,6 +262,7 @@ function addNewCard() {
                 if (errors.front != null) {
                     var error = $('#make-card-error');
                     error.text(errors.front)
+                    $("#make-card-submit").disabled = false;
                 } else {
                     //no errors in form
                     $('#make-card-form').trigger("reset");
